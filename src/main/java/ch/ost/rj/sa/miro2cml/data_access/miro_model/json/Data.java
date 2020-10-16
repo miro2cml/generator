@@ -4,18 +4,34 @@ import java.math.BigInteger;
 
 public class Data {
     private String type;
+    private BigInteger id;
 
     private double scale;
-
-    private double y;
-
+    private int y;
     private int x;
-
     private int width;
-
     private int height;
-
     private String title;
+    private String description;
+    private StartWidget startWidget;
+    private EndWidget endWidget;
+    private String url;
+    private double rotation;
+    private String text;
+    private Style style;
+
+    private CreatedBy createdBy;
+    private String modifiedAt;
+    private ModifiedBy modifiedBy;
+    private String createdAt;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public String toString() {
@@ -48,26 +64,22 @@ public class Data {
     public void setTitle(String title) {
         this.title = title;
     }
-    private Data startWidget;
-    private Data endWidget;
 
-    public Data getStartWidget() {
+    public StartWidget getStartWidget() {
         return startWidget;
     }
 
-    public void setStartWidget(Data startWidget) {
+    public void setStartWidget(StartWidget startWidget) {
         this.startWidget = startWidget;
     }
 
-    public Data getEndWidget() {
+    public EndWidget getEndWidget() {
         return endWidget;
     }
 
-    public void setEndWidget(Data endWidget) {
+    public void setEndWidget(EndWidget endWidget) {
         this.endWidget = endWidget;
     }
-
-    private String url;
 
     public String getUrl() {
         return url;
@@ -77,52 +89,36 @@ public class Data {
         this.url = url;
     }
 
-    private double rotation;
-
-    private String text;
-
-    private Style style;
-
-    private BigInteger id;
-
-    private CreatedBy createdBy;
-
-    private String modifiedAt;
-
-    private ModifiedBy modifiedBy;
-
-    private String createdAt;
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getType() {
         return this.type;
     }
 
-    public void setScale(double scale) {
-        this.scale = scale;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public double getScale() {
         return this.scale;
     }
 
-    public void setY(double y) {
-        this.y = y;
+    public void setScale(double scale) {
+        this.scale = scale;
     }
 
-    public double getY() {
+    public int getY() {
         return this.y;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getX() {
         return this.x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
 
     public int getWidth() {
@@ -141,60 +137,60 @@ public class Data {
         this.height = height;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public String getText() {
         return this.text;
     }
 
-    public void setStyle(Style style) {
-        this.style = style;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Style getStyle() {
         return this.style;
     }
 
-    public void setId(BigInteger id) {
-        this.id = id;
+    public void setStyle(Style style) {
+        this.style = style;
     }
 
     public BigInteger getId() {
         return this.id;
     }
 
-    public void setCreatedBy(CreatedBy createdBy) {
-        this.createdBy = createdBy;
+    public void setId(BigInteger id) {
+        this.id = id;
     }
 
     public CreatedBy getCreatedBy() {
         return this.createdBy;
     }
 
-    public void setModifiedAt(String modifiedAt) {
-        this.modifiedAt = modifiedAt;
+    public void setCreatedBy(CreatedBy createdBy) {
+        this.createdBy = createdBy;
     }
 
     public String getModifiedAt() {
         return this.modifiedAt;
     }
 
-    public void setModifiedBy(ModifiedBy modifiedBy) {
-        this.modifiedBy = modifiedBy;
+    public void setModifiedAt(String modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public ModifiedBy getModifiedBy() {
         return this.modifiedBy;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setModifiedBy(ModifiedBy modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public String getCreatedAt() {
         return this.createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public double getRotation() {
