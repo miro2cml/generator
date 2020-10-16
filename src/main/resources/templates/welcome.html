@@ -26,6 +26,21 @@
     <ol>
         <li th:each="task : ${tasks}" th:text="${task}"></li>
     </ol>
+    <div class="input-container">
+        <h2>Miro Input</h2>
+        <form action="/">
+            <label for="boardid">Miro Board Id:</label><br>
+            <input type="text" id="boardid" name="boardid"><br>
+            <label for="accesstoken">Miro Access Token:</label><br>
+            <input type="text" id="accesstoken" name="accesstoken"><br>
+            <input type="submit" value="Transfer">
+        </form>
+    </div>
+    <div class="output-container">
+        <h2>CML Output</h2>
+        <text>Link to file</text>
+        <Button><a href="files/downloadFile.cml" download="cmlOutput.cml">Download</a></Button>
+    </div>
 
 </main>
 <!-- /.container -->
