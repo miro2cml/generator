@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import java.util.Scanner;
 
 public class MiroApiConsumer {
-    private static void getBoard(String accessToken, String boardID) {
+    public static void getBoard(String accessToken, String boardID) {
 
         String query = "access_token=" + accessToken;
         String url = "https://api.miro.com/v1/boards/"+ boardID +"/widgets/";
