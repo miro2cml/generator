@@ -25,7 +25,7 @@ public class WelcomeController {
         return "welcome"; //view
     }
 
-    // /hello?name=kotlin
+    // /hello?miroid=kotlin
     @GetMapping("/hello")
     public String mainWithParam(
             @RequestParam(name = "name", required = false, defaultValue = "")
