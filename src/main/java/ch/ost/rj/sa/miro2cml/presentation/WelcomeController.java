@@ -1,8 +1,11 @@
 package ch.ost.rj.sa.miro2cml.presentation;
+import ch.ost.rj.sa.miro2cml.presentation.model.GetBoardForm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
@@ -19,10 +22,22 @@ public class WelcomeController {
 
     @GetMapping("/")
     public String main(Model model) {
+        List<String> boardTypes =  Arrays.asList("UserStoryMap","Event Storming Canvas", "Context Map", "Bounded Context Canvas", "automatic");
+        model.addAttribute("boardTypes", boardTypes);
         model.addAttribute("message", message);
         model.addAttribute("tasks", tasks);
+        GetBoardForm form = new GetBoardForm();
+        model.addAttribute("form",form);
 
         return "welcome"; //view
+    }
+    @PostMapping("/")
+    public String resolveGetBoardForm(GetBoardForm form, Model model){
+        model.addAttribute("form",form);
+
+        //ToDo: (async) call into business logic to start conversion
+
+        return "getBoardSuccess";
     }
 
     // /hello?miroid=kotlin

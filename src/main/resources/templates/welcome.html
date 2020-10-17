@@ -28,12 +28,16 @@
     </ol>
     <div class="input-container">
         <h2>Miro Input</h2>
-        <form action="/">
+        <form action="/"  method="post" th:object="${form}" >
             <label for="boardid" >Miro Board Id:</label><br>
-            <input type="text" id="boardid" name="boardid"><br>
+            <input type="text" id="boardid"  th:field="*{boardId}"><br>
             <label for="accesstoken">Miro Access Token:</label><br>
-            <input type="text" id="accesstoken" name="accesstoken"><br>
-            <input type="submit" value="Transfer">
+            <input type="text" id="accesstoken" th:field="*{accessToken}"><br>
+            <label for="dropBoard">Miro Board Type: </label>
+            <select class="form-control" th:field="*{boardType}" id="dropBoard" name="boardType">
+                <option th:each="board : ${boardTypes}" th:value="${board}" th:text="${board}"></option>
+            </select>
+            <button type="submit">Submit</button>
         </form>
     </div>
     <div class="output-container">
