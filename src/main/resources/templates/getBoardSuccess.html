@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,6 +10,11 @@
     <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br/>
     <span>AccessToken:</span><span th:text="${form.getAccessToken()}"></span><br/>
     <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br/>
+</div>
+<div class="output-container">
+    <h2>CML Output</h2>
+    <text>Link to file</text>
+    <Button> <a th:href="@{|/download?name=${form.getBoardId()}|}" download="cmlOutput.cml">Download</a></Button>
 </div>
 </body>
 </html>

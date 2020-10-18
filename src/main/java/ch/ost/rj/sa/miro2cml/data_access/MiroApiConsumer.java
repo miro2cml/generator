@@ -3,6 +3,7 @@ package ch.ost.rj.sa.miro2cml.data_access;
 import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Data;
 import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Root;
 import ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo.*;
+import ch.ost.rj.sa.miro2cml.business_logic.model.Board;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -11,10 +12,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class MiroApiConsumer {
-    public static void getBoard(String accessToken, String boardID) {
+    public static ArrayList<WidgetObject> getBoardWidgets(String accessToken, String boardID) {
 
         String query = "access_token=" + accessToken;
         String url = "https://api.miro.com/v1/boards/" + boardID + "/widgets/";
@@ -42,11 +42,12 @@ public class MiroApiConsumer {
 
             ArrayList<WidgetObject> list = convertMiroJsonToPojo(widgetList);
             System.out.println(list);
+            return list;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
     private static ArrayList<WidgetObject> convertMiroJsonToPojo(Root miroJson) {

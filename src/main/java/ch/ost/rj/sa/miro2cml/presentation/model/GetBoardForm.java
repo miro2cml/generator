@@ -1,9 +1,11 @@
 package ch.ost.rj.sa.miro2cml.presentation.model;
 
+import ch.ost.rj.sa.miro2cml.model.BoardType;
+
 public class GetBoardForm {
     private String accessToken;
     private String boardId;
-    private String boardType;
+    private BoardType boardType;
 
     public String getAccessToken() {
         return accessToken;
@@ -21,15 +23,15 @@ public class GetBoardForm {
         this.boardId = boardId;
     }
 
-    public String getBoardType() {
+    public BoardType getBoardType() {
         return boardType;
     }
 
-    public void setBoardType(String boardType) {
+    public void setBoardType(BoardType boardType) {
         this.boardType = boardType;
     }
 
-    public GetBoardForm(String accessToken, String boardId, String boardType) {
+    public GetBoardForm(String accessToken, String boardId, BoardType boardType) {
         this.accessToken = accessToken;
         this.boardId = boardId;
         this.boardType = boardType;
