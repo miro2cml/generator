@@ -1,4 +1,5 @@
 package ch.ost.rj.sa.miro2cml.presentation;
+import ch.ost.rj.sa.miro2cml.model.BoardType;
 import ch.ost.rj.sa.miro2cml.presentation.model.GetBoardForm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ public class WelcomeController {
 
     @GetMapping("/")
     public String main(Model model) {
-        List<String> boardTypes =  Arrays.asList("UserStoryMap","Event Storming Canvas", "Context Map", "Bounded Context Canvas", "automatic");
+        List<BoardType> boardTypes =  Arrays.asList(BoardType.USE_CASE,BoardType.BOUNDED_CONTEXT_CANVAS,BoardType.CONTEXT_MAP,BoardType.EVENT_STORMING,BoardType.AUTOMATIC);
         model.addAttribute("boardTypes", boardTypes);
         model.addAttribute("message", message);
         model.addAttribute("tasks", tasks);
