@@ -28,6 +28,11 @@ public class UseCaseCmlGenerator implements ICmlGenerator {
             }
             writer.flush();
             byteArrayResource = new ByteArrayResource(Files.readAllBytes(path));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             java.nio.file.Files.delete(path);
         } catch (IOException e) {
             e.printStackTrace();
