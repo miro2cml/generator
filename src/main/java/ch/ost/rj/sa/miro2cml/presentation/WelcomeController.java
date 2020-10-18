@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Arrays;
 import java.util.List;
 
+import static ch.ost.rj.sa.miro2cml.data_access.MiroApiConsumer.getBoard;
+
 @Controller
 public class WelcomeController {
 
@@ -48,7 +50,7 @@ public class WelcomeController {
                     String name, Model model) {
 
         model.addAttribute("message", name);
-
+        getBoard("5832d294-d90a-40b2-a83b-9aa5232b1493", "o9J_ki4it0o=");
         return "welcome"; //view
     }
 
