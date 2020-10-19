@@ -24,6 +24,45 @@ public class Data {
     private String modifiedAt;
     private ModifiedBy modifiedBy;
     private String createdAt;
+    private String date;
+    private Assignee assignee;
+    private String card; //isn't listed in Miro Documentation, but appears in CardWidgetObjects as field.
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "type='" + type + '\'' +
+                ", id=" + id +
+                ", scale=" + scale +
+                ", y=" + y +
+                ", x=" + x +
+                ", width=" + width +
+                ", height=" + height +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", startWidget=" + startWidget +
+                ", endWidget=" + endWidget +
+                ", url='" + url + '\'' +
+                ", rotation=" + rotation +
+                ", text='" + text + '\'' +
+                ", style=" + style +
+                ", createdBy=" + createdBy +
+                ", modifiedAt='" + modifiedAt + '\'' +
+                ", modifiedBy=" + modifiedBy +
+                ", createdAt='" + createdAt + '\'' +
+                ", date='" + date + '\'' +
+                ", assignee=" + assignee +
+                ", card='" + card + '\'' +
+                '}';
+    }
+
+    public String getCard() {
+        return card;
+    }
+
+    public void setCard(String card) {
+        this.card = card;
+    }
 
     public String getDescription() {
         return description;
@@ -33,28 +72,20 @@ public class Data {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Data{" +
-                "type='" + type + '\'' +
-                ", scale=" + scale +
-                ", y=" + y +
-                ", x=" + x +
-                ", width=" + width +
-                ", height=" + height +
-                ", title='" + title + '\'' +
-                ", startWidget=" + startWidget +
-                ", endWidget=" + endWidget +
-                ", url='" + url + '\'' +
-                ", rotation=" + rotation +
-                ", text='" + text + '\'' +
-                ", style=" + style +
-                ", id=" + id +
-                ", createdBy=" + createdBy +
-                ", modifiedAt='" + modifiedAt + '\'' +
-                ", modifiedBy=" + modifiedBy +
-                ", createdAt='" + createdAt + '\'' +
-                '}';
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Assignee getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(Assignee assignee) {
+        this.assignee = assignee;
     }
 
     public String getTitle() {
@@ -200,4 +231,5 @@ public class Data {
     public void setRotation(double rotation) {
         this.rotation = rotation;
     }
+
 }
