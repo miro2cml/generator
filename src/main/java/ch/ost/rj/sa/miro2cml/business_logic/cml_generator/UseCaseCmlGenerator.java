@@ -19,7 +19,6 @@ public class UseCaseCmlGenerator implements ICmlGenerator {
     //Todo: write CML generator -> currently only passes widgets in textform
     @Override
     public ByteArrayResource generateCmlByteArrayResource(ConceptBoard conceptBoard, CMLModel model) {
-        //ArrayList<WidgetObject> widgetObjects = conceptBoard.getOriginalBoard().getWidgetObjects();
         ArrayList<Object> cmlObjects = model.getAllObjects();
 
         ByteArrayResource byteArrayResource = null;

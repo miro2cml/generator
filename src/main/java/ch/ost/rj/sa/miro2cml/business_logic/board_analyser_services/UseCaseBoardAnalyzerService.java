@@ -20,6 +20,7 @@ public class UseCaseBoardAnalyzerService implements IBoardAnalyzerService {
     public CMLModel analyseInput(ConceptBoard conceptBoard){
         Board board = conceptBoard.getOriginalBoard();
         CMLModel cmlModel = new CMLModel(new ArrayList<>());
+        //just card -> mapping rules
         var cardsOnBoardStream = board.getWidgetObjects().stream().filter(x -> x instanceof Card);
         cardsOnBoardStream.forEach(x -> generateUserStory((Card) x, cmlModel));
         return cmlModel;
@@ -27,34 +28,29 @@ public class UseCaseBoardAnalyzerService implements IBoardAnalyzerService {
 
     private void generateUserStory(Card card, CMLModel model) {
         try{
-            //nur einteilige Verben und nur a anstelle an unterstützt
             //ignore blue and yellow cards -> mapping rules
             if(card.getBackgroundColor().equals("#2d9bf0") || card.getBackgroundColor().equals("#fbc800")){
                 return;
             }
+            //nur einteilige Verben und nur a anstelle an unterstützt, keine Sonderzeichen beachtet
             if(card.getTitle().matches("<p>As an [A-Z,a-z]+ I want to [a-z]+ a [a-z, A-Z]+ so that [a-zA-Z\\p{Blank}]+</p>")){
-                //refactoring TODO
-                String withoutStart = card.getTitle().substring(9);
-                int index = withoutStart.indexOf(" I want to ");
-                String actor = withoutStart.substring(0, index);
-                String withoutActor = withoutStart.substring(index+11);
-                System.out.println("withoutActor= " + withoutActor);
-                int indexA = withoutActor.indexOf(" a ");
-                String action = withoutActor.substring(0, indexA);
-                String withoutAction = withoutActor.substring(indexA+3);
-                int indexB = withoutAction.indexOf(" so that ");
-                String object = withoutAction.substring(0, indexB);
-                String withoutObject = withoutAction.substring(indexB+9);
-                int indexC = withoutObject.indexOf("</p>");
-                String goal = withoutObject.substring(0, indexC);
+                String userStory = card.getTitle();
+                String actor = getPart("<p>As an ", " I want to ", userStory);
+                String action = getPart(" I want to ", " a ", userStory);
+                String object = getPart(" a ", " so that ", userStory);
+                String goal = getPart(" so that ", "</p>", userStory);
                 String name = action.concat(object);
-                UserStory thisUserStory = new UserStory(name, actor, action, object, goal);
-                System.out.println(thisUserStory.toString());
-                model.add(thisUserStory);
+                model.add(new UserStory(name, actor, action, object, goal));
 
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private String getPart(String start, String end, String input) {
+        int startIndex = input.indexOf(start);
+        int endIndex = input.indexOf(end);
+        return input.substring(startIndex+start.length(), endIndex);
     }
 }
