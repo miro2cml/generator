@@ -2,6 +2,8 @@ package ch.ost.rj.sa.miro2cml.business_logic;
 
 import ch.ost.rj.sa.miro2cml.business_logic.board_analyser_services.UseCaseBoardAnalyzerService;
 import ch.ost.rj.sa.miro2cml.business_logic.cml_generator.UseCaseCmlGenerator;
+import ch.ost.rj.sa.miro2cml.business_logic.cml_model.CMLModel;
+import ch.ost.rj.sa.miro2cml.business_logic.model.Board;
 import ch.ost.rj.sa.miro2cml.business_logic.model.ConceptBoard;
 import ch.ost.rj.sa.miro2cml.model.BoardType;
 import org.springframework.core.io.ByteArrayResource;
@@ -27,11 +29,14 @@ public class BusinessLogicController {
         switch (boardType) {
             case USE_CASE:
                 ConceptBoard useCaseBoard = new UseCaseBoardAnalyzerService().analyseBoard(accessToken,boardId);
-                cml = new UseCaseCmlGenerator().generateCmlByteArrayResource(useCaseBoard);
+                CMLModel cmlModel = new UseCaseBoardAnalyzerService().analyseInput(useCaseBoard);
+                cml = new UseCaseCmlGenerator().generateCmlByteArrayResource(useCaseBoard, cmlModel);
                 break;
             case BOUNDED_CONTEXT_CANVAS:
                 break;
 
+            case EVENT_STORMING:
+                break;
             case CONTEXT_MAP:
                 break;
             default:
