@@ -20,7 +20,7 @@ public class UseCaseBoardAnalyzerService implements IBoardAnalyzerService {
     public CMLModel analyseInput(ConceptBoard conceptBoard){
         Board board = conceptBoard.getOriginalBoard();
         CMLModel cmlModel = new CMLModel(new ArrayList<>());
-        //just card -> mapping rules
+        //just cards -> mapping rules
         var cardsOnBoardStream = board.getWidgetObjects().stream().filter(x -> x instanceof Card);
         cardsOnBoardStream.forEach(x -> generateUserStory((Card) x, cmlModel));
         return cmlModel;
