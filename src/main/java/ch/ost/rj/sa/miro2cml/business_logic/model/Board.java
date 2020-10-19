@@ -1,6 +1,7 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model;
 
 import ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo.WidgetObject;
+
 import java.util.ArrayList;
 
 public class Board {

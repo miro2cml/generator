@@ -11,7 +11,7 @@
     <span>AccessToken:</span><span th:text="${form.getAccessToken()}"></span><br/>
     <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br/>
 </div>
-<div class="output-container">
+<div align="center" class="output-container">
     <h2>CML Output</h2>
     <text>Link to file</text>
     <Button> <a th:href="@{|/download?name=${form.getBoardId()}|}" download="cmlOutput.cml">Download</a></Button>
