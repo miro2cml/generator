@@ -32,20 +32,25 @@ public class UseCaseBoardAnalyzerService implements IBoardAnalyzerService {
             if(card.getBackgroundColor().equals("#2d9bf0") || card.getBackgroundColor().equals("#fbc800")){
                 return;
             }
+            //TODO refactoring
             //nur einteilige Verben und nur a anstelle an unterstützt, keine Sonderzeichen beachtet
-            if(card.getTitle().matches("<p>As an [A-Z,a-z]+ I want to [a-z]+ a [a-z, A-Z]+ so that [a-zA-Z\\p{Blank}]+</p>")){
+            if(card.getTitle().matches("<p>As an [A-Z,a-z\\p{Blank}]+ I want to [a-z]+ a [a-z, A-Z]+ so that [a-zA-Z\\p{Blank},.]+</p>")){
                 String userStory = card.getTitle();
                 String actor = getPart("<p>As an ", " I want to ", userStory);
                 String action = getPart(" I want to ", " a ", userStory);
                 String object = getPart(" a ", " so that ", userStory);
                 String goal = getPart(" so that ", "</p>", userStory);
-                String name = action.concat(object);
+                String name = getName(action, object);
                 model.add(new UserStory(name, actor, action, object, goal));
-
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private String getName(String action, String object) {
+        object.replaceAll("\\W+", "");
+        return action.concat(object);
     }
 
     private String getPart(String start, String end, String input) {
