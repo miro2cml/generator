@@ -2,7 +2,6 @@ package ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo;
 
 import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Data;
 
-import java.awt.*;
 import java.math.BigInteger;
 
 public class Shape extends WidgetObject{

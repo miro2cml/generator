@@ -2,18 +2,15 @@ package ch.ost.rj.sa.miro2cml.business_logic.cml_generator;
 
 import ch.ost.rj.sa.miro2cml.business_logic.cml_model.CMLModel;
 import ch.ost.rj.sa.miro2cml.business_logic.model.ConceptBoard;
-import ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo.WidgetObject;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class UseCaseCmlGenerator implements ICmlGenerator {
     //Todo: write CML generator -> currently only passes widgets in textform

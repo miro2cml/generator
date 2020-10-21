@@ -3,12 +3,10 @@ package presentation;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.Assert;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring5.dialect.SpringStandardDialect;
 import org.thymeleaf.testing.templateengine.context.web.SpringWebProcessingContextBuilder;
 import org.thymeleaf.testing.templateengine.engine.TestExecutor;
-import org.thymeleaf.testing.templateengine.resolver.ITestableResolver;
 
 import java.util.ArrayList;
 import java.util.List;

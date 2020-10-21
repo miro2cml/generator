@@ -3,7 +3,6 @@ package ch.ost.rj.sa.miro2cml.business_logic;
 import ch.ost.rj.sa.miro2cml.business_logic.board_analyser_services.UseCaseBoardAnalyzerService;
 import ch.ost.rj.sa.miro2cml.business_logic.cml_generator.UseCaseCmlGenerator;
 import ch.ost.rj.sa.miro2cml.business_logic.cml_model.CMLModel;
-import ch.ost.rj.sa.miro2cml.business_logic.model.Board;
 import ch.ost.rj.sa.miro2cml.business_logic.model.ConceptBoard;
 import ch.ost.rj.sa.miro2cml.model.BoardType;
 import org.springframework.core.io.ByteArrayResource;

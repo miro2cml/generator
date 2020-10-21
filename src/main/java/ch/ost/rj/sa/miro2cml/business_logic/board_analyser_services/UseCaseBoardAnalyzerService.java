@@ -5,7 +5,6 @@ import ch.ost.rj.sa.miro2cml.business_logic.cml_model.UserStory;
 import ch.ost.rj.sa.miro2cml.business_logic.model.Board;
 import ch.ost.rj.sa.miro2cml.business_logic.model.ConceptBoard;
 import ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo.Card;
-import ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo.WidgetObject;
 
 import java.util.ArrayList;
 
