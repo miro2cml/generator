@@ -9,10 +9,6 @@ public class Root {
 
     private int size;
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     @Override
     public String toString() {
         return "Root{" +
@@ -26,20 +22,24 @@ public class Root {
         return this.type;
     }
 
-    public void setData(List<Data> data) {
-        this.data = data;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public List<Data> getData() {
         return this.data;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setData(List<Data> data) {
+        this.data = data;
     }
 
     public int getSize() {
         return this.size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }
 

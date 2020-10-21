@@ -4,14 +4,14 @@ import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Data;
 
 import java.math.BigInteger;
 
-public class Shape extends WidgetObject{
+public class Shape extends WidgetObject {
     private int x;
     private int y;
     private double width;
     private double height;
     private double rotation;
 
-    private String backgroundColor ;
+    private String backgroundColor;
     private double backgroundOpacity;
     private String borderColor;
     private double borderOpacity;
@@ -46,29 +46,6 @@ public class Shape extends WidgetObject{
         this.textAlignVertical = textAlignVertical;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +"Shape{" +
-                "x=" + x +
-                ", y=" + y +
-                ", width=" + width +
-                ", height=" + height +
-                ", rotation=" + rotation +
-                ", backgroundColor='" + backgroundColor + '\'' +
-                ", backgroundOpacity=" + backgroundOpacity +
-                ", borderColor='" + borderColor + '\'' +
-                ", borderOpacity=" + borderOpacity +
-                ", borderStyle='" + borderStyle + '\'' +
-                ", borderWidth=" + borderWidth +
-                ", shapeType='" + shapeType + '\'' +
-                ", textColor='" + textColor + '\'' +
-                ", fontFamily='" + fontFamily + '\'' +
-                ", fontSize=" + fontSize +
-                ", textAlign='" + textAlign + '\'' +
-                ", textAlignVertical='" + textAlignVertical + '\'' +
-                '}';
-    }
-
     public Shape(Data miroWidgetData) {
         super(miroWidgetData.getId());
         this.x = miroWidgetData.getX();
@@ -88,6 +65,29 @@ public class Shape extends WidgetObject{
         this.fontSize = miroWidgetData.getStyle().getFontSize();
         this.textAlign = miroWidgetData.getStyle().getTextAlign();
         this.textAlignVertical = miroWidgetData.getStyle().getTextAlignVertical();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Shape{" +
+                "x=" + x +
+                ", y=" + y +
+                ", width=" + width +
+                ", height=" + height +
+                ", rotation=" + rotation +
+                ", backgroundColor='" + backgroundColor + '\'' +
+                ", backgroundOpacity=" + backgroundOpacity +
+                ", borderColor='" + borderColor + '\'' +
+                ", borderOpacity=" + borderOpacity +
+                ", borderStyle='" + borderStyle + '\'' +
+                ", borderWidth=" + borderWidth +
+                ", shapeType='" + shapeType + '\'' +
+                ", textColor='" + textColor + '\'' +
+                ", fontFamily='" + fontFamily + '\'' +
+                ", fontSize=" + fontSize +
+                ", textAlign='" + textAlign + '\'' +
+                ", textAlignVertical='" + textAlignVertical + '\'' +
+                '}';
     }
 
     public int getX() {

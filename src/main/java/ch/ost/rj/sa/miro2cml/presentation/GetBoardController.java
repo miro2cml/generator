@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class WelcomeController {
+public class GetBoardController {
     private Map<String, ByteArrayResource> resourceMap = new HashMap<>();
 
     @GetMapping("/")
@@ -30,7 +30,7 @@ public class WelcomeController {
         GetBoardForm form = new GetBoardForm();
         model.addAttribute("form", form);
 
-        return "getBoardForm"; //view
+        return "getBoardForm";
     }
 
     @PostMapping("/")
@@ -38,13 +38,13 @@ public class WelcomeController {
         model.addAttribute("form", form);
         BusinessLogicController businessLogicController = new BusinessLogicController(form.getBoardType(), form.getBoardId(), form.getAccessToken());
         businessLogicController.run();
-        resourceMap.put(form.getBoardId(), businessLogicController.getCml());
-        model.addAttribute("outputFile", businessLogicController.getCml());
+        resourceMap.put(form.getBoardId(), businessLogicController.getCmlByteArrayRessource());
+        model.addAttribute("outputFile", businessLogicController.getCmlByteArrayRessource());
         return "getBoardSuccess";
     }
 
     @GetMapping(path = "/download")
-    public ResponseEntity<Resource> downloadCML(@RequestParam(name = "name", required = true) String name){
+    public ResponseEntity<Resource> downloadCML(@RequestParam(name = "name", required = true) String name) {
 
         ByteArrayResource resource = resourceMap.get(name);
         HttpHeaders headers = new HttpHeaders();

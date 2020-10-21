@@ -13,8 +13,9 @@ public class Sticker extends WidgetObject {
 
     private String backgroundColor;
     private String fontFamily;
-    private int fontSize ;
+    private int fontSize;
     private String textAlign;
+    private String textAlignVertical;
 
     public Sticker(BigInteger id, int x, int y, double scale, double height, double width, String backgroundColor, String fontFamily, int fontSize, String textAlign, String textAlignVertical) {
         super(id);
@@ -28,6 +29,20 @@ public class Sticker extends WidgetObject {
         this.fontSize = fontSize;
         this.textAlign = textAlign;
         this.textAlignVertical = textAlignVertical;
+    }
+
+    public Sticker(Data miroWidgetData) {
+        super(miroWidgetData.getId());
+        this.x = miroWidgetData.getX();
+        this.y = miroWidgetData.getY();
+        this.scale = miroWidgetData.getScale();
+        this.height = miroWidgetData.getHeight();
+        this.width = miroWidgetData.getWidth();
+        this.backgroundColor = miroWidgetData.getStyle().getBackgroundColor();
+        this.fontFamily = miroWidgetData.getStyle().getFontFamily();
+        this.fontSize = miroWidgetData.getStyle().getFontSize();
+        this.textAlign = miroWidgetData.getStyle().getTextAlign();
+        this.textAlignVertical = miroWidgetData.getStyle().getTextAlignVertical();
     }
 
     @Override
@@ -44,20 +59,6 @@ public class Sticker extends WidgetObject {
                 ", textAlign='" + textAlign + '\'' +
                 ", textAlignVertical='" + textAlignVertical + '\'' +
                 '}';
-    }
-
-    public Sticker(Data miroWidgetData) {
-        super(miroWidgetData.getId());
-        this.x = miroWidgetData.getX();
-        this.y = miroWidgetData.getY();
-        this.scale = miroWidgetData.getScale();
-        this.height = miroWidgetData.getHeight();
-        this.width = miroWidgetData.getWidth();
-        this.backgroundColor = miroWidgetData.getStyle().getBackgroundColor();
-        this.fontFamily = miroWidgetData.getStyle().getFontFamily();
-        this.fontSize = miroWidgetData.getStyle().getFontSize();
-        this.textAlign = miroWidgetData.getStyle().getTextAlign();
-        this.textAlignVertical = miroWidgetData.getStyle().getTextAlignVertical();
     }
 
     public int getX() {
@@ -139,6 +140,4 @@ public class Sticker extends WidgetObject {
     public void setTextAlignVertical(String textAlignVertical) {
         this.textAlignVertical = textAlignVertical;
     }
-
-    private String textAlignVertical;
 }

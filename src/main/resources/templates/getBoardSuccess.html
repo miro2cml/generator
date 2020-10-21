@@ -14,7 +14,7 @@
 <div align="center" class="output-container">
     <h2>CML Output</h2>
     <text>Link to file</text>
-    <Button> <a th:href="@{|/download?name=${form.getBoardId()}|}" download="cmlOutput.cml">Download</a></Button>
+    <Button><a download="cmlOutput.cml" th:href="@{|/download?name=${form.getBoardId()}|}">Download</a></Button>
 </div>
 </body>
 </html>

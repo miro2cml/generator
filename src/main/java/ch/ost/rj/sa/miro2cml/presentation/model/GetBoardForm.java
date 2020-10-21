@@ -7,6 +7,15 @@ public class GetBoardForm {
     private String boardId;
     private BoardType boardType;
 
+    public GetBoardForm(String accessToken, String boardId, BoardType boardType) {
+        this.accessToken = accessToken;
+        this.boardId = boardId;
+        this.boardType = boardType;
+    }
+
+    public GetBoardForm() {
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -29,14 +38,5 @@ public class GetBoardForm {
 
     public void setBoardType(BoardType boardType) {
         this.boardType = boardType;
-    }
-
-    public GetBoardForm(String accessToken, String boardId, BoardType boardType) {
-        this.accessToken = accessToken;
-        this.boardId = boardId;
-        this.boardType = boardType;
-    }
-
-    public GetBoardForm() {
     }
 }

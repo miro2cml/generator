@@ -1,17 +1,7 @@
-package ch.ost.rj.sa.miro2cml.business_logic.cml_model;
+package ch.ost.rj.sa.miro2cml.business_logic.model.cml;
 
-public class UserStory {
+public class UserStory extends CmlArtifact {
     private String name, actor, action, object, goal;
-
-    @Override
-    public String toString() {
-        return "UserStory " + name + "{\n" +
-                "As an \"" + actor + "\"\n" +
-                "I want to \"" + action  +
-                "\" a \"" + object + "\"\n" +
-                "so that \"" + goal + "\"\n" +
-                '}';
-    }
 
     public UserStory(String name, String actor, String action, String object, String goal) {
         this.name = name;
@@ -19,6 +9,16 @@ public class UserStory {
         this.action = action;
         this.object = object;
         this.goal = goal;
+    }
+
+    @Override
+    public String toString() {
+        return "UserStory " + name + "{\n" +
+                "As an \"" + actor + "\"\n" +
+                "I want to \"" + action +
+                "\" a \"" + object + "\"\n" +
+                "so that \"" + goal + "\"\n" +
+                '}';
     }
 
     public String getName() {

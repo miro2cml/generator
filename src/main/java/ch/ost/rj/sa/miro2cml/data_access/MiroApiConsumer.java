@@ -21,32 +21,20 @@ public class MiroApiConsumer {
         try {
             URLConnection connection = new URL(url + "?" + query).openConnection();
             connection.setRequestProperty("Accept-Charset", charset.displayName());
-            InputStream response = connection.getInputStream();
-            /*
-            Scanner scanner = new Scanner(response);
-            String responseBody = scanner.useDelimiter("\\A").next();
-
-            System.out.println(responseBody);
-            */
-            //create ObjectMapper instance
-
+            InputStream responseStream = connection.getInputStream();
 
             ObjectMapper objectMapper = new ObjectMapper();
+            Root widgetList = convertJsonResponseStreamIntoRootObject(responseStream, objectMapper);
 
-            //read json file and convert to customer object
-            Root widgetList = objectMapper.readValue(response, Root.class);
-
-            //print customer details
-            System.out.println(widgetList);
-
-            ArrayList<WidgetObject> list = convertMiroJsonToPojo(widgetList);
-            System.out.println(list);
-            return list;
-
+            return convertMiroJsonToPojo(widgetList);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return null; //TODO: handle this case ( global error management with useful error messages in frontend...
+    }
+
+    private static Root convertJsonResponseStreamIntoRootObject(InputStream response, ObjectMapper objectMapper) throws IOException {
+        return objectMapper.readValue(response, Root.class);
     }
 
     private static ArrayList<WidgetObject> convertMiroJsonToPojo(Root miroJson) {
@@ -68,12 +56,9 @@ public class MiroApiConsumer {
                     break;
                 case "line":
                     widgetList.add(new Line(data));
-                    System.out.println("line:");
-                    System.out.println("line start:"+data.getStartWidget().getId());
-                    System.out.println("line end: "+data.getEndWidget().getId());
                     break;
                 default:
-                    System.out.println("invalid widgetType: "+ data.getType());
+                    //TODO: handle undefined dataTypes
             }
         }
         return widgetList;

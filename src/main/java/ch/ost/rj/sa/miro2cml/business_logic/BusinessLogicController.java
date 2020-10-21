@@ -1,21 +1,19 @@
 package ch.ost.rj.sa.miro2cml.business_logic;
 
-import ch.ost.rj.sa.miro2cml.business_logic.board_analyser_services.UseCaseBoardAnalyzerService;
-import ch.ost.rj.sa.miro2cml.business_logic.cml_generator.UseCaseCmlGenerator;
-import ch.ost.rj.sa.miro2cml.business_logic.cml_model.CMLModel;
-import ch.ost.rj.sa.miro2cml.business_logic.model.ConceptBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.UseCaseBoardMapperService;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MiroBoard;
+import ch.ost.rj.sa.miro2cml.data_access.MiroApiConsumer;
 import ch.ost.rj.sa.miro2cml.model.BoardType;
 import org.springframework.core.io.ByteArrayResource;
+
+import static ch.ost.rj.sa.miro2cml.business_logic.CmlByteArrayResourceGenerator.generateCmlByteArrayResource;
 
 public class BusinessLogicController {
     BoardType boardType;
     String boardId;
     String accessToken;
-    ByteArrayResource cml = null;
-
-    public ByteArrayResource getCml() {
-        return cml;
-    }
+    ByteArrayResource cmlByteArrayRessource = null;
 
     public BusinessLogicController(BoardType boardType, String boardId, String accessToken) {
         this.boardType = boardType;
@@ -23,13 +21,17 @@ public class BusinessLogicController {
         this.accessToken = accessToken;
     }
 
-    public void run() {
+    public ByteArrayResource getCmlByteArrayRessource() {
+        return cmlByteArrayRessource;
+    }
 
+    public void run() {
+        MiroBoard miroBoard = new MiroBoard(boardId, MiroApiConsumer.getBoardWidgets(accessToken, boardId));
         switch (boardType) {
             case USE_CASE:
-                ConceptBoard useCaseBoard = new UseCaseBoardAnalyzerService().analyseBoard(accessToken,boardId);
-                CMLModel cmlModel = new UseCaseBoardAnalyzerService().analyseInput(useCaseBoard);
-                cml = new UseCaseCmlGenerator().generateCmlByteArrayResource(useCaseBoard, cmlModel);
+                MappedBoard mappedUseCaseBoard = new UseCaseBoardMapperService().mapBoard(miroBoard);
+                cmlByteArrayRessource = generateCmlByteArrayResource(mappedUseCaseBoard);
+
                 break;
             case BOUNDED_CONTEXT_CANVAS:
                 break;

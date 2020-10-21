@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
 
     <title>Spring Boot Thymeleaf Hello World Example</title>
 
@@ -14,17 +14,17 @@
 <body>
 
 
-<main role="main" class="container">
+<main class="container" role="main">
     <div class="input-container">
         <h2>Miro Input</h2>
-        <form action="/"  method="post" th:object="${form}" >
-            <label for="boardid" >Miro Board Id:</label><br>
-            <input type="text" id="boardid"  th:field="*{boardId}"><br>
+        <form action="/" method="post" th:object="${form}">
+            <label for="boardid">Miro Board Id:</label><br>
+            <input id="boardid" th:field="*{boardId}" type="text"><br>
             <label for="accesstoken">Miro Access Token:</label><br>
-            <input type="text" id="accesstoken" th:field="*{accessToken}"><br>
+            <input id="accesstoken" th:field="*{accessToken}" type="text"><br>
             <label for="dropBoard">Miro Board Type: </label>
-            <select class="form-control" th:field="*{boardType}" id="dropBoard" name="boardType">
-                <option th:each="board : ${boardTypes}" th:value="${board}" th:text="${board}"></option>
+            <select class="form-control" id="dropBoard" name="boardType" th:field="*{boardType}">
+                <option th:each="miroBoard : ${boardTypes}" th:text="${miroBoard}" th:value="${miroBoard}"></option>
             </select>
             <button type="submit">Submit</button>
         </form>
@@ -33,6 +33,6 @@
 </main>
 <!-- /.container -->
 
-<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+<script th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}" type="text/javascript"></script>
 </body>
 </html>

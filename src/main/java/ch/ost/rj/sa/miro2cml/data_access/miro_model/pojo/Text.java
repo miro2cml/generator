@@ -4,14 +4,14 @@ import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Data;
 
 import java.math.BigInteger;
 
-public class Text extends WidgetObject{
+public class Text extends WidgetObject {
     private int x;
     private int y;
     private double width;
     private double scale;
     private double rotation;
 
-    private String backgroundColor ;
+    private String backgroundColor;
     private double backgroundOpacity;
     private String borderColor;
     private double borderOpacity;
@@ -20,7 +20,7 @@ public class Text extends WidgetObject{
     private String textColor;
 
     private String fontFamily;
-    private int fontSize ;
+    private int fontSize;
     private String textAlign;
 
     public Text(BigInteger id, int x, int y, double width, double scale, double rotation, String backgroundColor, double backgroundOpacity, String borderColor, double borderOpacity, String borderStyle, double borderWidth, String textColor, String fontFamily, int fontSize, String textAlign) {
@@ -42,28 +42,7 @@ public class Text extends WidgetObject{
         this.textAlign = textAlign;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +"Text{" +
-                "x=" + x +
-                ", y=" + y +
-                ", width=" + width +
-                ", scale=" + scale +
-                ", rotation=" + rotation +
-                ", backgroundColor='" + backgroundColor + '\'' +
-                ", backgroundOpacity=" + backgroundOpacity +
-                ", borderColor='" + borderColor + '\'' +
-                ", borderOpacity=" + borderOpacity +
-                ", borderStyle='" + borderStyle + '\'' +
-                ", borderWidth=" + borderWidth +
-                ", textColor='" + textColor + '\'' +
-                ", fontFamily='" + fontFamily + '\'' +
-                ", fontSize=" + fontSize +
-                ", textAlign='" + textAlign + '\'' +
-                '}';
-    }
-
-    public Text(Data miroWidgetData){
+    public Text(Data miroWidgetData) {
         super(miroWidgetData.getId());
         this.x = miroWidgetData.getX();
         this.y = miroWidgetData.getY();
@@ -80,6 +59,27 @@ public class Text extends WidgetObject{
         this.fontFamily = miroWidgetData.getStyle().getFontFamily();
         this.fontSize = miroWidgetData.getStyle().getFontSize();
         this.textAlign = miroWidgetData.getStyle().getTextAlign();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Text{" +
+                "x=" + x +
+                ", y=" + y +
+                ", width=" + width +
+                ", scale=" + scale +
+                ", rotation=" + rotation +
+                ", backgroundColor='" + backgroundColor + '\'' +
+                ", backgroundOpacity=" + backgroundOpacity +
+                ", borderColor='" + borderColor + '\'' +
+                ", borderOpacity=" + borderOpacity +
+                ", borderStyle='" + borderStyle + '\'' +
+                ", borderWidth=" + borderWidth +
+                ", textColor='" + textColor + '\'' +
+                ", fontFamily='" + fontFamily + '\'' +
+                ", fontSize=" + fontSize +
+                ", textAlign='" + textAlign + '\'' +
+                '}';
     }
 
     public String getBackgroundColor() {
@@ -181,7 +181,6 @@ public class Text extends WidgetObject{
     }
 
 
-
     public String getFontFamily() {
         return fontFamily;
     }
@@ -205,7 +204,6 @@ public class Text extends WidgetObject{
     public void setTextAlign(String textAlign) {
         this.textAlign = textAlign;
     }
-
 
 
 }

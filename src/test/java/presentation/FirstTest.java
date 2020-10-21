@@ -14,7 +14,7 @@ import java.util.List;
 public class FirstTest {
 
     @Test
-    public void firstTest(){
+    public void firstTest() {
         final List<IDialect> dialects = new ArrayList<IDialect>();
         dialects.add(new SpringStandardDialect());
 

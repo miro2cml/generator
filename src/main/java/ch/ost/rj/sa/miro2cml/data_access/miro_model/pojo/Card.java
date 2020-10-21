@@ -4,7 +4,7 @@ import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Data;
 
 import java.math.BigInteger;
 
-public class Card extends WidgetObject{
+public class Card extends WidgetObject {
     private int x;
     private int y;
     private double scale;
@@ -28,6 +28,16 @@ public class Card extends WidgetObject{
         this.backgroundColor = backgroundColor;
     }
 
+    public Card(Data miroWidgetData) {
+        super(miroWidgetData.getId());
+        this.x = miroWidgetData.getX();
+        this.y = miroWidgetData.getY();
+        this.scale = miroWidgetData.getScale();
+        this.title = miroWidgetData.getTitle();
+        this.description = miroWidgetData.getDescription();
+        this.backgroundColor = miroWidgetData.getStyle().getBackgroundColor();
+    }
+
     @Override
     public String toString() {
         return super.toString() + "Card{" +
@@ -39,19 +49,6 @@ public class Card extends WidgetObject{
                 ", backgroundColor='" + backgroundColor + '\'' +
                 '}';
     }
-
-    public Card(Data miroWidgetData) {
-        super(miroWidgetData.getId());
-        this.x = miroWidgetData.getX();
-        this.y = miroWidgetData.getY();
-        this.scale = miroWidgetData.getScale();
-        this.title = miroWidgetData.getTitle();
-        this.description = miroWidgetData.getDescription();
-        this.backgroundColor = miroWidgetData.getStyle().getBackgroundColor();
-    }
-
-
-
 
     public int getX() {
         return x;

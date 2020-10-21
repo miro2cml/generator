@@ -4,11 +4,11 @@ import ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo.WidgetObject;
 
 import java.util.ArrayList;
 
-public class Board {
+public class MiroBoard {
     private String boardId;
     private ArrayList<WidgetObject> widgetObjects;
 
-    public Board(String boardId, ArrayList<WidgetObject> widgetObjects) {
+    public MiroBoard(String boardId, ArrayList<WidgetObject> widgetObjects) {
         this.boardId = boardId;
         this.widgetObjects = widgetObjects;
     }
