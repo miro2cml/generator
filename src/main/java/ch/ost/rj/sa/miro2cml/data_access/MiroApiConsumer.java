@@ -1,8 +1,8 @@
 package ch.ost.rj.sa.miro2cml.data_access;
 
-import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Data;
-import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Root;
-import ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo.*;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro.json.Data;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro.json.Root;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro.pojo.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
