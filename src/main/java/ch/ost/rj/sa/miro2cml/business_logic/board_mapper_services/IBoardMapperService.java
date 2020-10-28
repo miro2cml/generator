@@ -2,7 +2,7 @@ package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MiroBoard;
-import ch.ost.rj.sa.miro2cml.business_logic.model.cml.CmlArtifact;
+import ch.ost.rj.sa.miro2cml.business_logic.model.cml.ICmlArtifact;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml.CmlModel;
 
 public interface IBoardMapperService {
@@ -16,7 +16,7 @@ public interface IBoardMapperService {
 
     default String provideCMLFileString(CmlModel cmlModel) {
         StringBuilder cmlFileStringBuilder = new StringBuilder();
-        for (CmlArtifact cmlArtifact : cmlModel.getArtifacts()) {
+        for (ICmlArtifact cmlArtifact : cmlModel.getArtifacts()) {
             cmlFileStringBuilder.append(cmlArtifact.toString());
             cmlFileStringBuilder.append(System.lineSeparator());
         }
