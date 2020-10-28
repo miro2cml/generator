@@ -1,6 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.cml;
 
-public class UserStory extends CmlArtifact {
+import java.util.Objects;
+
+public class UserStory implements ICmlArtifact {
     private String name, actor, action, object, goal;
 
     public UserStory(String name, String actor, String action, String object, String goal) {
@@ -60,4 +62,22 @@ public class UserStory extends CmlArtifact {
     public void setGoal(String goal) {
         this.goal = goal;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserStory)) return false;
+        UserStory userStory = (UserStory) o;
+        return name.equals(userStory.name) &&
+                actor.equals(userStory.actor) &&
+                action.equals(userStory.action) &&
+                object.equals(userStory.object) &&
+                goal.equals(userStory.goal);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, actor, action, object, goal);
+    }
+
 }

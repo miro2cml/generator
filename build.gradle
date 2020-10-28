@@ -17,6 +17,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.5'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
