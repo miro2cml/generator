@@ -10,25 +10,26 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
-    <div class="navbar">
-        <div class="navbar-collapse-collapse">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">miro2cml</a>
-            </div>
-            <ul class="nav-navbar-nav">
-                <li th:classappend="${module == 'home' ? 'active' : ''}">
-                    <a href="#" th:href="@{/}">Home</a>
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">miro2cml</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item" th:classappend="${module == 'home' ? 'active' : ''}">
+                    <a class="nav-link" href="#" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li th:classappend="${module == 'supportedTemplates' ? 'active' : ''}">
-                    <a href="#" th:href="@{/supportedTemplates}">Supported Templates</a>
+                <li class="nav-item" th:classappend="${module == 'supportedTemplates' ? 'active' : ''}">
+                    <a class="nav-link" href="#" th:href="@{/supportedTemplates}">Supported Templates</a>
                 </li>
-                <li th:classappend="${module == 'tutorials' ? 'active' : ''}">
-                    <a href="#" th:href="@{/tutorials}">Tutorials</a>
+                <li class="nav-item" th:classappend="${module == 'tutorials' ? 'active' : ''}">
+                    <a class="nav-link" href="#" th:href="@{/tutorials}">Tutorials</a>
                 </li>
             </ul>
         </div>
-    </div>
+    </nav>
 </div>
 </body>
 </html>

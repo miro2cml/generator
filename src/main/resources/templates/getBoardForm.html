@@ -7,19 +7,27 @@
 <div th:replace="fragments/header ::header"></div>
 
 <main class="container" role="main">
-    <div class="input-container">
-        <h2>Miro Input</h2>
-        <form action="/" method="post" th:object="${form}">
-            <label for="boardid">Miro Board Id:</label><br>
-            <input id="boardid" th:field="*{boardId}" type="text" required><br>
-            <label for="accesstoken">Miro Access Token:</label><br>
-            <input id="accesstoken" th:field="*{accessToken}" type="text" required><br>
-            <label for="dropBoard">Miro Board Type: </label>
-            <select class="form-control" id="dropBoard" name="boardType" th:field="*{boardType}">
-                <option th:each="miroBoard : ${boardTypes}" th:text="${miroBoard}" th:value="${miroBoard}"></option>
-            </select>
-            <button type="submit">Submit</button>
-        </form>
+    <div class="card">
+        <h5 class="card-header">Miro Input</h5>
+        <div class="card-body">
+            <form action="/" method="post" th:object="${form}">
+                <div class="form-group">
+                    <label for="boardid">Miro Board Id:</label><br>
+                    <input id="boardid" th:field="*{boardId}" type="text" class="form-control"required><br>
+                </div>
+                <div class="form-group">
+                    <label for="accesstoken">Miro Access Token:</label><br>
+                    <input id="accesstoken" th:field="*{accessToken}" type="text" class="form-control"required><br>
+                </div>
+                <div class="form-group">
+                    <label for="dropBoard">Miro Board Type: </label>
+                    <select class="form-control" id="dropBoard" name="boardType" th:field="*{boardType}">
+                        <option th:each="miroBoard : ${boardTypes}" th:text="${miroBoard}" th:value="${miroBoard}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-raised btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
 
 
