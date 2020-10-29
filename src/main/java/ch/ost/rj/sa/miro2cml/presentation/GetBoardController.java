@@ -29,7 +29,7 @@ public class GetBoardController {
         model.addAttribute("boardTypes", boardTypes);
         GetBoardForm form = new GetBoardForm();
         model.addAttribute("form", form);
-
+        model.addAttribute("module", "home");
         return "getBoardForm";
     }
 
