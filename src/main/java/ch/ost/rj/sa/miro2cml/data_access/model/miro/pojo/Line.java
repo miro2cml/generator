@@ -1,6 +1,6 @@
-package ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro.pojo;
 
-import ch.ost.rj.sa.miro2cml.data_access.miro_model.json.Data;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro.json.Data;
 
 import java.math.BigInteger;
 

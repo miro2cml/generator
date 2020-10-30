@@ -3,7 +3,7 @@ package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MiroBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml.CmlModel;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml.UserStory;
-import ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo.Card;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro.pojo.Card;
 
 import java.util.ArrayList;
 

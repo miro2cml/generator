@@ -1,4 +1,4 @@
-package ch.ost.rj.sa.miro2cml.data_access.miro_model.json;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro.json;
 
 public class ModifiedBy {
     private String type;

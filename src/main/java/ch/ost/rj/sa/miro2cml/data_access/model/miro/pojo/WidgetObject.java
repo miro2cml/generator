@@ -1,4 +1,4 @@
-package ch.ost.rj.sa.miro2cml.data_access.miro_model.pojo;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro.pojo;
 
 import java.math.BigInteger;
 

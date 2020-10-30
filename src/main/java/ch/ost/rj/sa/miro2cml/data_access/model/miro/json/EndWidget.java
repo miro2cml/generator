@@ -1,6 +1,6 @@
-package ch.ost.rj.sa.miro2cml.data_access.miro_model.json;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro.json;
 
-public class StartWidget {
+public class EndWidget {
     private String id;
 
     public String getId() {
