@@ -68,7 +68,7 @@ prepare-deploy:
     - build
   only:
     refs:
-      - dev
+      - develop
       - test
       - master
       - test-deploy
