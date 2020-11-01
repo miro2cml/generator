@@ -5,20 +5,10 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.cml.CmlModel;
 public class MappedBoard {
     private MiroBoard miroBoard;
     private CmlModel cmlModel;
-    private String cmlFileString;
 
-    public MappedBoard(MiroBoard miroBoard, CmlModel cmlModel, String cmlFileString) {
+    public MappedBoard(MiroBoard miroBoard, CmlModel cmlModel) {
         this.miroBoard = miroBoard;
         this.cmlModel = cmlModel;
-        this.cmlFileString = cmlFileString;
-    }
-
-    public String getCmlFileString() {
-        return cmlFileString;
-    }
-
-    public void setCmlFileString(String cmlFileString) {
-        this.cmlFileString = cmlFileString;
     }
 
     public MiroBoard getMiroBoard() {

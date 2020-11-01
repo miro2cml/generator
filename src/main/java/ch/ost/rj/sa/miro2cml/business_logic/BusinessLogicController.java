@@ -5,15 +5,15 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MiroBoard;
 import ch.ost.rj.sa.miro2cml.data_access.MiroApiConsumer;
 import ch.ost.rj.sa.miro2cml.model.BoardType;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 
-import static ch.ost.rj.sa.miro2cml.business_logic.CmlByteArrayResourceGenerator.generateCmlByteArrayResource;
+import static ch.ost.rj.sa.miro2cml.business_logic.ByteArrayResourceGenerator.generateByteArrayResource;
 
 public class BusinessLogicController {
     BoardType boardType;
     String boardId;
     String accessToken;
-    ByteArrayResource cmlByteArrayRessource = null;
+    Resource cmlRessource = null;
 
     public BusinessLogicController(BoardType boardType, String boardId, String accessToken) {
         this.boardType = boardType;
@@ -21,8 +21,8 @@ public class BusinessLogicController {
         this.accessToken = accessToken;
     }
 
-    public ByteArrayResource getCmlByteArrayRessource() {
-        return cmlByteArrayRessource;
+    public Resource getCmlRessource() {
+        return cmlRessource;
     }
 
     public void run() {
@@ -30,7 +30,7 @@ public class BusinessLogicController {
         switch (boardType) {
             case USE_CASE:
                 MappedBoard mappedUseCaseBoard = new UseCaseBoardMapperService().mapBoard(miroBoard);
-                cmlByteArrayRessource = generateCmlByteArrayResource(mappedUseCaseBoard);
+                cmlRessource = generateByteArrayResource(mappedUseCaseBoard);
 
                 break;
             case BOUNDED_CONTEXT_CANVAS:
