@@ -83,7 +83,7 @@ deploy:
     - sshpass -p $REMOTE_PASSWORD ssh $REMOTE_USER@$DEPLOYMENT_HOST -p $SSH_PORT -o "StrictHostKeyChecking=no" "cd /docker/miro2cml/; sudo ./miro2cml-runscript.sh $CI_COMMIT_REF_NAME $CI_COMMIT_SHORT_SHA"
     only:
         refs:
-            - dev
+            - develop
             - test
             - master
             - test-deploy

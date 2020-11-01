@@ -12,6 +12,6 @@ public class ContextMapBoardMapperService implements IBoardMapperService {
 
     @Override
     public CmlModel mapWidgetObjectsToCmlArtifacts(MiroBoard board) {
-        return new CmlModel(null);
+        return new CmlModel();
     }
 }

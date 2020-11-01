@@ -4,6 +4,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MiroBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml.CmlModel;
 
+
 public class BoundedContextCanvasBoardMapperService implements IBoardMapperService {
 
     @Override
@@ -13,11 +14,7 @@ public class BoundedContextCanvasBoardMapperService implements IBoardMapperServi
 
     @Override
     public CmlModel mapWidgetObjectsToCmlArtifacts(MiroBoard board) {
-        return new CmlModel(null);
-    }
 
-    @Override
-    public String provideCMLFileString(CmlModel cmlModel) {
-        return null;
+        return new CmlModel();
     }
 }

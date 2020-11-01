@@ -1,5 +1,9 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.cml;
 
+import org.contextmapper.dsl.contextMappingDSL.ContextMappingDSLFactory;
+import org.contextmapper.dsl.contextMappingDSL.Feature;
+import org.eclipse.emf.ecore.EObject;
+
 import java.util.Objects;
 
 public class UserStory implements ICmlArtifact {
@@ -21,6 +25,20 @@ public class UserStory implements ICmlArtifact {
                 "\" a \"" + object + "\"\n" +
                 "so that \"" + goal + "\"\n" +
                 '}';
+    }
+
+    @Override
+    public EObject provideEObject() {
+        org.contextmapper.dsl.contextMappingDSL.UserStory story = ContextMappingDSLFactory.eINSTANCE.createUserStory();
+
+        story.setName(name);
+        story.setRole(actor);
+        Feature feature = ContextMappingDSLFactory.eINSTANCE.createFeature();
+        feature.setVerb(action);
+        feature.setEntity(object);
+        story.getFeatures().add(feature);
+        story.setBenefit(goal);
+        return story;
     }
 
     public String getName() {

@@ -21,11 +21,6 @@ public class AutomaticBoardMapperService implements IBoardMapperService {
 
     @Override
     public CmlModel mapWidgetObjectsToCmlArtifacts(MiroBoard board) {
-        return new CmlModel(null);
-    }
-
-    @Override
-    public String provideCMLFileString(CmlModel cmlModel) {
-        return null;
+        return new CmlModel();
     }
 }

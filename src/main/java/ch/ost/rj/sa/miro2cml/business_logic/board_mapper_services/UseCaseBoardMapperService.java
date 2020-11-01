@@ -5,16 +5,16 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.cml.CmlModel;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml.UserStory;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.pojo.Card;
 
-import java.util.ArrayList;
 
 public class UseCaseBoardMapperService implements IBoardMapperService {
-    //TODO: Analyse
+
     @Override
     public CmlModel mapWidgetObjectsToCmlArtifacts(MiroBoard miroBoard) {
-        CmlModel cmlModel = new CmlModel(new ArrayList<>());
+        CmlModel cmlModel = new CmlModel();
         //just cards -> mapping rules
         var cardsOnBoardStream = miroBoard.getWidgetObjects().stream().filter(x -> x instanceof Card);
         cardsOnBoardStream.forEach(x -> generateUserStory((Card) x, cmlModel));
+
         return cmlModel;
     }
 
@@ -27,13 +27,16 @@ public class UseCaseBoardMapperService implements IBoardMapperService {
             //TODO refactoring
             //nur einteilige Verben und nur a anstelle an unterstützt, keine Sonderzeichen beachtet
             if (card.getTitle().matches("<p>As an [A-Z,a-z\\p{Blank}]+ I want to [a-z]+ a [a-z, A-Z]+ so that [a-zA-Z\\p{Blank},.]+</p>")) {
-                String userStory = card.getTitle();
-                String actor = getPart("<p>As an ", " I want to ", userStory);
-                String action = getPart(" I want to ", " a ", userStory);
-                String object = getPart(" a ", " so that ", userStory);
-                String goal = getPart(" so that ", "</p>", userStory);
+                String userStoryString = card.getTitle();
+                String actor = getPart("<p>As an ", " I want to ", userStoryString);
+                String action = getPart(" I want to ", " a ", userStoryString);
+                String object = getPart(" a ", " so that ", userStoryString);
+                String goal = getPart(" so that ", "</p>", userStoryString);
                 String name = getName(action, object);
-                model.add(new UserStory(name, actor, action, object, goal));
+                UserStory userStory = new UserStory(name, actor, action, object, goal);
+
+                org.contextmapper.dsl.contextMappingDSL.UserStory cmlUserStory = userStory.provideEObject() instanceof org.contextmapper.dsl.contextMappingDSL.UserStory ? (org.contextmapper.dsl.contextMappingDSL.UserStory) userStory.provideEObject() : null;
+                model.getResource().getContextMappingModel().getUserRequirements().add(cmlUserStory);
             }
         } catch (Exception e) {
             e.printStackTrace();
