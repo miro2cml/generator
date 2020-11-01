@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ByteArrayResourceGeneratorTest {
 
     @Test
-    void testGenerateWebResource() {
+    void testGenerateByteArrayResource() {
         // Setup
         final UserStory story = ContextMappingDSLFactory.eINSTANCE.createUserStory();
 
@@ -36,7 +36,7 @@ class ByteArrayResourceGeneratorTest {
         final MappedBoard mappedBoard = new MappedBoard(new MiroBoard("boardId", new ArrayList<>(List.of())), model);
 
         String expectedString = System.lineSeparator() + System.lineSeparator() + "UserStory addfriend {" + System.lineSeparator()
-                + "\tAs an \"Group Administrator\" I want to \"add\" \"friend\" so that \"the groups increase\"" + System.lineSeparator() + "}" + System.lineSeparator() + System.lineSeparator();
+                + "\tAs a \"Group Administrator\" I want to \"add\" \"friend\" so that \"the groups increase\"" + System.lineSeparator() + "}" + System.lineSeparator() + System.lineSeparator();
         final ByteArrayResource expectedResult = new ByteArrayResource(expectedString.getBytes(), "description");
 
         // Run the test
