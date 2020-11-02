@@ -7,13 +7,13 @@
     <title>Spring Boot Thymeleaf Hello World Example</title>
 
     <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{static/css/main.css}"/>
 </head>
 <body>
 <div th:fragment="footer">
     <h1>Miro</h1>
     <!-- TODO: image -->
-   <img th:src=@{/images/logo.png} alt="Context Mapper Logo" />
+   <img th:src="@{static/images/logo.png}" alt="Context Mapper Logo" />
 </div>
 </body>
 </html>
