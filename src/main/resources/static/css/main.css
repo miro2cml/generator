@@ -8,10 +8,20 @@ body {
     margin: 0;
     background-image:linear-gradient(160deg, black 30%, white 70%);
 }
-
+h1{
+    color:yellow;
+    position: fixed;
+    top: 55px;
+    left: 5px;
+}
 h5{
     color: hotpink;
     font-weight: bold;
+}
+img {
+    position: fixed;
+    bottom: 0;
+    right: 0;
 }
 
 .bg-dark{
