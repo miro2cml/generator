@@ -2,38 +2,31 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/headerinc :: head">
 </head>
-
 <body>
 <div th:replace="fragments/header ::header"></div>
-
-<main class="container" role="main">
-    <div class="card">
-        <h5 class="card-header">Miro Input</h5>
-        <div class="card-body">
-            <form action="/" method="post" th:object="${form}">
-                <div class="form-group">
-                    <label for="boardid">Miro Board Id:</label><br>
-                    <input id="boardid" th:field="*{boardId}" type="text" class="form-control"required><br>
-                </div>
-                <div class="form-group">
-                    <label for="accesstoken">Miro Access Token:</label><br>
-                    <input id="accesstoken" th:field="*{accessToken}" type="text" class="form-control"required><br>
-                </div>
-                <div class="form-group">
-                    <label for="dropBoard">Miro Board Type: </label>
-                    <select class="form-control" id="dropBoard" name="boardType" th:field="*{boardType}">
-                        <option th:each="miroBoard : ${boardTypes}" th:text="${miroBoard}" th:value="${miroBoard}"></option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-raised btn-primary">Submit</button>
-            </form>
+    <main class="container" role="main">
+        <div class="card">
+            <h5 class="card-header">Miro Input</h5>
+            <div class="card-body">
+                <form action="/" method="post" th:object="${form}">
+                    <div class="form-group">
+                        <label for="boardid">Miro Board Id:</label><br>
+                        <input id="boardid" th:field="*{boardId}" type="text" class="form-control"required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="accesstoken">Miro Access Token:</label><br>
+                        <input id="accesstoken" th:field="*{accessToken}" type="text" class="form-control"required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="dropBoard">Miro Board Type: </label>
+                        <select class="form-control" id="dropBoard" name="boardType" th:field="*{boardType}">
+                            <option th:each="miroBoard : ${boardTypes}" th:text="${miroBoard}" th:value="${miroBoard}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-raised btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
-    </div>
-
-
-</main>
-<!-- /.container -->
-
-
+    </main>
 </body>
 </html>

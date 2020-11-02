@@ -1,15 +1,21 @@
+html{
+    margin: 0;
+    height: 100%;
+}
 body {
     font-family: Arial, serif;
     padding: 0;
     margin: 0;
+    background-image:linear-gradient(160deg, black 30%, white 70%);
 }
 
-h1 {
-    color: #0000FF;
+h5{
+    color: hotpink;
+    font-weight: bold;
 }
 
-h2 {
-    color: #6d4c41;
+.bg-dark{
+    background-color: yellow!important;
 }
 
 button > a {
