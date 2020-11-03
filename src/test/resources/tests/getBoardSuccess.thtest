@@ -1,0 +1,71 @@
+%TEMPLATE_MODE HTML
+%NAME TestGetHeaderFragment
+%CONTEXT
+form = new ch.ost.rj.sa.miro2cml.presentation.model.GetBoardForm()
+form.accessToken = "access"
+form.boardId = "id"
+module = 'home'
+# form.boardType = new ch.ost.rj.sa.miro2cml.model.BoardType.USE_CASE --- doesn't work properly
+# ------------------------------------------
+%INPUT (classpath:templates/getBoardSuccess.html)
+%INPUT[fragments/headerinc] (classpath:templates/fragments/headerinc.html)
+%INPUT[fragments/header] (classpath:templates/fragments/header.html)
+%TEMPLATE_MODE HTML5
+# ------------------------------------------
+%OUTPUT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>miro2cml</title>
+    <link rel="stylesheet" href="webjars/bootstrap/4.5.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/testing/css/main.css"/>
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/4.5.3/js/bootstrap.min.js" type="text/javascript"></script>
+</head>
+<body>
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">miro2cml</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/testing/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/testing/supportedTemplates">Supported Templates</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/testing/tutorials">Tutorials</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <div class="card">
+        <h4 class="card-header">CML Output</h4>
+        <div class="card-body">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">GetBoardCall succeeded!</h4>
+                <span>BoardId:</span><span>id</span><br/>
+                <span>AccessToken:</span><span>access</span><br/>
+                <span>BoardType:</span><span></span><br/>
+            </div>
+            <div class="output-container">
+                <div class="form-group">
+                    <label for="output_cml">Download your CML-File:</label><br>
+                    <input id="output_cml" class="form-control" type="text" placeholder="output.cml" readonly><br>
+                </div>
+                <Button class="btn btn-raised btn-primary"><a download="cmlOutput.cml" href="/testing/download?name=id">Download</a></Button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
