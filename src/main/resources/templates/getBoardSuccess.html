@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headerinc :: head">
 </head>
 <body>
-<div align="center">
-    <h2>GetBoardCall succeeded!</h2>
-    <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br/>
-    <span>AccessToken:</span><span th:text="${form.getAccessToken()}"></span><br/>
-    <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br/>
-</div>
-<div align="center" class="output-container">
-    <h2>CML Output</h2>
-    <text>Link to file</text>
-    <Button><a download="cmlOutput.cml" th:href="@{|/download?name=${form.getBoardId()}|}">Download</a></Button>
+<div th:replace="fragments/header ::header"></div>
+<div class="container">
+    <div class="card">
+        <h4 class="card-header">CML Output</h4>
+        <div class="card-body">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">GetBoardCall succeeded!</h4>
+                <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br/>
+                <span>AccessToken:</span><span th:text="${form.getAccessToken()}"></span><br/>
+                <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br/>
+            </div>
+            <div class="output-container">
+                <div class="form-group">
+                    <label for="output_cml">Download your CML-File:</label><br>
+                    <input id="output_cml" class="form-control" type="text" placeholder="output.cml" readonly><br>
+                </div>
+                <Button class="btn btn-raised btn-primary"><a download="cmlOutput.cml" th:href="@{|/download?name=${form.getBoardId()}|}">Download</a></Button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
