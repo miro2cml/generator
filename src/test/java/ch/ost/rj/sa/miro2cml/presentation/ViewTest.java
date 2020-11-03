@@ -14,7 +14,7 @@ import java.util.List;
 public class ViewTest {
 
     @Test
-    public void GetBoardFormSuccessTest() {
+    public void GetHeaderIncFragmentTest() {
         final List<IDialect> dialects = new ArrayList<IDialect>();
         final SpringWebProcessingContextBuilder springPCBuilder = new SpringWebProcessingContextBuilder();
         final TestExecutor executor = new TestExecutor();
@@ -25,7 +25,37 @@ public class ViewTest {
         executor.setProcessingContextBuilder(springPCBuilder);
         executor.setDialects(dialects);
 
-        executor.execute("classpath:tests/getBoardFormSuccess.thtest");
+        executor.execute("classpath:tests/getHeaderIncFragment.thtest");
+        Assertions.assertTrue(executor.isAllOK());
+    }
+    @Test
+    public void GetHeaderFragmentTest() {
+        final List<IDialect> dialects = new ArrayList<IDialect>();
+        final SpringWebProcessingContextBuilder springPCBuilder = new SpringWebProcessingContextBuilder();
+        final TestExecutor executor = new TestExecutor();
+
+        dialects.add(new SpringStandardDialect());
+        springPCBuilder.setApplicationContextConfigLocation(null);
+
+        executor.setProcessingContextBuilder(springPCBuilder);
+        executor.setDialects(dialects);
+
+        executor.execute("classpath:tests/getHeaderFragment.thtest");
+        Assertions.assertTrue(executor.isAllOK());
+    }
+    @Test
+    public void GetBoardSuccessTest() {
+        final List<IDialect> dialects = new ArrayList<IDialect>();
+        final SpringWebProcessingContextBuilder springPCBuilder = new SpringWebProcessingContextBuilder();
+        final TestExecutor executor = new TestExecutor();
+
+        dialects.add(new SpringStandardDialect());
+        springPCBuilder.setApplicationContextConfigLocation(null);
+
+        executor.setProcessingContextBuilder(springPCBuilder);
+        executor.setDialects(dialects);
+
+        executor.execute("classpath:tests/getBoardSuccess.thtest");
         Assertions.assertTrue(executor.isAllOK());
     }
     @Test
