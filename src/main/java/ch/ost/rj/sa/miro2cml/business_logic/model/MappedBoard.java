@@ -3,35 +3,35 @@ package ch.ost.rj.sa.miro2cml.business_logic.model;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml.CmlModel;
 
 public class MappedBoard {
-    private MiroBoard miroBoard;
-    private CmlModel cmlModel;
+    private InputBoard inputBoard;
+    private IOutputArtifact outputArtifact;
 
-    public MappedBoard(MiroBoard miroBoard, CmlModel cmlModel) {
-        this.miroBoard = miroBoard;
-        this.cmlModel = cmlModel;
+    public MappedBoard(InputBoard inputBoard, IOutputArtifact outputArtifact) {
+        this.inputBoard = inputBoard;
+        this.outputArtifact = outputArtifact;
     }
 
-    public MiroBoard getMiroBoard() {
-        return miroBoard;
+    public InputBoard getMiroBoard() {
+        return inputBoard;
     }
 
-    public void setMiroBoard(MiroBoard miroBoard) {
-        this.miroBoard = miroBoard;
+    public void setMiroBoard(InputBoard inputBoard) {
+        this.inputBoard = inputBoard;
     }
 
-    public CmlModel getCmlModel() {
-        return cmlModel;
+    public IOutputArtifact getOutputArtifact() {
+        return outputArtifact;
     }
 
-    public void setCmlModel(CmlModel cmlModel) {
-        this.cmlModel = cmlModel;
+    public void setCmlModel(IOutputArtifact outputArtifact) {
+        this.outputArtifact = outputArtifact;
     }
 
-    public MiroBoard getOriginalBoard() {
-        return miroBoard;
+    public InputBoard getOriginalBoard() {
+        return inputBoard;
     }
 
-    public void setOriginalBoard(MiroBoard originalMiroBoard) {
-        this.miroBoard = originalMiroBoard;
+    public void setOriginalBoard(InputBoard originalInputBoard) {
+        this.inputBoard = originalInputBoard;
     }
 }
