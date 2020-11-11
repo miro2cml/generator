@@ -23,8 +23,12 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'junit:junit:4.12'
-    compile 'org.webjars:npm:5.0.0-2'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     compile group: 'org.webjars.npm', name: 'prettier', version: '2.0.5'
     compile group: 'org.webjars', name: 'bootstrap', version: '4.5.3'
     compile group: 'org.webjars.bower', name: 'jquery', version: '3.5.1'

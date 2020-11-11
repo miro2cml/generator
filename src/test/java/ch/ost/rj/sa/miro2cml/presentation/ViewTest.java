@@ -28,6 +28,7 @@ public class ViewTest {
         executor.execute("classpath:tests/getHeaderIncFragment.thtest");
         Assertions.assertTrue(executor.isAllOK());
     }
+
     @Test
     public void GetHeaderFragmentTest() {
         final List<IDialect> dialects = new ArrayList<IDialect>();
@@ -44,7 +45,7 @@ public class ViewTest {
         Assertions.assertTrue(executor.isAllOK());
     }
     @Test
-    public void GetBoardSuccessTest() {
+    public void GetFooterFragmentTest() {
         final List<IDialect> dialects = new ArrayList<IDialect>();
         final SpringWebProcessingContextBuilder springPCBuilder = new SpringWebProcessingContextBuilder();
         final TestExecutor executor = new TestExecutor();
@@ -55,9 +56,26 @@ public class ViewTest {
         executor.setProcessingContextBuilder(springPCBuilder);
         executor.setDialects(dialects);
 
-        executor.execute("classpath:tests/getBoardSuccess.thtest");
+        executor.execute("classpath:tests/getFooterFragment.thtest");
         Assertions.assertTrue(executor.isAllOK());
     }
+
+    @Test
+    public void cmlOutputViewTest() {
+        final List<IDialect> dialects = new ArrayList<IDialect>();
+        final SpringWebProcessingContextBuilder springPCBuilder = new SpringWebProcessingContextBuilder();
+        final TestExecutor executor = new TestExecutor();
+
+        dialects.add(new SpringStandardDialect());
+        springPCBuilder.setApplicationContextConfigLocation(null);
+
+        executor.setProcessingContextBuilder(springPCBuilder);
+        executor.setDialects(dialects);
+
+        executor.execute("classpath:tests/cml-output.thtest");
+        Assertions.assertTrue(executor.isAllOK());
+    }
+
     @Test
     public void TestTestingFunctionality() {
         final List<IDialect> dialects = new ArrayList<IDialect>();

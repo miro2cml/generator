@@ -5,15 +5,16 @@
 #01689b, 1  :104:155 (Blau, dunkel)
 #2996cb, 41 :150:203 (Blau, mittel)
 #47aadc, 71 :170:220 (Blau, hell) */
-html{
+html {
     margin: 0;
     height: 100%;
 }
+
 body {
     font-family: Arial, serif;
     padding: 0;
     margin: 0;
-    background-image:linear-gradient(160deg, #f9d12c 20%, white 70%);
+    background-image: linear-gradient(160deg, #f9d12c 20%, white 70%);
 }
 
 #mirologo {
@@ -21,7 +22,7 @@ body {
     left: 5px;
 }
 
-h5{
+h5 {
     color: #e4004d;
     font-weight: bold;
 }
@@ -33,22 +34,23 @@ img {
     right: 10px;
     z-index: -1;
 }
+
 .card {
     border: 4px solid #2a303e;
     box-shadow: 10px 10px 5px lightgray;
 }
 
 button {
-    background-color: #01689b!important;
+    background-color: #01689b !important;
 }
 
 button:hover {
-    background-color:#47aadc!important;
-    color: black!important;
+    background-color: #47aadc !important;
+    color: black !important;
 }
 
 .bg-dark {
-    background-color: #06063b!important;
+    background-color: #06063b !important;
 }
 
 button > a {
