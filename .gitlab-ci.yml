@@ -13,12 +13,14 @@ variables:
   CONTAINER_VERSION_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   DOCKER_IMAGE_FILE_NAME: miro2cml-docker-image.tar
   GIT_DEPTH: 0
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
+  
   GRADLE_CI: "gradle -PenvironmentName=ci"
   DEPLOYMENT_HOST: 188.68.38.100
   SSH_PORT: 22
-
+  DOCKER_TLS_CERTDIR: ""
+  # following variables had to be removed due to changes on gitlab shared runner
+  # DOCKER_HOST: tcp://docker:2375
+  # DOCKER_DRIVER: overlay2
 
 test:
   image: gradle:6.6.1-jdk11
@@ -54,10 +56,10 @@ build:
 # - CONTAINER_VERSION_IMAGE
 # - DOCKER_IMAGE_FILE_NAME
 prepare-deploy:
-  image: docker:19.03.0
-  stage: 'prepare-deploy'
+  image: docker:19.03.12
+  stage: prepare-deploy
   services:
-        - docker:19.03.0-dind
+    - docker:19.03.12-dind
   script:
     - docker version
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
