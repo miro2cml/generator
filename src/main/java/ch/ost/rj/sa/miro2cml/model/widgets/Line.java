@@ -28,16 +28,16 @@ public class Line extends WidgetObject {
         this.lineType = lineType;
     }
 
-    public Line(MiroWidget miroWidgetMiroWidget) {
-        super(miroWidgetMiroWidget.getId());
-        this.startWidgetId = new BigInteger(String.valueOf(0)); //miroWidgetMiroWidget.getStartWidget();
-        this.endWidgetId = new BigInteger(String.valueOf(0)); //endWidgetId;
-        this.borderColor = miroWidgetMiroWidget.getStyle().getBorderColor();
-        this.borderStyle = miroWidgetMiroWidget.getStyle().getBorderStyle();
-        this.borderWidth = miroWidgetMiroWidget.getStyle().getBorderWidth();
-        this.lineEndType = miroWidgetMiroWidget.getStyle().getLineEndType();
-        this.lineStartType = miroWidgetMiroWidget.getStyle().getLineEndType();
-        this.lineType = miroWidgetMiroWidget.getStyle().getLineType();
+    public Line(MiroWidget miroWidget) {
+        super(miroWidget.getId());
+        this.startWidgetId = new BigInteger(miroWidget.getStartWidget().getId());
+        this.endWidgetId = new BigInteger(miroWidget.getEndWidget().getId());
+        this.borderColor = miroWidget.getStyle().getBorderColor();
+        this.borderStyle = miroWidget.getStyle().getBorderStyle();
+        this.borderWidth = miroWidget.getStyle().getBorderWidth();
+        this.lineEndType = miroWidget.getStyle().getLineEndType();
+        this.lineStartType = miroWidget.getStyle().getLineEndType();
+        this.lineType = miroWidget.getStyle().getLineType();
     }
 
     @Override
