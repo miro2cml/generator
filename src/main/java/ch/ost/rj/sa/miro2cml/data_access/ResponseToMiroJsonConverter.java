@@ -2,6 +2,7 @@ package ch.ost.rj.sa.miro2cml.data_access;
 
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.boards.BoardCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.WidgetsCollection;
+import ch.ost.rj.sa.miro2cml.model.boards.BoardPresentation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -16,5 +17,9 @@ public class ResponseToMiroJsonConverter {
     static BoardCollection convertJsonResponseStreamIntoMiroBoardCollection(InputStream response) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(response, BoardCollection.class);
+    }
+    static BoardPresentation convertJsonResponseStreamIntoMiroBoardPresentation(InputStream response) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(response, BoardPresentation.class);
     }
 }

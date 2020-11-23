@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headerinc :: head">
+</head>
+<body>
+<div th:replace="fragments/header ::header"></div>
+<main class="container" role="main">
+    <div class="card">
+        <div class="card-header row">
+            <h5 class="col text-left"> CML Output</h5>
+        </div>
+        <div class="card-body">
+            <form class="row">
+                <div class="form-group align-items-center col-12 alert alert-danger " role="alert">
+                    <h4 class="alert-heading">Your Board Conversion request has been processed</h4>
+                    <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br>
+                    <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br>
+                    <th:block th:each="message : ${mappingMessages}">
+                        <span th:text="${message}"></span><br>
+                    </th:block>
+                </div>
+                <label class="col-2" for="logfile">Your Log-File:</label>
+                <input class="form-control col-3 text-right" id="logfile" readonly
+                       th:placeholder="@{|${form.getBoardId()}.log|}" type="text"><br>
+                <div class="col-5"></div>
+                <Button class="btn btn-raised btn-primary col-2"><a
+                        th:href="@{|/downloadLog?name=${form.getBoardId()}|}">Download Logfile</a></Button>
+            </form>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>

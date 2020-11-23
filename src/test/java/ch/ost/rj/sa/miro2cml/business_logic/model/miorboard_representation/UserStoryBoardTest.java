@@ -1,6 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.model.widgets.Card;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ class UserStoryBoardTest {
         String expectedVerb = "create";
         String expectedEntity = "board";
         String expectedBenefit = "I could see it";
-        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board);
+        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
@@ -47,7 +49,7 @@ class UserStoryBoardTest {
         String expectedVerb = "create";
         String expectedEntity = "object";
         String expectedBenefit = "I could see it";
-        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board);
+        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board, new MappingLog(""), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
@@ -67,7 +69,7 @@ class UserStoryBoardTest {
         String expectedVerb = "create";
         String expectedEntity = "board";
         String expectedBenefit = "I could see it";
-        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board);
+        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
@@ -87,7 +89,7 @@ class UserStoryBoardTest {
         String expectedVerb = "create";
         String expectedEntity = "object";
         String expectedBenefit = "I could see it";
-        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board);
+        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());

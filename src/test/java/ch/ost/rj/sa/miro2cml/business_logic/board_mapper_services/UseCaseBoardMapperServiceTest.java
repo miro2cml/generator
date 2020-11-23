@@ -1,6 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.ICmlArtifact;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.UserStory;
@@ -31,12 +33,12 @@ class UseCaseBoardMapperServiceTest {
         final ArrayList<WidgetObject> widgetObjectArrayList = new ArrayList<>();
         widgetObjectArrayList.add(card);
         final InputBoard inputBoard = new InputBoard("boardId", widgetObjectArrayList);
-        final UserStory story = new UserStory("createaccount", "user", "create", "account", "I could authorize myself");
+        final UserStory story = new UserStory("user", "create", "account", "I could authorize myself");
         final ArrayList<ICmlArtifact> list = new ArrayList<>();
         list.add(story);
         final CmlModel expectedResult = new CmlModel();
         // Run the test
-        final CmlModel result = useCaseBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(inputBoard);
+        final CmlModel result = useCaseBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(inputBoard,new MappingLog("testId"),new MappingMessages());
 
         // Verify the results
         assertEquals(expectedResult, result);

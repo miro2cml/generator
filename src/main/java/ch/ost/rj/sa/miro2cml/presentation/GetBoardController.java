@@ -3,6 +3,8 @@ package ch.ost.rj.sa.miro2cml.presentation;
 import ch.ost.rj.sa.miro2cml.business_logic.MappingController;
 import ch.ost.rj.sa.miro2cml.presentation.model.BoardForm;
 import ch.ost.rj.sa.miro2cml.presentation.utility.SessionHandlerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,25 +22,36 @@ import java.util.Map;
 
 @Controller
 public class GetBoardController {
-    private final Map<String, Resource> resourceMap = new HashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(GetBoardController.class);
+    private final Map<String, Resource> outputResourceMap = new HashMap<>();
+    private final Map<String, Resource> mappingLogRessourceMap = new HashMap<>();
+    //Todo: limit mapsizes to 100 -> probably over a fifo queue -> (if size >= 100 -> pop -> delete from map and after that save
 
     @PostMapping("/getBoard")
-    public String getBoard(BoardForm form, Model model, HttpSession session) {
+    public String getOutput(BoardForm form, Model model, HttpSession session) {
         model.addAttribute("form", form);
-        System.out.println("boardID: " + form.getBoardId());
-        System.out.println("log: board will now get Mapped");
+        logger.debug("boardID: " + form.getBoardId());
+        logger.debug("commence with board mapping");
         MappingController mappingController = new MappingController(form.getBoardType(), form.getBoardId(), SessionHandlerService.getMiroAccessToken(session));
-        mappingController.run();
-        System.out.println("log: board Mapped");
-        resourceMap.put(form.getBoardId(), mappingController.getResource());
-        model.addAttribute("outputFile", mappingController.getResource());
-        return "cml-output";
+        boolean succes = mappingController.run();
+        logger.debug("finished board mapping, success?: " + succes);
+
+        mappingLogRessourceMap.put(form.getBoardId(), mappingController.getServableMappingLog());
+        model.addAttribute("mappingMessages",mappingController.getMappingMessages());
+        if (succes){
+            outputResourceMap.put(form.getBoardId(), mappingController.getServableOutput());
+            model.addAttribute("perfectMapping",mappingController.isMappingFullSuccess());
+            return "output";
+        }
+        else {
+            return "no-output";
+        }
     }
 
     @GetMapping(path = "/download")
     public ResponseEntity<Resource> downloadCML(@RequestParam(name = "name", required = true) String name) throws IOException {
 
-        Resource resource = resourceMap.get(name);
+        Resource resource = outputResourceMap.get(name);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".cml");
         return ResponseEntity.ok()
@@ -47,4 +60,17 @@ public class GetBoardController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
+    @GetMapping(path = "/downloadLog")
+    public ResponseEntity<Resource> downloadMappingLog(@RequestParam(name = "name", required = true) String name) throws IOException {
+
+        Resource resource = mappingLogRessourceMap.get(name);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".log");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(resource.contentLength())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
 }

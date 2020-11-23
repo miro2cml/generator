@@ -15,11 +15,6 @@ public class Card extends WidgetObject {
     private String description;
     private String backgroundColor;
 
-    //private Date date;
-    //        assignee": {
-    //        "userId": "3074457345803957924" }
-
-
     public Card(BigInteger id, int x, int y, double scale, String title, String description, String backgroundColor) {
         super(id);
         this.x = x;
