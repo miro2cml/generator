@@ -16,7 +16,7 @@
                     <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br>
                     <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br>
                     <th:block th:each="message : ${mappingMessages}">
-                        <span th:text="${message}"></span><br>
+                        <span th:text="${message}" style="font-weight: bold"></span><br>
                     </th:block>
                 </div>
                 <label class="col-2" for="logfile">Your Log-File:</label>

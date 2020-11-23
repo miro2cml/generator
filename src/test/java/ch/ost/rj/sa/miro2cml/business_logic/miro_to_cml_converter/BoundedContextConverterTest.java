@@ -39,7 +39,7 @@ class BoundedContextConverterTest {
         widgetObjects.add(new Shape(BigInteger.ONE, 0, 0, 0, 0, 0, "#f0f7a9", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>First Query</p>"));
         widgetObjects.add(new Shape(BigInteger.ONE, 350, 0, 0, 0, 0, "#f0f7a9", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>Second Query</p>"));
         InputBoard board = new InputBoard("123", widgetObjects);
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         //run
         BoundedContext boundedContext = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(boundedContextBoard);
         //check

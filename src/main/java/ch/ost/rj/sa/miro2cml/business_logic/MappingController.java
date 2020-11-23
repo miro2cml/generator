@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic;
 
+import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.BoundedContextCanvasBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.EventStormingBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.UseCaseBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
@@ -57,7 +58,7 @@ public class MappingController {
         return new ByteArrayResource(mappingLog.toString().getBytes());
     }
 
-    public boolean run() {
+    public boolean run() throws Exception{
         logger.debug("Get BoardData from data source");
         mappingLog.addInfoLogEntry("Get BoardData from data source");
         WidgetCollection widgetCollection = MiroApiServiceAdapter.getBoardWidgets(accessToken, boardId);
@@ -70,28 +71,34 @@ public class MappingController {
 
             logger.debug("Commence Board mapping");
             mappingLog.addInfoLogEntry("Commence Board mapping");
-
-            switch (boardType) {
-                case USE_CASE:
-                    logger.debug("Board Type: UserStory");
-                    mappingLog.addInfoLogEntry("Board Type: UserStory");
-                    mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
-                    break;
-                case BOUNDED_CONTEXT_CANVAS:
-                    break;
-
-                case EVENT_STORMING:
-                    mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
-                    break;
-                case CONTEXT_MAP:
-                    break;
-                default:
-                case AUTOMATIC:
-                    break;
-            }
-            mappingLog.addInfoLogEntry("BoardMapping finished");
-
-            return true;
+                switch (boardType) {
+                    case USE_CASE:
+                        logger.debug("Board Type: UserStory");
+                        mappingLog.addInfoLogEntry("Board Type: UserStory");
+                        try{
+                            mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        }catch (Exception e){
+                            System.out.println(e.getMessage());
+                            return false;
+                        }
+                        //mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        break;
+                    case BOUNDED_CONTEXT_CANVAS:
+                        logger.debug("Board Type: Bounded Context Canvas");
+                        mappingLog.addInfoLogEntry("Board Type: Bounded Context Canvas");
+                        mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        break;
+                    case EVENT_STORMING:
+                        mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        break;
+                    case CONTEXT_MAP:
+                        break;
+                    default:
+                    case AUTOMATIC:
+                        break;
+                }
+                mappingLog.addInfoLogEntry("BoardMapping finished");
+                return true;
         } else {
             mappingMessages.add("Critical ERROR during MiroApiCall");
             mappingMessages.add("Please take a look at the logfile for further information");

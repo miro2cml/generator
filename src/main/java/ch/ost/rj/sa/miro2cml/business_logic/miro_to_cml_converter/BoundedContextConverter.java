@@ -13,13 +13,16 @@ public class BoundedContextConverter {
                 generateAggregateName(generateName(extractedBoard.getName()), extractedBoard.getAggregateName()),
                 generateResponsibilities(extractedBoard.getRoleTypes()),
                 generateDomainEvents(extractedBoard.getEvents()),
-                generateOperations(extractedBoard.getQueries(), extractedBoard.getCommands()));
+                generateQueries(extractedBoard.getQueries()),
+                generateCommands(extractedBoard.getCommands()));
     }
 
-    private static ArrayList<String> generateOperations(ArrayList<String> queries, ArrayList<String> commands) {
-        ArrayList<String> operations = convertArrays(queries);
-        operations.addAll(convertArrays(commands));
-        return operations;
+    private static ArrayList<String> generateCommands(ArrayList<String> commands) {
+        return convertArrays(commands);
+    }
+
+    private static ArrayList<String> generateQueries(ArrayList<String> queries) {
+        return convertArrays(queries);
     }
 
     private static ArrayList<String> generateDomainEvents(ArrayList<String> events) {
@@ -37,10 +40,14 @@ public class BoundedContextConverter {
     }
 
     private static ArrayList<String> generateResponsibilities(String roletypes) {
-        ArrayList<String> responsisbilites = new ArrayList<>();
-        roletypes = StringValidator.validatorForStrings(roletypes);
-        responsisbilites.add(roletypes);
-        return responsisbilites;
+        ArrayList<String> responsibilites = new ArrayList<>();
+        var roletype = roletypes.split("</p><p>");
+        for (String s: roletype) {
+            responsibilites.add(StringValidator.validatorForStrings(s));
+        }
+        //remove heading from responsibilities list
+        responsibilites.remove(0);
+        return responsibilites;
     }
 
     private static String generateAggregateName(String name, String aggregateName) {
@@ -74,6 +81,7 @@ public class BoundedContextConverter {
 
     private static String validateStringsForComment(String input) {
         input = StringValidator.replaceLineWithComma(input);
+        input= input.replaceFirst(",", ":");
         return StringValidator.validatorForStrings(input);
     }
 

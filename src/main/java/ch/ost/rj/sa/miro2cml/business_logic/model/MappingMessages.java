@@ -2,6 +2,7 @@ package ch.ost.rj.sa.miro2cml.business_logic.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MappingMessages {
     private ArrayList<String> messages= new ArrayList<>();
@@ -22,4 +23,6 @@ public class MappingMessages {
     public void setMappingState(boolean mappingState) {
         this.mappingState = mappingState;
     }
+
+    public void clear(){this.messages.removeIf(Objects::nonNull);}
 }

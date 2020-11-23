@@ -21,7 +21,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Name: Test</strong></p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedName = "<p><strong>Name: Test</strong></p>";
 
         assertEquals(expectedName, boundedContextBoard.getName());
@@ -41,7 +41,7 @@ class BoundedContextBoardTest {
         InputBoard board = new InputBoard("123", widgetObjects);
         String expextedDescription = "<p>What benefits does this context provide, and how does it provide them?</p>";
         //run
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         //check
         assertEquals(expextedDescription, boundedContextBoard.getDescription());
     }
@@ -53,7 +53,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedDomain = "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>";
 
         assertEquals(expectedDomain, boundedContextBoard.getDomain());
@@ -66,7 +66,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Business Model</strong></p><p><span>- revenue</span></p><p>- engagement</p><p>- compliance</p><p>- cost reduction</p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedBusinessModel = "<p><strong>Business Model</strong></p><p><span>- revenue</span></p><p>- engagement</p><p>- compliance</p><p>- cost reduction</p>";
 
         assertEquals(expectedBusinessModel, boundedContextBoard.getBusinessModel());
@@ -79,7 +79,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Evolution</strong></p><p><span>- genesis</span></p><p>- custom built</p><p>- product</p><p>- commodity</p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedEvolution="<p><strong>Evolution</strong></p><p><span>- genesis</span></p><p>- custom built</p><p>- product</p><p>- commodity</p>";
 
         assertEquals(expectedEvolution, boundedContextBoard.getEvolution());
@@ -92,7 +92,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Role Types</strong></p><p><span>- draft context</span></p><p>- execution context</p><p>- analysis context</p><p>- gateway context</p><p>- other</p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedRoletypes="<p><strong>Role Types</strong></p><p><span>- draft context</span></p><p>- execution context</p><p>- analysis context</p><p>- gateway context</p><p>- other</p>";
 
         assertEquals(expectedRoletypes, boundedContextBoard.getRoleTypes());
@@ -108,7 +108,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Shape(BigInteger.ONE, 350, 0, 0, 0, 0, "#cbdcee", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>Second Command</p>"));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedCommand = "<p>First Command</p>";
         assertEquals(expectedCommand, boundedContextBoard.getCommands().get(0));
         assertEquals(1, boundedContextBoard.getCommands().size());
@@ -124,7 +124,7 @@ class BoundedContextBoardTest {
             widgetObjects.add(new Shape(BigInteger.ONE, 350, 0, 0, 0, 0, "#f9f3c1", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>Second Event</p>"));
             InputBoard board = new InputBoard("123", widgetObjects);
 
-            BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+            BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
             String expectedEvent = "<p>First Event</p>";
             assertEquals(expectedEvent, boundedContextBoard.getEvents().get(0));
         assertEquals(1, boundedContextBoard.getEvents().size());
@@ -140,7 +140,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Shape(BigInteger.ONE, 350, 0, 0, 0, 0, "#f0f7a9", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>Second Query</p>"));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedQuery = "<p>First Query</p>";
         assertEquals(expectedQuery, boundedContextBoard.getQueries().get(0));
         assertEquals(1, boundedContextBoard.getQueries().size());
@@ -156,7 +156,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Shape(BigInteger.ONE, 350, 0, 0, 0, 0, "#f9f3c1", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>Second Event</p>"));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedEvent = "<p>Second Event</p>";
         assertEquals(expectedEvent, boundedContextBoard.getOutBoundCommunication().get(0));
         assertEquals(1, boundedContextBoard.getOutBoundCommunication().size());
@@ -172,7 +172,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Shape(BigInteger.ONE, 350, 0, 0, 0, 0, "#cbdcee", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>Second Command</p>"));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedCommand = "<p>Second Command</p>";
         assertEquals(expectedCommand, boundedContextBoard.getOutBoundCommunication().get(0));
         assertEquals(1, boundedContextBoard.getOutBoundCommunication().size());
@@ -188,7 +188,7 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Shape(BigInteger.ONE, 350, 0, 0, 0, 0, "#f0f7a9", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>Second Query</p>"));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         String expectedQuery = "<p>Second Query</p>";
         assertEquals(expectedQuery, boundedContextBoard.getOutBoundCommunication().get(0));
         assertEquals(1, boundedContextBoard.getOutBoundCommunication().size());

@@ -30,8 +30,8 @@ public class Line extends WidgetObject {
 
     public Line(MiroWidget miroWidget) {
         super(miroWidget.getId());
-        this.startWidgetId = new BigInteger(miroWidget.getStartWidget().getId());
-        this.endWidgetId = new BigInteger(miroWidget.getEndWidget().getId());
+        this.startWidgetId = new BigInteger(String.valueOf(2)); /*new BigInteger(miroWidget.getStartWidget().getId());*/
+        this.endWidgetId = new BigInteger(String.valueOf(1));/*new BigInteger(miroWidget.getEndWidget().getId());*/
         this.borderColor = miroWidget.getStyle().getBorderColor();
         this.borderStyle = miroWidget.getStyle().getBorderStyle();
         this.borderWidth = miroWidget.getStyle().getBorderWidth();

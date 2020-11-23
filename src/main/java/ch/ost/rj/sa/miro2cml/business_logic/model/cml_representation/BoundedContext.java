@@ -17,19 +17,20 @@ public class BoundedContext implements ICmlArtifact{
   private String comment, name, domainVisionStatement, implementationStrategy, aggregateName;
   private ArrayList<String> responsibilites;
   private ArrayList<String> domainEvents;
-  private ArrayList<String> operations;
+  private ArrayList<String> commands, queries;
   private KnowledgeLevel knowledgeLevel=KnowledgeLevel.CONCRETE;
   private BoundedContext refindedboundedContext;
   private BoundedContextType boundedContextType = BoundedContextType.FEATURE;
 
-    public BoundedContext(String comment, String name, String domainVisionStatement, String aggregateName, ArrayList<String> responsibilites, ArrayList<String> domainEvents, ArrayList<String> operations) {
+    public BoundedContext(String comment, String name, String domainVisionStatement, String aggregateName, ArrayList<String> responsibilites, ArrayList<String> domainEvents, ArrayList<String> queries, ArrayList<String> commands) {
         this.comment = comment;
         this.name = name;
         this.domainVisionStatement = domainVisionStatement;
         this.aggregateName = aggregateName;
         this.responsibilites = responsibilites;
         this.domainEvents = domainEvents;
-        this.operations = operations;
+        this.queries = queries;
+        this.commands = commands;
     }
 
     @Override
@@ -45,28 +46,39 @@ public class BoundedContext implements ICmlArtifact{
         Aggregate aggregate = factory.createAggregate();
         aggregate.setName(aggregateName);
         boundedContext.getAggregates().add(aggregate);
-        addDomainEvents(aggregate, 0);
+        addDomainEvents(aggregate);
+        addQueries(aggregate);
+        addCommands(aggregate);
     }
 
-    private void addDomainEvents(Aggregate aggregate, int counter) {
+    private void addCommands(Aggregate aggregate) {
+        DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
+        domainEvent.setName(name + "_Commands");
+        aggregate.getDomainObjects().add(domainEvent);
+        addOperations(domainEvent, commands);
+    }
+
+    private void addQueries(Aggregate aggregate) {
+        DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
+        domainEvent.setName(name + "_Queries");
+        aggregate.getDomainObjects().add(domainEvent);
+        addOperations(domainEvent, queries);
+    }
+
+    private void addDomainEvents(Aggregate aggregate) {
         for(String s : domainEvents){
             DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
             domainEvent.setName(s);
             aggregate.getDomainObjects().add(domainEvent);
-            //operations sind im ersten DomainEvent enthalten
-            counter++;
-            if(counter==1){
-                addOperations(domainEvent);
-            }
         }
     }
 
-    private void addOperations(DomainEvent domainEvent) {
+    private void addOperations(DomainEvent domainEvent, ArrayList<String> operations)  {
         for(String str: operations){
             DomainObjectOperation operation = TacticdslFactory.eINSTANCE.createDomainObjectOperation();
             operation.setName(str);
             ComplexType returnType = TacticdslFactory.eINSTANCE.createComplexType();
-            returnType.setType("void");
+            returnType.setType("String");
             operation.setReturnType(returnType);
             domainEvent.getOperations().add(operation);
         }
@@ -79,25 +91,13 @@ public class BoundedContext implements ICmlArtifact{
         boundedContext.setDomainVisionStatement(domainVisionStatement);
         boundedContext.setKnowledgeLevel(knowledgeLevel);
         boundedContext.setType(boundedContextType);
-        SetResponsibilities(boundedContext);
+        setResponsibilities(boundedContext);
     }
 
-    private void SetResponsibilities(org.contextmapper.dsl.contextMappingDSL.BoundedContext boundedContext) {
+    private void setResponsibilities(org.contextmapper.dsl.contextMappingDSL.BoundedContext boundedContext) {
         for (String s: responsibilites) {
             boundedContext.getResponsibilities().add(s);
         }
     }
 
-    @Override
-    public String toString() {
-        return "BoundedContext{" +
-                "comment='" + comment + '\'' +
-                ", name='" + name + '\'' +
-                ", domainVisionStatement='" + domainVisionStatement + '\'' +
-                ", aggregateName='" + aggregateName + '\'' +
-                ", responsibilites=" + responsibilites +
-                ", domainEvents=" + domainEvents +
-                ", operations=" + operations +
-                '}';
-    }
 }

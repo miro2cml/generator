@@ -17,7 +17,7 @@ public class StringValidator {
         return input;
     }
     public static String removeAllHtmlTags(String input){
-        return input.replaceAll("<[a-z A-Z,./:\"=_-]+>", "");
+        return input.replaceAll("<[)(a-z A-Z,./:\"=_-]+>", "");
     }
     public static String removeHtmlBreaks(String input){
         input = input.replaceAll("<br />", "");

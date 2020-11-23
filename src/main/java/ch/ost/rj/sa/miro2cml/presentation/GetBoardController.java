@@ -1,6 +1,7 @@
 package ch.ost.rj.sa.miro2cml.presentation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.MappingController;
+import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.presentation.model.BoardForm;
 import ch.ost.rj.sa.miro2cml.presentation.utility.SessionHandlerService;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class GetBoardController {
     //Todo: limit mapsizes to 100 -> probably over a fifo queue -> (if size >= 100 -> pop -> delete from map and after that save
 
     @PostMapping("/getBoard")
-    public String getOutput(BoardForm form, Model model, HttpSession session) {
+    public String getOutput(BoardForm form, Model model, HttpSession session) throws Exception{
         model.addAttribute("form", form);
         logger.debug("boardID: " + form.getBoardId());
         logger.debug("commence with board mapping");
@@ -39,7 +40,11 @@ public class GetBoardController {
         mappingLogRessourceMap.put(form.getBoardId(), mappingController.getServableMappingLog());
         model.addAttribute("mappingMessages",mappingController.getMappingMessages());
         if (succes){
-            outputResourceMap.put(form.getBoardId(), mappingController.getServableOutput());
+            try {
+                outputResourceMap.put(form.getBoardId(), mappingController.getServableOutput());
+            }catch (Exception e){
+                return "no-output";
+            }
             model.addAttribute("perfectMapping",mappingController.isMappingFullSuccess());
             return "output";
         }
