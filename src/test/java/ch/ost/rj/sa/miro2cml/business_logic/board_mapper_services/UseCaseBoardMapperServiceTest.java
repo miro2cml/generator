@@ -1,9 +1,9 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
-import ch.ost.rj.sa.miro2cml.business_logic.model.cml.CmlModel;
-import ch.ost.rj.sa.miro2cml.business_logic.model.cml.ICmlArtifact;
-import ch.ost.rj.sa.miro2cml.business_logic.model.cml.UserStory;
+import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
+import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.ICmlArtifact;
+import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.UserStory;
 import ch.ost.rj.sa.miro2cml.model.widgets.Card;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
 import org.junit.jupiter.api.BeforeEach;

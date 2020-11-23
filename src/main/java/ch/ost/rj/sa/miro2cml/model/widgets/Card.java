@@ -1,5 +1,7 @@
 package ch.ost.rj.sa.miro2cml.model.widgets;
 
+
+import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 
 import java.math.BigInteger;
@@ -96,5 +98,18 @@ public class Card extends WidgetObject {
 
     public void setBackgroundColor(String backgroundColor) {
         this.backgroundColor = backgroundColor;
+    }
+
+    public void validate(){
+        if(title != null) {
+            title = StringValidator.removeDoubleSpace(title);
+        }else{
+            title="";
+        }
+    }
+
+    @Override
+    public String getMappingRelevantText() {
+        return title;
     }
 }

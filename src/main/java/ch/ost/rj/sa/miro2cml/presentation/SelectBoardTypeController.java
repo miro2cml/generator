@@ -17,6 +17,7 @@ public class SelectBoardTypeController {
         List<BoardType> boardTypes = Arrays.asList(BoardType.USE_CASE, BoardType.BOUNDED_CONTEXT_CANVAS, BoardType.CONTEXT_MAP, BoardType.EVENT_STORMING, BoardType.AUTOMATIC);
         model.addAttribute("boardTypes", boardTypes);
         model.addAttribute("form", form);
+        //TODO add boardId to logger
         return new ModelAndView("selectBoardType", model);
     }
 }

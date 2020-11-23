@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic;
 
+import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.EventStormingBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.UseCaseBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
@@ -42,12 +43,13 @@ public class MappingController {
             case USE_CASE:
                 MappedBoard mappedUseCaseBoard = new UseCaseBoardMapperService().mapBoard(inputBoard);
                 resource = generateByteArrayResource(mappedUseCaseBoard);
-
                 break;
             case BOUNDED_CONTEXT_CANVAS:
                 break;
 
             case EVENT_STORMING:
+                MappedBoard mappedEventStormingBoard = new EventStormingBoardMapperService().mapBoard(inputBoard);
+                resource = generateByteArrayResource(mappedEventStormingBoard);
                 break;
             case CONTEXT_MAP:
                 break;

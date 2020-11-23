@@ -1,4 +1,4 @@
-package ch.ost.rj.sa.miro2cml.business_logic.model.cml;
+package ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation;
 
 import org.eclipse.emf.ecore.EObject;
 

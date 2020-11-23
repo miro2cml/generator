@@ -44,6 +44,7 @@ public class ViewTest {
         executor.execute("classpath:tests/getHeaderFragment.thtest");
         Assertions.assertTrue(executor.isAllOK());
     }
+
     @Test
     public void GetFooterFragmentTest() {
         final List<IDialect> dialects = new ArrayList<IDialect>();
