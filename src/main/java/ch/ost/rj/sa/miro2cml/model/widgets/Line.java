@@ -117,4 +117,13 @@ public class Line extends WidgetObject {
     public void setLineType(String lineType) {
         this.lineType = lineType;
     }
+
+    public void validate(){
+        super.validate();
+    }
+
+    @Override
+    public String getMappingRelevantText(){
+        return super.getMappingRelevantText();
+    }
 }

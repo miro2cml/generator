@@ -1,5 +1,7 @@
 package ch.ost.rj.sa.miro2cml.model.widgets;
 
+
+import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 
 import java.math.BigInteger;
@@ -82,6 +84,7 @@ public class Text extends WidgetObject {
                 ", fontFamily='" + fontFamily + '\'' +
                 ", fontSize=" + fontSize +
                 ", textAlign='" + textAlign + '\'' +
+                ", text='" + text + '\'' +
                 '}';
     }
 
@@ -214,6 +217,16 @@ public class Text extends WidgetObject {
     public void setTextAlign(String textAlign) {
         this.textAlign = textAlign;
     }
+    public void validate(){
+        if(text != null){
+        text = StringValidator.removeDoubleSpace(text);
+        }else{
+            text = "";
+        }
+    }
 
-
+    @Override
+    public String getMappingRelevantText() {
+        return text;
+    }
 }

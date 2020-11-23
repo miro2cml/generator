@@ -8,6 +8,7 @@ public class ByteArrayResourceGenerator {
     }
 
     public static ByteArrayResource generateByteArrayResource(MappedBoard mappedBoard) {
-        return new ByteArrayResource(mappedBoard.getOutputArtifact().toByteArray());
+        return new ByteArrayResource(mappedBoard.getCmlModel().toByteArray());
     }
 }
+

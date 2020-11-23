@@ -39,6 +39,21 @@ public class AuthorizationController {
     @Value("${miro.redirectUri}")
     String redirectUri = "http://localhost:8080/auth/redirect";
 
+
+    private static HttpRequest.BodyPublisher buildFormDataFromMap(Map<Object, Object> data) {
+        var builder = new StringBuilder();
+        for (Map.Entry<Object, Object> entry : data.entrySet()) {
+            if (builder.length() > 0) {
+                builder.append("&");
+            }
+            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8));
+            builder.append("=");
+            builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+        }
+        System.out.println(builder.toString());
+        return HttpRequest.BodyPublishers.ofString(builder.toString());
+    }
+
     @GetMapping("/auth")
     public ModelAndView getAuthView(ModelMap model) {
 
@@ -71,6 +86,14 @@ public class AuthorizationController {
     }
 
     public MiroAuthResponse postAuthCode(String authCode) {
+
+/*      Map<Object, Object> data = new HashMap<>();
+        data.put("grant_type", "authorization_code");
+        data.put("client_id", clientID);
+        data.put("client_secret", clientSecret);
+        data.put("code", authCode);
+        data.put("redirect_uri", redirectUri);
+*/
         String postUri = "https://api.miro.com/v1/oauth/token?grant_type=authorization_code&code=" + authCode + "&redirect_uri=" + redirectUri + "&client_id=" + clientID + "&client_secret=" + clientSecret;
 
         HttpRequest request = HttpRequest.newBuilder()
