@@ -1,6 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
 import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
@@ -39,7 +41,7 @@ class BoundedContextCanvasBoardMapperServiceTest {
         expectedResult.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) expectedBoundedContext.provideEObject());
 
         //run
-        CmlModel cmlModel = boundedContextCanvasBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(board);
+        CmlModel cmlModel = boundedContextCanvasBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(board,new MappingLog(""),new MappingMessages());
 
         //check
         assertEquals(true, cmlModel.equals(expectedResult));

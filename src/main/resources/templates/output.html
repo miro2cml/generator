@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headerinc :: head">
+</head>
+<body>
+<div th:replace="fragments/header ::header"></div>
+<main class="container" role="main">
+    <div class="card">
+        <div class="card-header row">
+            <h5 class="col text-left">CML Output</h5>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="form-group row align-items-center">
+                    <div class="col-12 alert alert-success" role="alert" th:if="${perfectMapping}">
+
+                        <h4 class="alert-heading">Your Board Conversion Request has been processed</h4>
+                        <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br>
+                        <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br>
+                        <th:block th:each="message : ${mappingMessages}">
+                            <span th:text="${message}"></span><br>
+                        </th:block>
+                    </div>
+                    <div class="col-12 alert alert-warning" role="alert" th:unless="${perfectMapping}">
+                        <h4 class="alert-heading">Your Board Conversion Request has been processed</h4>
+                        <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br>
+                        <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br>
+                        <th:block th:each="message : ${mappingMessages}">
+                            <span th:text="${message}"></span><br>
+                        </th:block>
+                    </div>
+                    <label for="output_cml" class="col-2">Your CML-File:</label><br>
+                    <input class="form-control col-3 text-right" id="output_cml" readonly
+                           th:placeholder="@{|${form.getBoardId()}.cml|}" type="text"><br>
+                    <div class="col-3"></div>
+                    <Button class="btn btn-raised btn-primary col-2"><a
+                            th:href="@{|/downloadLog?name=${form.getBoardId()}|}">Download Logfile</a></Button>
+                    <Button class="btn btn-raised btn-primary col-2"><a
+                            th:href="@{|/download?name=${form.getBoardId()}|}">Download CML</a></Button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>

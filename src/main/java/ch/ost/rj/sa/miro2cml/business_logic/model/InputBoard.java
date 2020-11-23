@@ -11,7 +11,6 @@ public class InputBoard {
     public InputBoard(String boardId, List<WidgetObject> widgetObjects) {
         this.boardId = boardId;
         this.widgetObjects = widgetObjects;
-        System.out.println("log: created " + this);
     }
 
     @Override

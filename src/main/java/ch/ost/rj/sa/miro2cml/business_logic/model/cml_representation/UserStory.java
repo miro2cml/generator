@@ -9,12 +9,12 @@ import java.util.Objects;
 public class UserStory implements ICmlArtifact {
     private String name, role, verb, entity, benefit;
 
-    public UserStory(String name, String role, String verb, String entity, String benefit) {
-        this.name = name;
+    public UserStory(String role, String verb, String entity, String benefit) {
         this.role = role;
         this.verb = verb;
         this.entity = entity;
         this.benefit = benefit;
+        this.name = verb + entity;
     }
 
     @Override

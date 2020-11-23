@@ -7,13 +7,14 @@ public class BoardForm {
     private BoardType boardType;
     private String module;
 
-    public BoardForm(String accessToken, String boardId, BoardType boardType, String module) {
+    public BoardForm(String boardId, BoardType boardType) {
         this.boardId = boardId;
         this.boardType = boardType;
         this.module = module;
     }
 
     public BoardForm() {
+
     }
 
     public String getBoardId() {

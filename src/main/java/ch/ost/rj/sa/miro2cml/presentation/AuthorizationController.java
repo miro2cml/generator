@@ -5,6 +5,8 @@ import ch.ost.rj.sa.miro2cml.presentation.model.MiroAuthResponse;
 import ch.ost.rj.sa.miro2cml.presentation.utility.SessionHandlerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 @Controller
 public class AuthorizationController {
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationController.class);
 
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
@@ -72,16 +75,15 @@ public class AuthorizationController {
 
     @GetMapping("/auth/redirect")
     public ModelAndView resolveRedirect(@RequestParam(name = "code") String authCode, ModelMap model, HttpSession session) {
+       logger.debug("incoming auth-flow call");
         model.addAttribute("clientID", clientID);
-        BoardForm form = new BoardForm();
-        model.addAttribute("form", form);
 
         MiroAuthResponse authResponse = postAuthCode(authCode);
         model.addAttribute("auth_token", authResponse.getAccess_token());
         SessionHandlerService.setMiroAccessToken(session, authResponse.getAccess_token());
         SessionHandlerService.setMiroTeamId(session, authResponse.getTeam_id());
 
-        System.out.println("log: redirect");
+        logger.debug("redirect to root");
         return new ModelAndView("redirect:/", model);
     }
 

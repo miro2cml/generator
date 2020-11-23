@@ -1,6 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.UserStory;
 import ch.ost.rj.sa.miro2cml.model.widgets.Card;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
@@ -11,43 +13,85 @@ import java.util.List;
 public class UserStoryBoard {
     public static final String BLUECARD = "#2d9bf0";
     public static final String YELLOWCARD = "#fbc800";
+    private static final List<List<String>> regex = UserStoryRegex.createUserStoriesRegex();
+    final MappingMessages messages;
+    final MappingLog log;
     private final InputBoard inputBoard;
     private final ArrayList<UserStory> userStories;
-    private static final List<List<String>> regex = UserStoryRegex.createUserStoriesRegex();
 
-    private UserStoryBoard(InputBoard inputBoard) {
+    private UserStoryBoard(InputBoard inputBoard, MappingLog log, MappingMessages messages) {
         this.inputBoard = inputBoard;
+        this.log = log;
+        this.messages = messages;
         this.userStories = extractUserStories();
     }
-    public static UserStoryBoard createUserStoryBoard(InputBoard inputBoard) {
-        return new UserStoryBoard(inputBoard);
+
+    public static UserStoryBoard createUserStoryBoard(InputBoard inputBoard, MappingLog log, MappingMessages messages) {
+        return new UserStoryBoard(inputBoard, log, messages);
     }
 
-
-    private  ArrayList<UserStory> extractUserStories() {
-        ArrayList<UserStory> output = new ArrayList<>();
-        for(WidgetObject widget: inputBoard.getWidgetObjects()){
-            if(widget instanceof Card && isValidUserStory(((Card)widget))){
-                output.add(extractUserStory((Card)widget));
-            }
-        }
-        return output;
+    private static String getPart(String start, String end, String input, int index) {
+        int startIndex = input.indexOf(start, index);
+        int endIndex = input.indexOf(end, index);
+        return input.substring(startIndex + start.length(), endIndex);
     }
 
-    private static boolean isValidUserStory(Card card) {
-        return !(isBlueOrYellow(card)) && (card.getTitle()!= null) && findUserStory(card.getTitle());
+    private boolean isValidUserStory(Card card) {
+        return !(isBlueOrYellow(card)) && (!isCardTitleNull(card)) && findUserStoryFromCard(card);
     }
 
-
-    private static boolean findUserStory(String input){
+    private boolean findUserStoryFromCard(Card card) {
+        String input = card.getTitle();
         for (List<String> strings : regex) {
             if (input.matches(strings.get(0))) {
                 return true;
             }
         }
+        log.addWarningLogEntry("Card " + card.getTitle() + " didn't match any supported UserStoryFormats");
         return false;
     }
-    private UserStory extractUserStory(Card card){
+
+    private boolean isCardTitleNull(Card card) {
+        if (card.getTitle() == null) {
+            log.addErrorLogEntry("Card title field is null");
+            return true;
+        }
+        return false;
+    }
+
+    private ArrayList<UserStory> extractUserStories() {
+        ArrayList<UserStory> output = new ArrayList<>();
+        List<WidgetObject> input = inputBoard.getWidgetObjects();
+        int cardCounter = 0;
+        for (WidgetObject widget : input) {
+            if (widget instanceof Card) {
+                Card card = (Card) widget;
+                cardCounter++;
+                if (isValidUserStory(card)) {
+                    UserStory userStory = extractUserStory(card);
+                    if (userStory != null) {
+                        output.add(userStory);
+                        log.addSuccessLogEntry("Card: " + card.getTitle() + " has been mapped to: " + userStory.getName());
+                    } else {
+                        log.addErrorLogEntry("mapping of " + card.getTitle() + " resulted in invalid UserStory");
+                    }
+                }
+            }
+        }
+        if (output.size() == cardCounter) {
+            messages.add("No Errors/Warnings occurred during Mapping");
+        } else {
+            messages.add("Errors/warnings occurred");
+            messages.add("we received " + input.size() + " widgets from Miro");
+            messages.add(cardCounter + " of them were Cards");
+            messages.add(output.size() + " of these cards have been successfully converted to UserStories");
+            messages.add("Consult the logfile for more information");
+            messages.setMappingState(false);
+        }
+        return output;
+    }
+
+    private UserStory extractUserStory(Card card) {
         String text = card.getTitle();
         for (List<String> strings : regex) {
             if (text.matches(strings.get(0))) {
@@ -55,21 +99,19 @@ public class UserStoryBoard {
                 String verb = getPart(strings.get(2), strings.get(3), text, strings.get(1).length() + role.length());
                 String entity = getPart(strings.get(3), strings.get(4), text, strings.get(1).length() + strings.get(2).length() + verb.length() + role.length());
                 String benefit = getPart(strings.get(4), strings.get(5), text, strings.get(1).length() + strings.get(2).length() + strings.get(3).length() + verb.length() + role.length() + entity.length());
-                return new UserStory("", role, verb, entity, benefit);
+                return new UserStory(role, verb, entity, benefit);
             }
         }
         return null;
     }
 
-    private static boolean isBlueOrYellow(Card card) {
-        return card.getBackgroundColor().equals(BLUECARD) || card.getBackgroundColor().equals(YELLOWCARD);
+    private boolean isBlueOrYellow(Card card) {
+        if (card.getBackgroundColor().equals(BLUECARD) || card.getBackgroundColor().equals(YELLOWCARD)) {
+            log.addWarningLogEntry("Card: " + card.getTitle() + "has been discarded. Reason: Color mapping rule");
+            return true;
+        }
+        return false;
     }
-    private static String getPart(String start, String end, String input, int index) {
-        int startIndex = input.indexOf(start, index);
-        int endIndex = input.indexOf(end, index);
-        return input.substring(startIndex + start.length(), endIndex);
-    }
-
 
     public ArrayList<UserStory> getUserStories() {
         return userStories;

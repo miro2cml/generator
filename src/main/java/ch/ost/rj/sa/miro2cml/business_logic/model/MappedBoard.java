@@ -2,7 +2,6 @@ package ch.ost.rj.sa.miro2cml.business_logic.model;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
 
-
 public class MappedBoard {
     private InputBoard inputBoard;
     private CmlModel cmlModel;
@@ -21,9 +20,6 @@ public class MappedBoard {
     }
     public void setCmlModel(CmlModel cmlModel) {
         this.cmlModel = cmlModel;
-    }
-    public InputBoard getOriginalBoard() {
-        return inputBoard;
     }
     public void setOriginalBoard(InputBoard originalInputBoard) {
         this.inputBoard = originalInputBoard;
