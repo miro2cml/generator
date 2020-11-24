@@ -75,12 +75,7 @@ public class MappingController {
                     case USE_CASE:
                         logger.debug("Board Type: UserStory");
                         mappingLog.addInfoLogEntry("Board Type: UserStory");
-                        try{
-                            mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
-                        }catch (Exception e){
-                            System.out.println(e.getMessage());
-                            return false;
-                        }
+                        mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                         //mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                         break;
                     case BOUNDED_CONTEXT_CANVAS:

@@ -18,7 +18,7 @@
                         <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br>
                         <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br>
                         <th:block th:each="message : ${mappingMessages}">
-                            <span th:text="${message}"></span><br>
+                            <span th:text="${message}" style="font-weight: bold"></span><br>
                         </th:block>
                     </div>
                     <div class="col-12 alert alert-warning" role="alert" th:unless="${perfectMapping}">
@@ -26,7 +26,7 @@
                         <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br>
                         <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br>
                         <th:block th:each="message : ${mappingMessages}">
-                            <span th:text="${message}"></span><br>
+                            <span th:text="${message}" style="font-weight: bold"></span><br>
                         </th:block>
                     </div>
                     <label for="output_cml" class="col-2">Your CML-File:</label><br>

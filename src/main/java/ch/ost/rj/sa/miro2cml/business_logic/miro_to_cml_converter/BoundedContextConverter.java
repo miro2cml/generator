@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class BoundedContextConverter {
     public static BoundedContext convertExtractedBoardToCMLBoundedContext(BoundedContextBoard extractedBoard, MappingLog mappingLog, MappingMessages messages){
-        return new BoundedContext(generateComment(extractedBoard), generateName(extractedBoard.getName()),
-                generateDescription(extractedBoard.getDescription()),
-                generateAggregateName(generateName(extractedBoard.getName()), extractedBoard.getAggregateName()),
+        return new BoundedContext(generateComment(extractedBoard), generateName(extractedBoard.getName(), mappingLog, messages),
+                generateDescription(extractedBoard.getDescription(), mappingLog, messages),
+                generateAggregateName(generateName(extractedBoard.getName(), mappingLog, messages), extractedBoard.getAggregateName()),
                 generateResponsibilities(extractedBoard.getRoleTypes()),
                 generateDomainEvents(extractedBoard.getEvents()),
                 generateQueries(extractedBoard.getQueries()),
@@ -58,7 +58,13 @@ public class BoundedContextConverter {
         return StringValidator.convertForVariableName(name+aggregateName);
     }
 
-    private static String generateDescription(String description) {
+    private static String generateDescription(String description, MappingLog mappingLog, MappingMessages messages) {
+        if(description==null || description.equals("")){
+            mappingLog.addErrorLogEntry("Description is empty");
+            messages.add("Description not found. Check if you have set a description under the description tag");
+            description="This is the Domain Vision Statement";
+            mappingLog.addInfoLogEntry("Automatic Domain Vision Statement set to: This is the Domain Vision Statement");
+        }
         return StringValidator.validatorForStrings(description);
     }
 
@@ -94,18 +100,28 @@ public class BoundedContextConverter {
         return StringValidator.validatorForStrings(input);
     }
 
-    private static String generateName(String name) {
-        String generatedName = removeTemplateText(name);
+    private static String generateName(String name, MappingLog mappingLog, MappingMessages messages) {
+        String generatedName = removeTemplateText(name, mappingLog, messages);
         return StringValidator.convertForVariableName(generatedName);
     }
 
-    private static String removeTemplateText(String name) {
+    private static String removeTemplateText(String name, MappingLog mappingLog, MappingMessages messages) {
         String generatedName = StringValidator.removeSimpleHtmlTags(name);
-        if(generatedName.contains("Name: ")){
-            generatedName = generatedName.substring(6);
+        if(generatedName.length()>7){
+            if(generatedName.contains("Name: ")){
+                generatedName = generatedName.substring(6);
+            }else{
+                generatedName=generatedName.substring(5);
+            }
         }else{
-            generatedName=generatedName.substring(5);
+            generatedName="MyBoundedContext";
+            if(!(mappingLog.getLogEntries().contains("ERROR: Name not found"))){
+                messages.add("Name not found. Check if you have set a Name at the field Name: ");
+                mappingLog.addErrorLogEntry("Name not found");
+                mappingLog.addInfoLogEntry("Name set to MyBoundedContext");
+            }
         }
-        return generatedName;
+        return StringValidator.validatorForStrings(generatedName);
+
     }
 }

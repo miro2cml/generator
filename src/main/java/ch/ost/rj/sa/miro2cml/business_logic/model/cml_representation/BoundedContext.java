@@ -59,19 +59,29 @@ public class BoundedContext implements ICmlArtifact{
     }
 
     private void addCommands(Aggregate aggregate) {
-        DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-        domainEvent.setName(name + "_Commands");
-        aggregate.getDomainObjects().add(domainEvent);
-        mappingLog.addInfoLogEntry("Automatic generated Domain Event with name: "+name+"_Commands");
-        addOperations(domainEvent, commands);
+        if(commands.isEmpty()){
+            mappingLog.addErrorLogEntry("No Commands were found");
+            messages.add("No Commands found. Check if you use the blue Command box in the field Inbound Communication");
+        }else{
+            DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
+            domainEvent.setName(name + "_Commands");
+            aggregate.getDomainObjects().add(domainEvent);
+            mappingLog.addInfoLogEntry("Automatic generated Domain Event with name: "+name+"_Commands");
+            addOperations(domainEvent, commands);
+        }
     }
 
     private void addQueries(Aggregate aggregate) {
-        DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-        domainEvent.setName(name + "_Queries");
-        aggregate.getDomainObjects().add(domainEvent);
-        mappingLog.addInfoLogEntry("Automatic generated Domain Event with name: "+name+"_Queries");
-        addOperations(domainEvent, queries);
+        if(queries.isEmpty()){
+            mappingLog.addErrorLogEntry("No Queries were found");
+            messages.add("No Queries found. Check if you use the green Query box in the field Inbound Communication");
+        }else{
+            DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
+            domainEvent.setName(name + "_Queries");
+            aggregate.getDomainObjects().add(domainEvent);
+            mappingLog.addInfoLogEntry("Automatic generated Domain Event with name: "+name+"_Queries");
+            addOperations(domainEvent, queries);
+        }
     }
 
     private void addDomainEvents(Aggregate aggregate) {
@@ -83,7 +93,7 @@ public class BoundedContext implements ICmlArtifact{
         }
         if(domainEvents.isEmpty()){
             mappingLog.addErrorLogEntry("No Domain Events were found");
-            messages.add("Check if you use the yellow Domain Event box in the field Inbound Communication");
+            messages.add("No Domain Events found. Check if you use the yellow Domain Event box in the field Inbound Communication");
         }
     }
 
@@ -97,15 +107,6 @@ public class BoundedContext implements ICmlArtifact{
             mappingLog.addInfoLogEntry("Automatic generated return type Strin for "+str);
             domainEvent.getOperations().add(operation);
             mappingLog.addSuccessLogEntry("Add Operation to Aggregate with name: "+str);
-        }
-        if(operations.isEmpty()){
-            if(domainEvent.getName().equals(name+"_Commands")){
-                mappingLog.addErrorLogEntry("No Commands were found");
-                messages.add("Check if you use the blue Command box in the field Inbound Communication");
-            }else if(domainEvent.getName().equals(name+"_Queries")){
-                mappingLog.addErrorLogEntry("No Queries were found");
-                messages.add("Check if you use the green Query box in the field Inbound Communication");
-            }
         }
 
     }
