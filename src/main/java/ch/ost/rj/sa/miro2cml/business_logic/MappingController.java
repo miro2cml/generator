@@ -78,8 +78,10 @@ public class MappingController {
                     mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                     break;
                 case BOUNDED_CONTEXT_CANVAS:
+                    logger.debug("Board Type: Bounded Context Canvas");
+                    mappingLog.addInfoLogEntry("Board Type: Bounded Context Canvas");
+                    mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                     break;
-
                 case EVENT_STORMING:
                     mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                     break;
