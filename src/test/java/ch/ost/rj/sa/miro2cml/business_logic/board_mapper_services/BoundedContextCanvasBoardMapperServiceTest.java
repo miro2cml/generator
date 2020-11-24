@@ -28,6 +28,8 @@ class BoundedContextCanvasBoardMapperServiceTest {
     void mapWidgetObjectsToCmlArtifacts() throws Exception {
         //setup
         InputBoard board = getInputBoard();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //setup cml object
         ArrayList<String> responsibilites = new ArrayList<>();
         responsibilites.add("Role Types- draft context- execution context- analysis context- gateway context- other");
@@ -39,7 +41,7 @@ class BoundedContextCanvasBoardMapperServiceTest {
         ArrayList<String> commands = new ArrayList<>();
         commands.add("First_Command");
         commands.add("Second_Command");
-        BoundedContext expectedBoundedContext = new BoundedContext("/* Strategic Classifications: Domain, core, supporting, generic, other?/Business Model, revenue, engagement, compliance, cost reduction/Evolution, genesis, custom built, product, commodity/Ubiquitous Language: /Business Descisions: /Outbound Communications: , Second Command, Second Event, Second Query*/", "Test", "What benefits does this context provide, and how does it provide them?", "Test_Aggregate", responsibilites , domainevent, queries, commands);
+        BoundedContext expectedBoundedContext = new BoundedContext("/* Strategic Classifications: Domain, core, supporting, generic, other?/Business Model, revenue, engagement, compliance, cost reduction/Evolution, genesis, custom built, product, commodity/Ubiquitous Language: /Business Descisions: /Outbound Communications: , Second Command, Second Event, Second Query*/", "Test", "What benefits does this context provide, and how does it provide them?", "Test_Aggregate", responsibilites , domainevent, queries, commands, mappingLog, messages);
         CmlModel expectedResult = new CmlModel();
         expectedResult.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) expectedBoundedContext.provideEObject());
 

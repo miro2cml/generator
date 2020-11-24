@@ -26,6 +26,7 @@ public class StringValidator {
     public static String replaceHtmlCodeWithString(String input){
         input = input.replaceAll("&gt;", ">");
         input = input.replaceAll("&lt;", "<");
+        input = input.replaceAll("&#39;", "'");
         return input;
     }
     public static String removeSpecialCharacters(String input){

@@ -1,5 +1,7 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation;
 
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import org.contextmapper.dsl.contextMappingDSL.Aggregate;
 import org.contextmapper.dsl.contextMappingDSL.BoundedContextType;
 import org.contextmapper.dsl.contextMappingDSL.ContextMappingDSLFactory;
@@ -21,8 +23,10 @@ public class BoundedContext implements ICmlArtifact{
   private KnowledgeLevel knowledgeLevel=KnowledgeLevel.CONCRETE;
   private BoundedContext refindedboundedContext;
   private BoundedContextType boundedContextType = BoundedContextType.FEATURE;
+  private MappingMessages messages;
+  private MappingLog mappingLog;
 
-    public BoundedContext(String comment, String name, String domainVisionStatement, String aggregateName, ArrayList<String> responsibilites, ArrayList<String> domainEvents, ArrayList<String> queries, ArrayList<String> commands) {
+    public BoundedContext(String comment, String name, String domainVisionStatement, String aggregateName, ArrayList<String> responsibilites, ArrayList<String> domainEvents, ArrayList<String> queries, ArrayList<String> commands, MappingLog mappingLog, MappingMessages messages) {
         this.comment = comment;
         this.name = name;
         this.domainVisionStatement = domainVisionStatement;
@@ -31,6 +35,8 @@ public class BoundedContext implements ICmlArtifact{
         this.domainEvents = domainEvents;
         this.queries = queries;
         this.commands = commands;
+        this.mappingLog = mappingLog;
+        this.messages = messages;
     }
 
     @Override
@@ -46,6 +52,7 @@ public class BoundedContext implements ICmlArtifact{
         Aggregate aggregate = factory.createAggregate();
         aggregate.setName(aggregateName);
         boundedContext.getAggregates().add(aggregate);
+        mappingLog.addSuccessLogEntry("Add aggregate to Bounded Context with name: "+aggregateName);
         addDomainEvents(aggregate);
         addQueries(aggregate);
         addCommands(aggregate);
@@ -55,6 +62,7 @@ public class BoundedContext implements ICmlArtifact{
         DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
         domainEvent.setName(name + "_Commands");
         aggregate.getDomainObjects().add(domainEvent);
+        mappingLog.addInfoLogEntry("Automatic generated Domain Event with name: "+name+"_Commands");
         addOperations(domainEvent, commands);
     }
 
@@ -62,6 +70,7 @@ public class BoundedContext implements ICmlArtifact{
         DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
         domainEvent.setName(name + "_Queries");
         aggregate.getDomainObjects().add(domainEvent);
+        mappingLog.addInfoLogEntry("Automatic generated Domain Event with name: "+name+"_Queries");
         addOperations(domainEvent, queries);
     }
 
@@ -70,6 +79,11 @@ public class BoundedContext implements ICmlArtifact{
             DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
             domainEvent.setName(s);
             aggregate.getDomainObjects().add(domainEvent);
+            mappingLog.addSuccessLogEntry("Add Domain Event to Aggregate with name: "+s);
+        }
+        if(domainEvents.isEmpty()){
+            mappingLog.addErrorLogEntry("No Domain Events were found");
+            messages.add("Check if you use the yellow Domain Event box in the field Inbound Communication");
         }
     }
 
@@ -80,23 +94,44 @@ public class BoundedContext implements ICmlArtifact{
             ComplexType returnType = TacticdslFactory.eINSTANCE.createComplexType();
             returnType.setType("String");
             operation.setReturnType(returnType);
+            mappingLog.addInfoLogEntry("Automatic generated return type Strin for "+str);
             domainEvent.getOperations().add(operation);
+            mappingLog.addSuccessLogEntry("Add Operation to Aggregate with name: "+str);
         }
-        ;
+        if(operations.isEmpty()){
+            if(domainEvent.getName().equals(name+"_Commands")){
+                mappingLog.addErrorLogEntry("No Commands were found");
+                messages.add("Check if you use the blue Command box in the field Inbound Communication");
+            }else if(domainEvent.getName().equals(name+"_Queries")){
+                mappingLog.addErrorLogEntry("No Queries were found");
+                messages.add("Check if you use the green Query box in the field Inbound Communication");
+            }
+        }
+
     }
 
     private void createBoundedContext(org.contextmapper.dsl.contextMappingDSL.BoundedContext boundedContext) {
         boundedContext.setName(name);
+        mappingLog.addSuccessLogEntry("Bounded Context created with name: "+name);
         boundedContext.setComment(comment);
+        mappingLog.addSuccessLogEntry("Bounded Context comment set: "+comment);
         boundedContext.setDomainVisionStatement(domainVisionStatement);
+        mappingLog.addSuccessLogEntry("Bounded Context Domain Vision Statement set: "+domainVisionStatement);
         boundedContext.setKnowledgeLevel(knowledgeLevel);
+        mappingLog.addInfoLogEntry("Automatic Knowledge Level Concrete set");
         boundedContext.setType(boundedContextType);
+        mappingLog.addInfoLogEntry("Automatic Context Type FEATURE set");
         setResponsibilities(boundedContext);
     }
 
     private void setResponsibilities(org.contextmapper.dsl.contextMappingDSL.BoundedContext boundedContext) {
         for (String s: responsibilites) {
             boundedContext.getResponsibilities().add(s);
+            mappingLog.addSuccessLogEntry("Add responsibility: "+s);
+        }
+        if(responsibilites.isEmpty()){
+            mappingLog.addErrorLogEntry("No responsibilities detected");
+            messages.add("Check if you use the template correct in the field Role Types");
         }
     }
 

@@ -45,7 +45,7 @@ class BoundedContextConverterTest {
         InputBoard board = new InputBoard("123", widgetObjects);
         BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         //run
-        BoundedContext boundedContext = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(boundedContextBoard);
+        BoundedContext boundedContext = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(boundedContextBoard, mappingLog, messages);
         //check
         String expectedBoundedContext = "BoundedContext{comment='/** Strategic Classifications: \n *Domain: core, supporting, generic, other?\n *Business Model: revenue, engagement, compliance, cost reduction\n *Evolution: genesis, custom built, product, commodity\n *Ubiquitous Language: \n *Business Descisions: \n *Outbound Communications: Second Command, Second Event, Second Query\n */', name='Test', domainVisionStatement='', implementationStrategy='null', aggregateName='Test_Aggregate', responsibilites=[- draft context, - execution context, - analysis context, - gateway context, - other], domainEvents=[], commands=[], queries=[], knowledgeLevel=CONCRETE, refindedboundedContext=null, boundedContextType=FEATURE}";
         assertEquals(expectedBoundedContext, boundedContext.toString());

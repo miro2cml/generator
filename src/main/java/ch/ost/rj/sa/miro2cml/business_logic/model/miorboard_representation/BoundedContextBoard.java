@@ -202,7 +202,7 @@ public class BoundedContextBoard {
             }
         }
         if(outputArray.isEmpty()){
-            messages.add("No Outbound Communications found");
+            mappingLog.addErrorLogEntry("No Outbound Communications found");
         }
         return outputArray;
     }
@@ -224,12 +224,11 @@ public class BoundedContextBoard {
                 matchCondition=isUbiquitousLanguageOrBusinessDecision(color, widget);
             }
             if(matchCondition){
-                mappingLog.addSuccessLogEntry("Element with color: "+ color + "found");
+                mappingLog.addSuccessLogEntry("Element with color: "+ color + " found");
                 outputArray.add(((Shape)widget).getText());
             }
         }
         if(outputArray.isEmpty()){
-            messages.add("No Elements found with color: " + color);
             mappingLog.addErrorLogEntry("No Elements with color: "+color + " found");
         }
         return outputArray;
@@ -264,7 +263,7 @@ public class BoundedContextBoard {
             }
         }
         mappingLog.addErrorLogEntry("Field Inbound Communication not found");
-        messages.add("Field Inbound Communication not found, there are mapping errors possible");
+        messages.add("Field Inbound Communication not found, there are mapping errors possible. Make sure you use the template correct!");
         return 0;
     }
     private int getTop() {
@@ -275,7 +274,7 @@ public class BoundedContextBoard {
             }
         }
         mappingLog.addErrorLogEntry("Field Description not found");
-        messages.add("Field Description not found, there are mapping errors possible");
+        messages.add("Field Description not found, there are mapping errors possible. Make sure you use the template correct!");
         return 0;
     }
     private int getMiddle() {
@@ -286,7 +285,7 @@ public class BoundedContextBoard {
             }
         }
         mappingLog.addErrorLogEntry("Field Domain in Strategic Classification not found");
-        messages.add("Field Strategic Classification not found, there are mapping errors possible");
+        messages.add("Field Strategic Classification not found, there are mapping errors possible. Make sure you use the template correct!");
         return 0;
     }
 
@@ -298,7 +297,6 @@ public class BoundedContextBoard {
             }
         }
         mappingLog.addErrorLogEntry(regex + " not found");
-        messages.add("Field "+ regex +" not found");
         return "";
     }
 

@@ -1,6 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter;
 
 import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
 import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.BoundedContextBoard;
 
@@ -8,14 +10,15 @@ import javax.print.DocFlavor;
 import java.util.ArrayList;
 
 public class BoundedContextConverter {
-    public static BoundedContext convertExtractedBoardToCMLBoundedContext(BoundedContextBoard extractedBoard){
+    public static BoundedContext convertExtractedBoardToCMLBoundedContext(BoundedContextBoard extractedBoard, MappingLog mappingLog, MappingMessages messages){
         return new BoundedContext(generateComment(extractedBoard), generateName(extractedBoard.getName()),
                 generateDescription(extractedBoard.getDescription()),
                 generateAggregateName(generateName(extractedBoard.getName()), extractedBoard.getAggregateName()),
                 generateResponsibilities(extractedBoard.getRoleTypes()),
                 generateDomainEvents(extractedBoard.getEvents()),
                 generateQueries(extractedBoard.getQueries()),
-                generateCommands(extractedBoard.getCommands()));
+                generateCommands(extractedBoard.getCommands()),
+                mappingLog, messages);
     }
 
     private static ArrayList<String> generateCommands(ArrayList<String> commands) {
@@ -74,7 +77,7 @@ public class BoundedContextConverter {
         String output="";
         if(!input.isEmpty()){
             for(String s: input){
-                if(s != null){
+                if(s != null && !s.equals("")){
                     output = output + s + ", ";
                 }
             }
