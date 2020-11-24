@@ -60,7 +60,7 @@ class StringValidatorTest {
     @Test
     void extractHtmlLink_2() {
         final String inputOne = "<a href=\"dasisteinLink\">String";
-        final String expectedOne = "dasisteinLinkString\">String";
+        final String expectedOne = "dasisteinLink\">String";
         final String resultOne = StringValidator.extractHtmlLink(inputOne);
         assertEquals(expectedOne, resultOne);
     }
