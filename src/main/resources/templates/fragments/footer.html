@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <title>Spring Boot Thymeleaf Hello World Example</title>
+
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{static/css/main.css}"/>
+</head>
+<body>
+<div th:fragment="footer">
+    <img alt="Miro Logo" id="mirologo" th:src="@{/images/miroLogo.png}"/>
+    <img alt="Context Mapper Logo" th:src="@{/images/logo.png}"/>
+</div>
+</body>
+</html>

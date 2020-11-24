@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "miro.clientId",
+      "type": "java.math.BigInteger",
+      "description": "Client ID of the miro Application"
+    },
+    {
+      "name": "miro.clientSecret",
+      "type": "java.lang.String",
+      "description": "Client Secret of the miro Application"
+    },
+    {
+      "name": "miro.redirectUri",
+      "type": "java.lang.String",
+      "description": "Redirect URI sent to Miro for OAuth."
+    }
+  ]
+}
