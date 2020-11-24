@@ -25,7 +25,7 @@ class BoundedContextCanvasBoardMapperServiceTest {
         boundedContextCanvasBoardMapperServiceUnderTest = new BoundedContextCanvasBoardMapperService();
     }
     @Test
-    void mapWidgetObjectsToCmlArtifacts() {
+    void mapWidgetObjectsToCmlArtifacts() throws Exception {
         //setup
         InputBoard board = getInputBoard();
         //setup cml object
@@ -33,10 +33,13 @@ class BoundedContextCanvasBoardMapperServiceTest {
         responsibilites.add("Role Types- draft context- execution context- analysis context- gateway context- other");
         ArrayList<String> domainevent = new ArrayList<>();
         domainevent.add("First_Event");
-        ArrayList<String> events = new ArrayList<>();
-        events.add("First_Command");
-        events.add("First_Query");
-        BoundedContext expectedBoundedContext = new BoundedContext("/* Strategic Classifications: Domain, core, supporting, generic, other?/Business Model, revenue, engagement, compliance, cost reduction/Evolution, genesis, custom built, product, commodity/Ubiquitous Language: /Business Descisions: /Outbound Communications: , Second Command, Second Event, Second Query*/", "Test", "What benefits does this context provide, and how does it provide them?", "Test_Aggregate", responsibilites , domainevent, events);
+        ArrayList<String> queries = new ArrayList<>();
+        queries.add("First_Query");
+        queries.add("Second_Query");
+        ArrayList<String> commands = new ArrayList<>();
+        commands.add("First_Command");
+        commands.add("Second_Command");
+        BoundedContext expectedBoundedContext = new BoundedContext("/* Strategic Classifications: Domain, core, supporting, generic, other?/Business Model, revenue, engagement, compliance, cost reduction/Evolution, genesis, custom built, product, commodity/Ubiquitous Language: /Business Descisions: /Outbound Communications: , Second Command, Second Event, Second Query*/", "Test", "What benefits does this context provide, and how does it provide them?", "Test_Aggregate", responsibilites , domainevent, queries, commands);
         CmlModel expectedResult = new CmlModel();
         expectedResult.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) expectedBoundedContext.provideEObject());
 

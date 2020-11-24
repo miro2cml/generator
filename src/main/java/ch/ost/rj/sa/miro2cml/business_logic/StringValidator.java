@@ -13,11 +13,11 @@ public class StringValidator {
     }
     public static String extractHtmlLink(String input){
         input = input.replaceAll("<a href=\"", "");
-        input = input.replaceAll("\">", "");
         return input;
     }
     public static String removeAllHtmlTags(String input){
-        return input.replaceAll("<[)(a-z A-Z,./:\"=_-]+>", "");
+        input = input.replaceAll("<[)(a-z A-Z,./:\"=_-]+>", "");
+        return input.replaceAll("\">", "");
     }
     public static String removeHtmlBreaks(String input){
         input = input.replaceAll("<br />", "");

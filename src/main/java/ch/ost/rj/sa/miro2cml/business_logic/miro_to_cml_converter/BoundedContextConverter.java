@@ -4,6 +4,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
 import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.BoundedContextBoard;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 
 public class BoundedContextConverter {
@@ -59,21 +60,26 @@ public class BoundedContextConverter {
     }
 
     private static String generateComment(BoundedContextBoard extractedBoard) {
-        return "/* Strategic Classifications: "+
-                validateStringsForComment(extractedBoard.getDomain()) + "/"
-                + validateStringsForComment(extractedBoard.getBusinessModel())+ "/"
-                + validateStringsForComment(extractedBoard.getEvolution()) + "/" +
-                "Ubiquitous Language: " + validateArrays(extractedBoard.getUbiquitousLanguage()) + "/" +
-                "Business Descisions: " + validateArrays(extractedBoard.getBusinessDescisions()) + "/" +
+        return "/** Strategic Classifications: \n *"+
+                validateStringsForComment(extractedBoard.getDomain()) + "\n *"
+                + validateStringsForComment(extractedBoard.getBusinessModel())+ "\n *"
+                + validateStringsForComment(extractedBoard.getEvolution()) + "\n *" +
+                "Ubiquitous Language: " + validateArrays(extractedBoard.getUbiquitousLanguage()) + "\n *" +
+                "Business Descisions: " + validateArrays(extractedBoard.getBusinessDescisions()) + "\n *" +
                 "Outbound Communications: " + validateArrays(extractedBoard.getOutBoundCommunication()) +
-                "*/";
+                "\n */";
     }
 
     private static String validateArrays(ArrayList<String> input) {
         String output="";
-        for(String s: input){
-            if(!s.equals("")){
-                output= output +", "+ s;
+        if(!input.isEmpty()){
+            for(String s: input){
+                if(s != null){
+                    output = output + s + ", ";
+                }
+            }
+            if(output.length()>2){
+                output = output.substring(0, output.length()-2);
             }
         }
         return StringValidator.validatorForStrings(output);

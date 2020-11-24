@@ -1,6 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
 import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.BoundedContextBoard;
 import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
@@ -16,9 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BoundedContextConverterTest {
 
     @Test
-    void generateBoundedContext() {
+    void generateBoundedContext() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Name: Test</strong></p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 20, 15, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>What benefits does this context provide, and how does it provide them?</p>", "", 0, ""));
         //add description tag
@@ -43,7 +47,7 @@ class BoundedContextConverterTest {
         //run
         BoundedContext boundedContext = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(boundedContextBoard);
         //check
-        String expectedBoundedContext = "BoundedContext{comment='/* Strategic Classifications: Domain, core, supporting, generic, other?/Business Model, revenue, engagement, compliance, cost reduction/Evolution, genesis, custom built, product, commodity/Ubiquitous Language: /Business Descisions: /Outbound Communications: , Second Command, Second Event, Second Query*/', name='Test', domainVisionStatement='What benefits does this context provide, and how does it provide them?', aggregateName='Test_Aggregate', responsibilites=[Role Types- draft context- execution context- analysis context- gateway context- other], domainEvents=[First_Event], operations=[First_Query, First_Command]}";
+        String expectedBoundedContext = "BoundedContext{comment='/** Strategic Classifications: \n *Domain: core, supporting, generic, other?\n *Business Model: revenue, engagement, compliance, cost reduction\n *Evolution: genesis, custom built, product, commodity\n *Ubiquitous Language: \n *Business Descisions: \n *Outbound Communications: Second Command, Second Event, Second Query\n */', name='Test', domainVisionStatement='', implementationStrategy='null', aggregateName='Test_Aggregate', responsibilites=[- draft context, - execution context, - analysis context, - gateway context, - other], domainEvents=[], commands=[], queries=[], knowledgeLevel=CONCRETE, refindedboundedContext=null, boundedContextType=FEATURE}";
         assertEquals(expectedBoundedContext, boundedContext.toString());
     }
 }

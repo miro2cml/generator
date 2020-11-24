@@ -119,4 +119,17 @@ class StringValidatorTest {
         final String resultOne = StringValidator.validatorForStrings(inputOne);
         assertEquals(expectedOne, resultOne);
     }
+
+    @Test
+    void removeAllHtmlTags(){
+        final String inputOne = "<strong style=\"background-color:transparent\">";
+        final String expectedOne = "";
+        final String resultOne = StringValidator.removeAllHtmlTags(inputOne);
+        assertEquals(expectedOne, resultOne);
+
+        final String inputTwo = "<p><strong style=\"background-color:transparent\">&lt;HealthInsurance&gt";
+        final String expectedTwo = "&lt;HealthInsurance&gt";
+        final String resultTwo = StringValidator.removeAllHtmlTags(inputTwo);
+        assertEquals(expectedTwo, resultTwo);
+    }
 }

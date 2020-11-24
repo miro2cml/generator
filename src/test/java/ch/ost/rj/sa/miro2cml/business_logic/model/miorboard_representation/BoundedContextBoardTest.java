@@ -1,6 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
 import ch.ost.rj.sa.miro2cml.model.widgets.Text;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
@@ -14,9 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BoundedContextBoardTest {
 
     @Test
-    void createBoundedContextBoard_Name() {
+    void createBoundedContextBoard_Name() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add name
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Name: Test</strong></p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
@@ -27,9 +31,11 @@ class BoundedContextBoardTest {
         assertEquals(expectedName, boundedContextBoard.getName());
     }
     @Test
-    void createBoundedContext_Description() {
+    void createBoundedContext_Description() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add description
         widgetObjects.add(new Text(BigInteger.ONE, 20, 15, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>What benefits does this context provide, and how does it provide them?</p>", "", 0, ""));
         //add description tag
@@ -46,9 +52,11 @@ class BoundedContextBoardTest {
         assertEquals(expextedDescription, boundedContextBoard.getDescription());
     }
     @Test
-    void createBoundedContextBoard_Domain() {
+    void createBoundedContextBoard_Domain() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add domain
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
@@ -59,9 +67,11 @@ class BoundedContextBoardTest {
         assertEquals(expectedDomain, boundedContextBoard.getDomain());
     }
     @Test
-    void createBoundedContextBoard_BusinessModel() {
+    void createBoundedContextBoard_BusinessModel() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add BusinessModel
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Business Model</strong></p><p><span>- revenue</span></p><p>- engagement</p><p>- compliance</p><p>- cost reduction</p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
@@ -72,9 +82,11 @@ class BoundedContextBoardTest {
         assertEquals(expectedBusinessModel, boundedContextBoard.getBusinessModel());
     }
     @Test
-    void createBoundedContextBoard_Evolution() {
+    void createBoundedContextBoard_Evolution() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add Evolution
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Evolution</strong></p><p><span>- genesis</span></p><p>- custom built</p><p>- product</p><p>- commodity</p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
@@ -85,9 +97,11 @@ class BoundedContextBoardTest {
         assertEquals(expectedEvolution, boundedContextBoard.getEvolution());
     }
     @Test
-    void createBoundedContextBoard_RoleTypes() {
+    void createBoundedContextBoard_RoleTypes() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add RoleTypes
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Role Types</strong></p><p><span>- draft context</span></p><p>- execution context</p><p>- analysis context</p><p>- gateway context</p><p>- other</p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
@@ -98,9 +112,11 @@ class BoundedContextBoardTest {
         assertEquals(expectedRoletypes, boundedContextBoard.getRoleTypes());
     }
     @Test
-    void createBoundedContextBoard_Commands(){
+    void createBoundedContextBoard_Commands() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add Outbound Tag
         widgetObjects.add(new Text(BigInteger.ONE, 300, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "Outbound Communication", "", 0, ""));
         // add command
@@ -114,9 +130,11 @@ class BoundedContextBoardTest {
         assertEquals(1, boundedContextBoard.getCommands().size());
     }
     @Test
-    void createBounded_DomainEvent(){
+    void createBounded_DomainEvent() throws Exception {
             //setup
             ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
             //add Outbound Tag
             widgetObjects.add(new Text(BigInteger.ONE, 300, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "Outbound Communication", "", 0, ""));
             // add events
@@ -130,9 +148,11 @@ class BoundedContextBoardTest {
         assertEquals(1, boundedContextBoard.getEvents().size());
     }
     @Test
-    void createBounded_Query(){
+    void createBounded_Query() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add Outbound Tag
         widgetObjects.add(new Text(BigInteger.ONE, 300, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "Outbound Communication", "", 0, ""));
         // add query
@@ -146,9 +166,11 @@ class BoundedContextBoardTest {
         assertEquals(1, boundedContextBoard.getQueries().size());
     }
     @Test
-    void createBounded_DomainEventOutbound(){
+    void createBounded_DomainEventOutbound() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add Outbound Tag
         widgetObjects.add(new Text(BigInteger.ONE, 300, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "Outbound Communication", "", 0, ""));
         // add events
@@ -162,9 +184,11 @@ class BoundedContextBoardTest {
         assertEquals(1, boundedContextBoard.getOutBoundCommunication().size());
     }
     @Test
-    void createBoundedContextBoard_CommandsOutbound(){
+    void createBoundedContextBoard_CommandsOutbound() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add Outbound Tag
         widgetObjects.add(new Text(BigInteger.ONE, 300, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "Outbound Communication", "", 0, ""));
         // add commands
@@ -178,9 +202,11 @@ class BoundedContextBoardTest {
         assertEquals(1, boundedContextBoard.getOutBoundCommunication().size());
     }
     @Test
-    void createBounded_QueryOutbound(){
+    void createBounded_QueryOutbound() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
         //add Outbound Tag
         widgetObjects.add(new Text(BigInteger.ONE, 300, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "Outbound Communication", "", 0, ""));
         // add query

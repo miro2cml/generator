@@ -13,9 +13,7 @@ import java.util.ArrayList;
 public class BoundedContextBoard {
     //TODO: move static Variables
     public static final String DESCRIPTION = "Description";
-    public static final String STRATEGIC_CLASSIFICATION = "Strategic Classification";
     public static final String INBOUND_COMMUNICATION = "Inbound Communication";
-    public static final String OUTBOUND_COMMUNICATION = "Outbound Communication";
     private static final String QUERY_COLOR = "#f0f7a9";
     private static final String COMMAND_COLOR = "#cbdcee";
     private static final String EVENT_COLOR = "#f9f3c1";
@@ -43,7 +41,7 @@ public class BoundedContextBoard {
     private MappingMessages messages;
     private MappingLog mappingLog;
 
-    private BoundedContextBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws Exception {
+    private BoundedContextBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
         this.mappingLog = mappingLog;
         this.messages = messages;
         this.inputBoard = inputBoard;
@@ -58,11 +56,11 @@ public class BoundedContextBoard {
         this.evolution = searchForString(SEARCH_EVOLUTION);
         this.roleTypes = searchForString(SEARCH_ROLETYPES);
         this.aggregateName = " Aggregate";
-        this.queries = searchForColor(QUERY_COLOR);
-        this.commands = searchForColor(COMMAND_COLOR);
-        this.events = searchForColor(EVENT_COLOR);
-        this.businessDescisions = searchForColor(DECISION_COLOR);
-        this.ubiquitousLanguage= searchForColor(UBIQUITOUS_LANGUAGE_COLOR);
+        this.queries = searchForColor(QUERY_COLOR, 1);
+        this.commands = searchForColor(COMMAND_COLOR, 1);
+        this.events = searchForColor(EVENT_COLOR,1);
+        this.businessDescisions = searchForColor(DECISION_COLOR, 2);
+        this.ubiquitousLanguage= searchForColor(UBIQUITOUS_LANGUAGE_COLOR, 2);
         this.outBoundCommunication = extractOutboundCommunication();
     }
 
@@ -209,16 +207,23 @@ public class BoundedContextBoard {
         return outputArray;
     }
     private boolean isAOutboundCommunication(WidgetObject widget) {
-        return widget instanceof Shape && (((Shape)widget).getX() > middle);
+        return widget instanceof Shape && (((Shape)widget).getX() > middle) && ( ((Shape)widget).getBackgroundColor().equals(EVENT_COLOR) || ((Shape)widget).getBackgroundColor().equals(COMMAND_COLOR)|| ((Shape)widget).getBackgroundColor().equals(QUERY_COLOR));
     }
     private boolean isAOutboundCommunicationAndNotExample(WidgetObject widget){
         return isAOutboundCommunication(widget)&& isNotCardExample(((Shape)widget).getText());
     }
 
-    private ArrayList<String> searchForColor(String color){
+    private ArrayList<String> searchForColor(String color, int condition){
         ArrayList<String> outputArray= new ArrayList<>();
+        boolean matchCondition = false;
         for(WidgetObject widget: inputBoard.getWidgetObjects()){
-            if(isInboundWithColorAndNotExample(color, widget)){
+            if(condition ==1){
+                matchCondition=isInboundWithColorAndNotExample(color, widget);
+            }
+            else if(condition==2){
+                matchCondition=isUbiquitousLanguageOrBusinessDecision(color, widget);
+            }
+            if(matchCondition){
                 mappingLog.addSuccessLogEntry("Element with color: "+ color + "found");
                 outputArray.add(((Shape)widget).getText());
             }
@@ -228,6 +233,10 @@ public class BoundedContextBoard {
             mappingLog.addErrorLogEntry("No Elements with color: "+color + " found");
         }
         return outputArray;
+    }
+
+    private boolean isUbiquitousLanguageOrBusinessDecision(String color, WidgetObject widget) {
+        return widget instanceof Shape && ((Shape) widget).getBackgroundColor().equals(color);
     }
 
     private boolean isInboundWithColorAndNotExample(String color, WidgetObject widget) {
@@ -272,11 +281,11 @@ public class BoundedContextBoard {
     private int getMiddle() {
         for(WidgetObject widget: inputBoard.getWidgetObjects()){
             if((isaBoolean(SEARCH_DOMAIN, widget))){
-                mappingLog.addSuccessLogEntry("Field Strategic Classification found");
+                mappingLog.addSuccessLogEntry("Field Domain in Strateic Classification found");
                 return ((Text) widget).getX();
             }
         }
-        mappingLog.addErrorLogEntry("Field Strategic Classification not found");
+        mappingLog.addErrorLogEntry("Field Domain in Strategic Classification not found");
         messages.add("Field Strategic Classification not found, there are mapping errors possible");
         return 0;
     }

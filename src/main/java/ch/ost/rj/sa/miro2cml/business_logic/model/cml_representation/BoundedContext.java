@@ -100,4 +100,21 @@ public class BoundedContext implements ICmlArtifact{
         }
     }
 
+    @Override
+    public String toString() {
+        return "BoundedContext{" +
+                "comment='" + comment + '\'' +
+                ", name='" + name + '\'' +
+                ", domainVisionStatement='" + domainVisionStatement + '\'' +
+                ", implementationStrategy='" + implementationStrategy + '\'' +
+                ", aggregateName='" + aggregateName + '\'' +
+                ", responsibilites=" + responsibilites +
+                ", domainEvents=" + domainEvents +
+                ", commands=" + commands +
+                ", queries=" + queries +
+                ", knowledgeLevel=" + knowledgeLevel +
+                ", refindedboundedContext=" + refindedboundedContext +
+                ", boundedContextType=" + boundedContextType +
+                '}';
+    }
 }
