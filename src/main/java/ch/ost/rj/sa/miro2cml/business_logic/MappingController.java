@@ -59,7 +59,7 @@ public class MappingController {
         return new ByteArrayResource(mappingLog.toString().getBytes());
     }
 
-    public boolean run() throws Exception{
+    public boolean startMappingProcess() {
         logger.debug("Get BoardData from data source");
         mappingLog.addInfoLogEntry("Get BoardData from data source");
         WidgetCollection widgetCollection = MiroApiServiceAdapter.getBoardWidgets(accessToken, boardId);

@@ -1,7 +1,6 @@
 package ch.ost.rj.sa.miro2cml.presentation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.MappingController;
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.presentation.model.BoardForm;
 import ch.ost.rj.sa.miro2cml.presentation.utility.SessionHandlerService;
 import org.slf4j.Logger;
@@ -34,7 +33,7 @@ public class GetBoardController {
         logger.debug("boardID: " + form.getBoardId());
         logger.debug("commence with board mapping");
         MappingController mappingController = new MappingController(form.getBoardType(), form.getBoardId(), SessionHandlerService.getMiroAccessToken(session));
-        boolean succes = mappingController.run();
+        boolean succes = mappingController.startMappingProcess();
         logger.debug("finished board mapping, success?: " + succes);
 
         mappingLogRessourceMap.put(form.getBoardId(), mappingController.getServableMappingLog());
