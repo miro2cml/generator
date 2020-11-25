@@ -40,11 +40,7 @@ public class GetBoardController {
         mappingLogRessourceMap.put(form.getBoardId(), mappingController.getServableMappingLog());
         model.addAttribute("mappingMessages",mappingController.getMappingMessages());
         if (succes){
-            try {
-                outputResourceMap.put(form.getBoardId(), mappingController.getServableOutput());
-            }catch (Exception e){
-                return "no-output";
-            }
+            outputResourceMap.put(form.getBoardId(), mappingController.getServableOutput());
             model.addAttribute("perfectMapping",mappingController.isMappingFullSuccess());
             return "output";
         }
