@@ -224,8 +224,12 @@ public class BoundedContextBoard {
     }
 
     private boolean isNotCardExample(String text) {
-        return !((text.equals(EVENT_EXAMPLE) || text.equals(COMMAND_EXAMPLE)
-                || text.equals(QUERY_EXAMPLE)));
+        if(text==null){
+            return false;
+        }else{
+            return !((text.equals(EVENT_EXAMPLE) || text.equals(COMMAND_EXAMPLE)
+                    || text.equals(QUERY_EXAMPLE)));
+        }
     }
 
     private int getMiddle() {
