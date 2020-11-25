@@ -4,6 +4,8 @@ import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 
 import java.math.BigInteger;
 
+import static java.lang.String.valueOf;
+
 public class Line extends WidgetObject {
     private BigInteger startWidgetId;
     private BigInteger endWidgetId;

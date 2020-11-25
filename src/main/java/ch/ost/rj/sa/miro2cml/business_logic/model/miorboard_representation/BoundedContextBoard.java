@@ -247,12 +247,21 @@ public class BoundedContextBoard {
     }
 
     private boolean isNotCardExample(String text) {
-        if(text != null){
-            return !(text.equals(EVENT_EXAMPLE) || text.equals(COMMAND_EXAMPLE)
-                    || text.equals(QUERY_EXAMPLE));
-        }else {
+        if(text==null){
             return false;
+        }else{
+            return !((text.equals(EVENT_EXAMPLE) || text.equals(COMMAND_EXAMPLE)
+                    || text.equals(QUERY_EXAMPLE)));
         }
+    }
+
+    private int getMiddle() {
+        for(WidgetObject widget: inputBoard.getWidgetObjects()){
+            if((isaBoolean(OUTBOUND_COMMUNICATION, widget))){
+                return ((Text) widget).getX();
+            }
+        }
+        return 0;
     }
 
     private int getBottom() {
