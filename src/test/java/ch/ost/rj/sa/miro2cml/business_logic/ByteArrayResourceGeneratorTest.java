@@ -22,7 +22,7 @@ class ByteArrayResourceGeneratorTest {
 
         story.setName("addfriend");
         story.setRole("Group Administrator");
-        Feature feature = ContextMappingDSLFactory.eINSTANCE.createFeature();
+        Feature feature = ContextMappingDSLFactory.eINSTANCE.createStoryFeature();
         feature.setVerb("add");
         feature.setEntity("friend");
         story.getFeatures().add(feature);
