@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
+import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;

@@ -72,12 +72,12 @@ public class MappingController {
 
             logger.debug("Commence Board mapping");
             mappingLog.addInfoLogEntry("Commence Board mapping");
+            try{
                 switch (boardType) {
                     case USE_CASE:
                         logger.debug("Board Type: UserStory");
                         mappingLog.addInfoLogEntry("Board Type: UserStory");
                         mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
-                        //mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                         break;
                     case BOUNDED_CONTEXT_CANVAS:
                         logger.debug("Board Type: Bounded Context Canvas");
@@ -94,17 +94,22 @@ public class MappingController {
                         break;
                 }
                 mappingLog.addInfoLogEntry("BoardMapping finished");
-            mappingLog.addInfoLogEntry("commence with cml serialization");
-            try {
+                mappingLog.addInfoLogEntry("commence with cml serialization");
                 resource = ByteArrayResourceGenerator.generateByteArrayResource(mappedBoard);
                 mappingLog.addInfoLogEntry("finished cml serialization");
+                return true;
+
+            }catch(WrongBoardException e){
+                mappingMessages.clear();
+                mappingMessages.add(e.getMessage());
+                mappingLog.addErrorLogEntry("Board doesn't match expected Input Board. Take a look at the section Supported Templates for more informations.");
+                return false;
             } catch (Exception e){
                 mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
                 mappingMessages.add("Critical ERROR during cml serialization");
                 mappingMessages.add("Please take a look at the logfile for further information");
                 return false;
             }
-                return true;
         } else {
             mappingMessages.add("Critical ERROR during MiroApiCall");
             mappingMessages.add("Please take a look at the logfile for further information");
