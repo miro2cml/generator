@@ -47,7 +47,25 @@ class BoundedContextConverterTest {
         //run
         BoundedContext boundedContext = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(boundedContextBoard, mappingLog, messages);
         //check
-        String expectedBoundedContext = "BoundedContext{comment='/** Strategic Classifications: \n *Domain: core, supporting, generic, other?\n *Business Model: revenue, engagement, compliance, cost reduction\n *Evolution: genesis, custom built, product, commodity\n *Ubiquitous Language: \n *Business Descisions: \n *Outbound Communications: Second Command, Second Event, Second Query\n */', name='Test', domainVisionStatement='This is the Domain Vision Statement', implementationStrategy='null', aggregateName='Test_Aggregate', responsibilites=[- draft context, - execution context, - analysis context, - gateway context, - other], domainEvents=[], commands=[], queries=[], knowledgeLevel=CONCRETE, refindedboundedContext=null, boundedContextType=FEATURE}";
+        String expectedBoundedContext = "BoundedContext{comment='/** \n* Domain: core, supporting, generic, other?\n* Business Model: revenue, engagement, compliance, cost reduction\n* Evolution: genesis, custom built, product, commodity\n* Outbound Communications: Second Command, Second Event, Second Query\n*/', name='Test', domainVisionStatement='This is the Domain Vision Statement', implementationStrategy='null', aggregateName='Test_Aggregate', responsibilites=[- draft context, - execution context, - analysis context, - gateway context, - other], domainEvents=[], commands=[], queries=[], knowledgeLevel=CONCRETE, refindedboundedContext=null, boundedContextType=FEATURE}";
         assertEquals(expectedBoundedContext, boundedContext.toString());
+    }
+
+    @Test
+    void createBoundedContextWithLessElements() throws Exception{
+        //setup
+        ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
+        widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
+        widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p>", "", 0, ""));
+        widgetObjects.add(new Text(BigInteger.ONE, 5, 10, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Description</p>", "", 0, ""));
+        InputBoard board = new InputBoard("123", widgetObjects);
+        BoundedContextBoard boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
+
+        BoundedContext boundedContext = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(boundedContextBoard, mappingLog, messages);
+        String expectedName = "MyBoundedContext";
+        BoundedContext expectedBoundedContext = new BoundedContext("/** \n* Domain\n*/", "MyBoundedContext", "This is the Domain Vision Statement", "MyBoundedContext_Aggregate", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), mappingLog, messages);
+        assertEquals(expectedBoundedContext.toString(), boundedContext.toString());
     }
 }

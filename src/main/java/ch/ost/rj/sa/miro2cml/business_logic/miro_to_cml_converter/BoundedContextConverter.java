@@ -69,14 +69,26 @@ public class BoundedContextConverter {
     }
 
     private static String generateComment(BoundedContextBoard extractedBoard) {
-        return "/** Strategic Classifications: \n *"+
-                validateStringsForComment(extractedBoard.getDomain()) + "\n *"
-                + validateStringsForComment(extractedBoard.getBusinessModel())+ "\n *"
-                + validateStringsForComment(extractedBoard.getEvolution()) + "\n *" +
-                "Ubiquitous Language: " + validateArrays(extractedBoard.getUbiquitousLanguage()) + "\n *" +
-                "Business Descisions: " + validateArrays(extractedBoard.getBusinessDescisions()) + "\n *" +
-                "Outbound Communications: " + validateArrays(extractedBoard.getOutBoundCommunication()) +
-                "\n */";
+        String result = "";
+        if(!extractedBoard.getDomain().isEmpty()){
+            result = result + "* " + validateStringsForComment(extractedBoard.getDomain()) + "\n" ;
+        }
+        if(!extractedBoard.getBusinessModel().isEmpty()){
+            result = result + "* " +validateStringsForComment(extractedBoard.getBusinessModel())+ "\n" ;
+        }
+        if(!extractedBoard.getEvolution().isEmpty()){
+            result = result+ "* "+ validateStringsForComment(extractedBoard.getEvolution()) + "\n";
+        }
+        if(!extractedBoard.getUbiquitousLanguage().isEmpty()){
+            result = result+ "* "+ "Ubiquitous Language: " + validateArrays(extractedBoard.getUbiquitousLanguage()) + "\n";
+        }
+        if(!extractedBoard.getBusinessDescisions().isEmpty()){
+            result = result+ "* "+ "Business Descisions: " + validateArrays(extractedBoard.getBusinessDescisions())  + "\n";
+        }
+        if(!extractedBoard.getOutBoundCommunication().isEmpty()){
+            result = result+ "* "+ "Outbound Communications: " + validateArrays(extractedBoard.getOutBoundCommunication()) + "\n";
+        }
+        return (result.isEmpty())?result: "/** \n" + result + "*/";
     }
 
     private static String validateArrays(ArrayList<String> input) {

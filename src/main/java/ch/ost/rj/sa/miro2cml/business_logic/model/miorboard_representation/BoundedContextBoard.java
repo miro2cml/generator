@@ -64,7 +64,7 @@ public class BoundedContextBoard {
         this.outBoundCommunication = extractOutboundCommunication();
     }
 
-    public static BoundedContextBoard createBoundedContextBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws Exception {
+    public static BoundedContextBoard createBoundedContextBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
         return new BoundedContextBoard(inputBoard, mappingLog, messages);
     }
 
@@ -285,7 +285,7 @@ public class BoundedContextBoard {
             }
         }
         mappingLog.addErrorLogEntry("Field Domain in Strategic Classification not found");
-        messages.add("Field Strategic Classification not found, there are mapping errors possible. Make sure you use the template correct!");
+        messages.add("Field Domain in Strategic Classification not found, there are mapping errors possible. Make sure you use the template correct!");
         return 0;
     }
 

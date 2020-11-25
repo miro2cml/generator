@@ -1,17 +1,21 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
+import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
 import ch.ost.rj.sa.miro2cml.model.widgets.Text;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import org.junit.Rule;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestExecutionListeners;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BoundedContextBoardTest {
     @Test
@@ -254,4 +258,19 @@ class BoundedContextBoardTest {
         assertEquals(expectedQuery, boundedContextBoard.getOutBoundCommunication().get(0));
         assertEquals(1, boundedContextBoard.getOutBoundCommunication().size());
     }
+
+    @Test
+    void createBoundedContextBoard_ThrowException() throws Exception{
+        ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
+        //add name
+        widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Name: Test</strong></p>", "", 0, ""));
+        InputBoard board = new InputBoard("123", widgetObjects);
+
+        //var boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
+        Throwable exception = assertThrows(WrongBoardException.class, () -> BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages));
+        assertEquals("Input Board doesn't match with expected Board Type: Bounded Context Canvas", exception.getMessage());
+    }
+
 }

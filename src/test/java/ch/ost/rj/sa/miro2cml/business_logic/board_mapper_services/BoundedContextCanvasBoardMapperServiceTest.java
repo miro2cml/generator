@@ -6,6 +6,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
+import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.BoundedContextBoard;
 import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
 import ch.ost.rj.sa.miro2cml.model.widgets.Text;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
@@ -16,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BoundedContextCanvasBoardMapperServiceTest {
 
@@ -52,6 +54,26 @@ class BoundedContextCanvasBoardMapperServiceTest {
         //check
         assertEquals(true, cmlModel.equals(expectedResult));
     }
+    @Test
+    public void createBoundedContextBoard_ThrowException() throws Exception{
+        InputBoard board = getInputBoardWithException();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
+
+        Throwable exception = assertThrows(WrongBoardException.class, () -> boundedContextCanvasBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(board, mappingLog, messages));
+        assertEquals("Input Board doesn't match with expected Board Type: Bounded Context Canvas", exception.getMessage());
+    }
+    @Test
+    public void createBoundedContextBoard_Messages() throws Exception{
+        InputBoard board = getInputBoardWithException();
+        MappingLog mappingLog = new MappingLog("123");
+        MappingMessages messages = new MappingMessages();
+
+        Throwable exception = assertThrows(WrongBoardException.class, () -> boundedContextCanvasBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(board, mappingLog, messages));
+        assertEquals("Field Description not found, there are mapping errors possible. Make sure you use the template correct!", messages.getMessages().get(0));
+        assertEquals("Field Inbound Communication not found, there are mapping errors possible. Make sure you use the template correct!", messages.getMessages().get(1));
+        assertEquals("Field Domain in Strategic Classification not found, there are mapping errors possible. Make sure you use the template correct!", messages.getMessages().get(2));
+    }
 
     private InputBoard getInputBoard() {
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
@@ -73,5 +95,12 @@ class BoundedContextCanvasBoardMapperServiceTest {
         widgetObjects.add(new Shape(BigInteger.ONE, 350, 0, 0, 0, 0, "#f0f7a9", 0, "", 0, "", 0, "", "", "", 0, "", "", "<p>Second Query</p>"));
         return new InputBoard("123", widgetObjects);
     }
+    private InputBoard getInputBoardWithException() {
+        ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
+        widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Name: Test</strong></p>", "", 0, ""));
+        widgetObjects.add(new Text(BigInteger.ONE, 20, 15, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>What benefits does this context provide, and how does it provide them?</p>", "", 0, ""));
+        return new InputBoard("123", widgetObjects);
+    }
+
 
 }
