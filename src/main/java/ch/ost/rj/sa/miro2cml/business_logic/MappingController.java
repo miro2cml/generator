@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic;
 
+import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.BoundedContextCanvasBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.EventStormingBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.UseCaseBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
@@ -24,6 +25,7 @@ public class MappingController {
     String accessToken;
     MappingMessages mappingMessages = new MappingMessages();
     private MappedBoard mappedBoard = null;
+    private Resource resource = null;
 
     public MappingController(BoardType boardType, String boardId, String accessToken) {
         this.boardType = boardType;
@@ -42,7 +44,7 @@ public class MappingController {
     }
 
     public Resource getServableOutput() {
-        return ByteArrayResourceGenerator.generateByteArrayResource(mappedBoard);
+        return resource;
     }
 
     public List<String> getMappingMessages() {
@@ -78,8 +80,8 @@ public class MappingController {
                     mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                     break;
                 case BOUNDED_CONTEXT_CANVAS:
+                    mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                     break;
-
                 case EVENT_STORMING:
                     mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                     break;
@@ -90,7 +92,14 @@ public class MappingController {
                     break;
             }
             mappingLog.addInfoLogEntry("BoardMapping finished");
-
+            mappingLog.addInfoLogEntry("commence with cml serialization");
+            try {
+                resource = ByteArrayResourceGenerator.generateByteArrayResource(mappedBoard);
+                mappingLog.addInfoLogEntry("finished cml serialization");
+            } catch (Exception e){
+                mappingLog.addErrorLogEntry("critical Error during cml serialization");
+                return false;
+            }
             return true;
         } else {
             mappingMessages.add("Critical ERROR during MiroApiCall");
