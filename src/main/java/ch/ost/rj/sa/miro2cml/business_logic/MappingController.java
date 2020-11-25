@@ -99,7 +99,9 @@ public class MappingController {
                 resource = ByteArrayResourceGenerator.generateByteArrayResource(mappedBoard);
                 mappingLog.addInfoLogEntry("finished cml serialization");
             } catch (Exception e){
-                mappingLog.addErrorLogEntry("critical Error during cml serialization");
+                mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
+                mappingMessages.add("Critical ERROR during cml serialization");
+                mappingMessages.add("Please take a look at the logfile for further information");
                 return false;
             }
                 return true;
