@@ -255,15 +255,6 @@ public class BoundedContextBoard {
         }
     }
 
-    private int getMiddle() {
-        for(WidgetObject widget: inputBoard.getWidgetObjects()){
-            if((isaBoolean(OUTBOUND_COMMUNICATION, widget))){
-                return ((Text) widget).getX();
-            }
-        }
-        return 0;
-    }
-
     private int getBottom() {
         for(WidgetObject widget: inputBoard.getWidgetObjects()){
             if((isaBoolean(INBOUND_COMMUNICATION, widget))){
