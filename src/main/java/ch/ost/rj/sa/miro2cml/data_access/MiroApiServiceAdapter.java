@@ -44,7 +44,8 @@ public class MiroApiServiceAdapter {
     }
 
     public static List<BoardPresentation> getMiroBoards(String accessToken, String teamId) {
-        String query = "access_token=" + accessToken;
+        final int limit = 300;
+        String query = "access_token=" + accessToken + "&" + "limit=" + limit;
         String url = "https://api.miro.com/v1/teams/" + teamId + "/boards/";
         Charset charset = java.nio.charset.StandardCharsets.UTF_8;
         try {

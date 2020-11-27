@@ -59,7 +59,7 @@ public class MappingController {
         return new ByteArrayResource(mappingLog.toString().getBytes());
     }
 
-    public boolean run() {
+    public boolean startMappingProcess() {
         logger.debug("Get BoardData from data source");
         mappingLog.addInfoLogEntry("Get BoardData from data source");
         WidgetCollection widgetCollection = MiroApiServiceAdapter.getBoardWidgets(accessToken, boardId);
@@ -72,35 +72,44 @@ public class MappingController {
 
             logger.debug("Commence Board mapping");
             mappingLog.addInfoLogEntry("Commence Board mapping");
-
-            switch (boardType) {
-                case USE_CASE:
-                    logger.debug("Board Type: UserStory");
-                    mappingLog.addInfoLogEntry("Board Type: UserStory");
-                    mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
-                    break;
-                case BOUNDED_CONTEXT_CANVAS:
-                    mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
-                    break;
-                case EVENT_STORMING:
-                    mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
-                    break;
-                case CONTEXT_MAP:
-                    break;
-                default:
-                case AUTOMATIC:
-                    break;
-            }
-            mappingLog.addInfoLogEntry("BoardMapping finished");
-            mappingLog.addInfoLogEntry("commence with cml serialization");
-            try {
+            try{
+                switch (boardType) {
+                    case USE_CASE:
+                        logger.debug("Board Type: UserStory");
+                        mappingLog.addInfoLogEntry("Board Type: UserStory");
+                        mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        break;
+                    case BOUNDED_CONTEXT_CANVAS:
+                        logger.debug("Board Type: Bounded Context Canvas");
+                        mappingLog.addInfoLogEntry("Board Type: Bounded Context Canvas");
+                        mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        break;
+                    case EVENT_STORMING:
+                        mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        break;
+                    case CONTEXT_MAP:
+                        break;
+                    default:
+                    case AUTOMATIC:
+                        break;
+                }
+                mappingLog.addInfoLogEntry("BoardMapping finished");
+                mappingLog.addInfoLogEntry("commence with cml serialization");
                 resource = ByteArrayResourceGenerator.generateByteArrayResource(mappedBoard);
                 mappingLog.addInfoLogEntry("finished cml serialization");
+                return true;
+
+            }catch(WrongBoardException e){
+                mappingMessages.clear();
+                mappingMessages.add(e.getMessage());
+                mappingLog.addErrorLogEntry("Board doesn't match expected Input Board. Take a look at the section Supported Templates for more informations.");
+                return false;
             } catch (Exception e){
-                mappingLog.addErrorLogEntry("critical Error during cml serialization");
+                mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
+                mappingMessages.add("Critical ERROR during cml serialization");
+                mappingMessages.add("Please take a look at the logfile for further information");
                 return false;
             }
-            return true;
         } else {
             mappingMessages.add("Critical ERROR during MiroApiCall");
             mappingMessages.add("Please take a look at the logfile for further information");

@@ -32,8 +32,8 @@ public class Line extends WidgetObject {
 
     public Line(MiroWidget miroWidget) {
         super(miroWidget.getId());
-        this.startWidgetId = new BigInteger(String.valueOf(2)); /*new BigInteger(miroWidget.getStartWidget().getId());*/
-        this.endWidgetId = new BigInteger(String.valueOf(1));/*new BigInteger(miroWidget.getEndWidget().getId());*/
+        this.startWidgetId = resolveStartWidgetId(miroWidget);
+        this.endWidgetId = resolveEndWIdgetId(miroWidget);
         this.borderColor = miroWidget.getStyle().getBorderColor();
         this.borderStyle = miroWidget.getStyle().getBorderStyle();
         this.borderWidth = miroWidget.getStyle().getBorderWidth();
@@ -122,6 +122,19 @@ public class Line extends WidgetObject {
 
     public void validate(){
         super.validate();
+    }
+
+    private BigInteger resolveEndWIdgetId(MiroWidget miroWidget){
+        if (miroWidget.getEndWidget()!=null && miroWidget.getEndWidget().getId()!=null){
+            return new BigInteger(miroWidget.getEndWidget().getId());
+        }
+        return new BigInteger(String.valueOf(0));
+    }
+    private BigInteger resolveStartWidgetId(MiroWidget miroWidget){
+        if (miroWidget.getStartWidget()!=null && miroWidget.getStartWidget().getId()!=null){
+            return new BigInteger(miroWidget.getStartWidget().getId());
+        }
+        return new BigInteger(String.valueOf(0));
     }
 
     @Override
