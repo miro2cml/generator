@@ -70,11 +70,12 @@ public class EventStormingBoard {
             double xEnd= xStart+ (1.2*width);
             double yStart = yMiddle - 0.5*height;
             double yEnd = yMiddle+ (0.5 *height);
+            double position = sticker.getX();
             String domainEvent= getTextFromStickerWithCorrectPosition(domainEvents, xStart, xEnd, yStart, yEnd);
             String role= getTextFromStickerWithCorrectPosition(userRole, xStart, xEnd, yStart, yEnd);
             List<String> aggregate= getTextsFromStickerWithCorrectPosition(aggregates, xStart, xEnd, yStart, yEnd);
             List<String> trigger = getTrigger(domainEvent);
-            EventStormingGroup eventStormingGroup = new EventStormingGroup(domainEvent, command,  aggregate, role, trigger);
+            EventStormingGroup eventStormingGroup = new EventStormingGroup(position, domainEvent, command,  aggregate, role, trigger);
             mappingLog.addSuccessLogEntry("Group found with elements: DomainEvent -> "+domainEvent+"( triggers "+trigger+"), Command -> "+command+", Aggregate ->"+ aggregate+", User Role -> "+role+".");
             output.add(eventStormingGroup);
         }

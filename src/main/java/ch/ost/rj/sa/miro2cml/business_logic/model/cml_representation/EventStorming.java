@@ -1,7 +1,9 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation;
 
 import org.contextmapper.dsl.contextMappingDSL.Aggregate;
+import org.contextmapper.dsl.contextMappingDSL.Application;
 import org.contextmapper.dsl.contextMappingDSL.ContextMappingDSLFactory;
+import org.contextmapper.dsl.contextMappingDSL.Flow;
 import org.contextmapper.tactic.dsl.tacticdsl.CommandEvent;
 import org.contextmapper.tactic.dsl.tacticdsl.DomainEvent;
 import org.contextmapper.tactic.dsl.tacticdsl.TacticdslFactory;
@@ -12,10 +14,12 @@ import java.util.Map;
 
 public class EventStorming implements ICmlArtifact {
     private ArrayList<AggregatesCML> aggregates;
+    private ArrayList<FlowStep> flow;
     private String issues;
 
-    public EventStorming(ArrayList<AggregatesCML> aggregates, String issues) {
+    public EventStorming(ArrayList<AggregatesCML> aggregates, ArrayList<FlowStep> flow, String issues) {
         this.aggregates = aggregates;
+        this.flow = flow;
         this.issues = issues;
     }
 
@@ -32,8 +36,14 @@ public class EventStorming implements ICmlArtifact {
         }
         boundedContext.setComment(issues);
         boundedContext.setName("EventStormingBoundedContext");
-
+        addFlow();
         return boundedContext;
+    }
+
+    private void addFlow() {
+        Application application = ContextMappingDSLFactory.eINSTANCE.createApplication();
+        Flow flow = ContextMappingDSLFactory.eINSTANCE.createFlow();
+        application.getFlows().add(flow);
     }
 
     private void addCommands(Aggregate aggregate, AggregatesCML thisAggregate) {
@@ -46,10 +56,10 @@ public class EventStorming implements ICmlArtifact {
     }
 
     private void addDomainEvents(Aggregate aggregate, AggregatesCML thisAggregate) {
-        for ( Map.Entry<String, String> entry : thisAggregate.getDomainEvents().entrySet()) {
+        for ( Map.Entry<String, ArrayList<String>> entry : thisAggregate.getDomainEvents().entrySet()) {
             DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
             domainEvent.setName(entry.getKey());
-            domainEvent.setComment(entry.getValue());
+            //domainEvent.setComment(entry.getValue());
             aggregate.getDomainObjects().add(domainEvent);
         }
     }

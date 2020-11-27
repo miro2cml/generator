@@ -3,13 +3,15 @@ package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 import java.util.List;
 
 public class EventStormingGroup {
+    private double position;
     private String domainEvent;
     private String command;
     private List<String> agggregate;
     private String role;
     private List<String> trigger;
     //TODO: modify with logic from event-storming CheatSheet (exapmle more than one aggregate possible)
-    public EventStormingGroup(String domainEvent, String command, List<String> agggregate, String role, List<String> trigger) {
+    public EventStormingGroup(double position, String domainEvent, String command, List<String> agggregate, String role, List<String> trigger) {
+        this.position = position;
         this.domainEvent = domainEvent;
         this.command = command;
         this.agggregate = agggregate;
@@ -55,5 +57,9 @@ public class EventStormingGroup {
 
     public void setTrigger(List<String> trigger) {
         this.trigger = trigger;
+    }
+
+    public double getPosition() {
+        return position;
     }
 }
