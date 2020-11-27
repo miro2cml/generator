@@ -1,16 +1,16 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
+import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.model.widgets.Line;
 import ch.ost.rj.sa.miro2cml.model.widgets.Sticker;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EventStormingBoard {
     public static final String USER_ROLE_P = "<p>User Role</p>";
@@ -24,39 +24,31 @@ public class EventStormingBoard {
     private final String aggregateColor;
     private final String issueColor;
     private final String userRoleColor;
-
+    private MappingLog mappingLog;
+    private MappingMessages messages;
     private ArrayList<Sticker> domainEvents;
     private ArrayList<Sticker> commands;
     private ArrayList<Sticker> aggregates;
     private ArrayList<Sticker> userRole;
     private ArrayList<String> issues;
-    private Map<String, String> triggers;
+    private ArrayList<ArrayList<String>> triggers;
     private double height, width;
     private ArrayList<EventStormingGroup> connections;
 
-    public List<String> getIssues() {
-        ArrayList<String> output = new ArrayList<>();
-        for (String s: issues) {
-            output.add(StringValidator.validatorForStrings(s));
-        }
-        return output;
-    }
-
-    public ArrayList<EventStormingGroup> getConnections() {
-        return connections;
-    }
-
-    private EventStormingBoard(InputBoard inputBoard) {
+    private EventStormingBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+        this.mappingLog = mappingLog;
+        this.messages = messages;
         this.inputBoard = inputBoard;
         this.domainEventColor = getColor(DOMAIN_EVENT_P);
         this.commandColor = getColor(COMMAND_P);
         this.aggregateColor = getColor(AGGREGATE_P);
         this.issueColor = getColor(ISSUE_P);
         this.userRoleColor = getColor(USER_ROLE_P);
-        this.domainEvents = getStickerWithRelevantColor(domainEventColor);
-        this.commands = getStickerWithRelevantColor(commandColor);
-        this.aggregates = getStickerWithRelevantColor(aggregateColor);
-        this.userRole = getStickerWithRelevantColor(userRoleColor);
+        checkInputFields();
+        this.domainEvents = getStickerWithRelevantColor(domainEventColor, "Domain Events ");
+        this.commands = getStickerWithRelevantColor(commandColor, "Commands ");
+        this.aggregates = getStickerWithRelevantColor(aggregateColor, "Aggregates ");
+        this.userRole = getStickerWithRelevantColor(userRoleColor, "UserRoles ");
         this.issues = getStringWithColor(issueColor);
         this.triggers = getLines();
         this.height = getHeight();
@@ -64,6 +56,9 @@ public class EventStormingBoard {
         this.connections = generateMap();
     }
 
+    public static EventStormingBoard createEventStormingBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+        return new EventStormingBoard(inputBoard, mappingLog, messages);
+    }
 
     private ArrayList<EventStormingGroup> generateMap() {
         ArrayList<EventStormingGroup> output = new ArrayList<>();
@@ -77,24 +72,40 @@ public class EventStormingBoard {
             double yEnd = yMiddle+ (0.5 *height);
             String domainEvent= getTextFromStickerWithCorrectPosition(domainEvents, xStart, xEnd, yStart, yEnd);
             String role= getTextFromStickerWithCorrectPosition(userRole, xStart, xEnd, yStart, yEnd);
-            String aggregate= getTextFromStickerWithCorrectPosition(aggregates, xStart, xEnd, yStart, yEnd);
-            String trigger = getTrigger(domainEvent);
-            EventStormingGroup eventStormingGroup = new EventStormingGroup(domainEvent, command,  aggregate, role, trigger );
+            List<String> aggregate= getTextsFromStickerWithCorrectPosition(aggregates, xStart, xEnd, yStart, yEnd);
+            List<String> trigger = getTrigger(domainEvent);
+            EventStormingGroup eventStormingGroup = new EventStormingGroup(domainEvent, command,  aggregate, role, trigger);
+            mappingLog.addSuccessLogEntry("Group found with elements: DomainEvent -> "+domainEvent+"( triggers "+trigger+"), Command -> "+command+", Aggregate ->"+ aggregate+", User Role -> "+role+".");
             output.add(eventStormingGroup);
         }
 
         return output;
     }
 
-    private String getTrigger(String domainEvent) {
-        if (triggers.containsKey(domainEvent)) {
-            for ( Map.Entry<String, String> entry : triggers.entrySet()) {
-                if(entry.getKey().equals(domainEvent)){
-                    return entry.getValue();
+
+    public List<String> getIssues() {
+        ArrayList<String> output = new ArrayList<>();
+        for (String s: issues) {
+            output.add(StringValidator.validatorForStrings(s));
+        }
+        return output;
+    }
+
+    private List<String> getTrigger(String domainEvent) {
+        ArrayList<String> output=new ArrayList<>();
+        for(ArrayList<String>  text: triggers){
+            if(text.get(0).contains(domainEvent)){
+                for (String s : text) {
+                    output.add(s);
+                    mappingLog.addSuccessLogEntry("Trigger "+s+" found for "+domainEvent);
                 }
             }
         }
-        return "";
+        if(output.isEmpty()){
+            mappingLog.addErrorLogEntry("For "+domainEvent+" no triggers found");
+            messages.add("For "+domainEvent+" no triggers found. Check if the lines are correct connected.");
+        }
+        return output;
     }
 
     private String getTextFromStickerWithCorrectPosition(ArrayList<Sticker> inputList, double xStart, double xEnd, double yStart, double yEnd ){
@@ -106,6 +117,16 @@ public class EventStormingBoard {
         return "";
     }
 
+    private List<String> getTextsFromStickerWithCorrectPosition(ArrayList<Sticker> inputList, double xStart, double xEnd, double yStart, double yEnd) {
+        ArrayList<String> output = new ArrayList<>();
+        for (Sticker innerSticker : inputList) {
+            if(innerSticker.getX() > xStart && innerSticker.getX() < xEnd && innerSticker.getY() > yStart && innerSticker.getY() < yEnd){
+                output.add(innerSticker.getText());
+            }
+        }
+        return output;
+    }
+
     private int getWidth() {
         return (int) domainEvents.get(0).getWidth();
     }
@@ -114,28 +135,45 @@ public class EventStormingBoard {
         return (int) domainEvents.get(0).getHeight();
     }
 
-    public static EventStormingBoard createEventStormingBoard(InputBoard inputBoard) {
-        return new EventStormingBoard(inputBoard);
-    }
 
-    private Map<String, String> getLines() {
-        Map<String, String> lines = new HashMap<>();
+    private ArrayList<ArrayList<String>> getLines() {
+        ArrayList<ArrayList<String>> lines = new ArrayList<>();
         for (WidgetObject widget:inputBoard.getWidgetObjects()) {
             if(widget instanceof Line){
                 BigInteger startWidgetId = ((Line) widget).getStartWidgetId();
                 BigInteger endWidgetId = ((Line) widget).getEndWidgetId();
                 String start = getWidgetText(startWidgetId);
                 String end = getWidgetText(endWidgetId);
-                lines.put(start, end);
+                mappingLog.addSuccessLogEntry("Connection found: "+start + " triggers " + end);
+                if(!exists(lines, start, end)){
+                    ArrayList<String> newConnection = new ArrayList<>();
+                    newConnection.add(start);
+                    newConnection.add(end);
+                    lines.add(newConnection);
+                }
             }
+        }
+        if(lines.isEmpty()){
+            mappingLog.addErrorLogEntry("No connections found.");
+            messages.add("No connections found. Check if you use the lines correct.");
         }
         return lines;
     }
 
+    private boolean exists(ArrayList<ArrayList<String>> lines, String start, String end){
+        for(ArrayList<String> text: lines) {
+            if (text.get(0).contains(start)) {
+                text.add(end);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private String getWidgetText(BigInteger start) {
         for (WidgetObject widget:inputBoard.getWidgetObjects()) {
-            if(widget.getId().equals(start)){
-                return widget.getMappingRelevantText();
+            if(widget.getId().equals(start) && widget instanceof Sticker){
+                return ((Sticker) widget).getText();
             }
         }
         return "";
@@ -148,15 +186,24 @@ public class EventStormingBoard {
                 output.add(((Sticker) widget).getText());
             }
         }
+        if(output.isEmpty()){
+            mappingLog.addErrorLogEntry("No Issues found");
+            messages.add("No Issues found. Check if you use any Issue Stickers.");
+        }
         return output;
     }
 
-    private ArrayList<Sticker> getStickerWithRelevantColor(String color) {
+    private ArrayList<Sticker> getStickerWithRelevantColor(String color, String event) {
         ArrayList<Sticker> output = new ArrayList<>();
         for (WidgetObject widget:inputBoard.getWidgetObjects()) {
-            if(widget instanceof Sticker && (((Sticker) widget).getBackgroundColor().equals(color))){
+            if(widget instanceof Sticker && (((Sticker) widget).getBackgroundColor().equals(color)) && !widget.getMappingRelevantText().equals("")){
                 output.add((Sticker)widget);
+                mappingLog.addSuccessLogEntry(event + " add " + ((Sticker) widget).getText());
             }
+        }
+        if(output.isEmpty()){
+            mappingLog.addErrorLogEntry("No "+event+"found.");
+            messages.add("No "+event+" found.");
         }
         return output;
     }
@@ -166,10 +213,29 @@ public class EventStormingBoard {
             if(widget instanceof Sticker && (((Sticker) widget).getText().contains(matcher))){
                 String color = ((Sticker)widget).getBackgroundColor();
                 inputBoard.getWidgetObjects().remove(widget);
+                mappingLog.addSuccessLogEntry(matcher + " found.");
                 return color;
             }
         }
+        mappingLog.addErrorLogEntry(matcher+ " not found.");
+        messages.add("Sticker " + matcher + "  not found, there are mapping errors possible. Make sure you use the template correct!");
         return "";
+    }
+
+    private void checkInputFields() throws WrongBoardException{
+        HashSet<String> colors = new HashSet<>();
+        colors.add(domainEventColor);
+        colors.add(commandColor);
+        colors.add(aggregateColor);
+        colors.add(userRoleColor);
+        colors.add(issueColor);
+        if(domainEventColor.equals("") || commandColor.equals("") || aggregateColor.equals("")|| commandColor.equals(domainEventColor) || aggregateColor.equals(domainEventColor) || aggregateColor.equals(commandColor) ||colors.size()<4){
+            throw new WrongBoardException("Input Board doesn't match with expected Board Type: Event Storming");
+        }
+    }
+
+    public ArrayList<EventStormingGroup> getConnections() {
+        return connections;
     }
 
     @Override

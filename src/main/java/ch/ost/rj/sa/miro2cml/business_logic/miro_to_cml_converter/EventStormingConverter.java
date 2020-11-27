@@ -7,6 +7,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.Event
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EventStormingConverter {
@@ -15,10 +16,12 @@ public class EventStormingConverter {
         ArrayList<String> aggregateList = new ArrayList<>();
         ArrayList<AggregatesCML> aggregatesCMLS = new ArrayList<>();
         for(ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingGroup input : inputs) {
-            String aggregate = input.getAgggregate();
-            if (aggregateList.contains(aggregate)) {
-                break;
-            } else { aggregateList.add(aggregate);
+            List<String> aggregates = input.getAgggregate();
+            for(String aggregate: aggregates){
+                if (aggregateList.contains(aggregate)) {
+                    break;
+                } else { aggregateList.add(aggregate);
+                }
             }
         }
         for (String aggregate: aggregateList) {
@@ -26,10 +29,10 @@ public class EventStormingConverter {
             Map<String, String> commands = new HashMap<>();
             Map<String, String> events = new HashMap<>();
             for (ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingGroup input : inputs) {
-                if (input.getAgggregate().equals(aggregate)) {
+                if (input.getAgggregate().get(0).equals(aggregate)) {
                     commands.put(StringValidator.convertForVariableName(input.getCommand()), "/* role " + StringValidator.validatorForStrings(input.getRole()) + "*/");
                     if (!(input.getDomainEvent().equals(""))) {
-                        events.put(StringValidator.convertForVariableName(input.getDomainEvent()), "/* triggers" + StringValidator.validatorForStrings(input.getTrigger()) + "*/");
+                        events.put(StringValidator.convertForVariableName(input.getDomainEvent()), "/* triggers" + generateTriggers(input.getTrigger()) + "*/");
                     }
                 }
             }
@@ -37,5 +40,13 @@ public class EventStormingConverter {
 
         }
         return new EventStorming(aggregatesCMLS, "/* " + board.getIssues().toString() + "*/");
+    }
+
+    private static String generateTriggers(List<String> trigger) {
+        String output="";
+        for(int i=1; i <trigger.size(); i++){
+            output+= StringValidator.convertForVariableName(trigger.get(i));
+        }
+        return output;
     }
 }
