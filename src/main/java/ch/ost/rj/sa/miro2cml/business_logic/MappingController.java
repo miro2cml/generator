@@ -105,6 +105,10 @@ public class MappingController {
                 mappingLog.addErrorLogEntry("Board doesn't match expected Input Board. Take a look at the section Supported Templates for more informations.");
                 return false;
             } catch (Exception e){
+                System.out.println(e.getMessage());
+                System.out.println(e.getStackTrace());
+                System.out.println(e.getClass());
+                System.out.println();
                 mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
                 mappingMessages.add("Critical ERROR during cml serialization");
                 mappingMessages.add("Please take a look at the logfile for further information");

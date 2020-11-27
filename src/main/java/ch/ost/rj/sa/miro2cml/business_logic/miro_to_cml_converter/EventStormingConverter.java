@@ -24,38 +24,28 @@ public class EventStormingConverter {
         }
         for (String aggregate: aggregateList) {
             String name = StringValidator.convertForVariableName(aggregate);
-            Map<String, String> commands = new HashMap<>();
-            Map<String, ArrayList<String>> events = new HashMap<>();
+            ArrayList<FlowStep> step = new ArrayList<>();
             for (ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingGroup input : inputs) {
                 if (input.getAgggregate().get(0).equals(aggregate)) {
-                    commands.put(StringValidator.convertForVariableName(input.getCommand()), "/* role " + StringValidator.validatorForStrings(input.getRole()) + "*/");
-                    if (!(input.getDomainEvent().equals(""))) {
-                        events.put(StringValidator.convertForVariableName(input.getDomainEvent()), generateTriggers((ArrayList<String>) input.getTrigger()));
-                    }
+                    step.add(new FlowStep(input.getPosition(), StringValidator.convertForVariableName(input.getCommand()), StringValidator.convertForVariableName(input.getDomainEvent()), StringValidator.convertForVariableName(input.getRole()), generateTriggers((ArrayList<String>) input.getTrigger())));
                 }
             }
-            aggregatesCMLList.add(new AggregatesCML(name, events, commands));
+            aggregatesCMLList.add(new AggregatesCML(name, step));
 
         }
-        ArrayList<FlowStep> flow = createFlow(board.getConnections());
-        return new EventStorming(aggregatesCMLList, flow, "/* " + board.getIssues().toString() + "*/");
+        return new EventStorming(aggregatesCMLList, "/* " + board.getIssues().toString() + "*/");
     }
 
-    private static ArrayList<FlowStep> createFlow(ArrayList<EventStormingGroup> connections) {
-        ArrayList<FlowStep> output = new ArrayList<>();
-        for(EventStormingGroup group: connections){
-            output.add(new FlowStep(group.getPosition(), StringValidator.convertForVariableName(group.getCommand()), StringValidator.convertForVariableName(group.getDomainEvent()), generateTriggers((ArrayList<String>) group.getTrigger())));
-        }
-        //TODO Sorting with postion
-        output.sort(new SortByPosition());
-        return output;
-    }
 
     private static ArrayList<String> generateTriggers(ArrayList<String> trigger) {
-        trigger.remove(0);
-        for (String s: trigger) {
-            s=StringValidator.convertForVariableName(s);
+        if(trigger.isEmpty()){
+            return trigger;
+        }else{
+            trigger.remove(0);
+            for (String s: trigger) {
+                StringValidator.convertForVariableName(s);
+            }
+            return trigger;
         }
-        return trigger;
     }
 }
