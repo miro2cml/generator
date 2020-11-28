@@ -1,5 +1,8 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation;
 
+import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
+import org.checkerframework.common.value.qual.StringVal;
+
 import java.util.ArrayList;
 
 public class FlowStep {
@@ -27,8 +30,11 @@ public class FlowStep {
 
     public String getRole(){ return role; }
 
-    public ArrayList<String> getTriggers() {
-        return triggers;
+    public String getTriggers() {
+        if(triggers.isEmpty()){
+            return "blabla";
+        }
+        return StringValidator.convertForVariableName(triggers.get(0));
     }
 
     public double getPosition() {

@@ -55,12 +55,13 @@ public class EventStorming implements ICmlArtifact {
                 //add command
                 CommandEvent commandEvent = TacticdslFactory.eINSTANCE.createCommandEvent();
                 commandEvent.setName(steps.getCommand());
-                //commandEvent.setComment(steps.getRole());
                 aggregate.getDomainObjects().add(commandEvent);
                 //steps one flow
                 DomainEventProductionStep stepOne = ContextMappingDSLFactory.eINSTANCE.createDomainEventProductionStep();
                 EitherCommandOrOperation commandOrOperation = ContextMappingDSLFactory.eINSTANCE.createEitherCommandOrOperation();
-                commandOrOperation.setActor("User");
+                if(!steps.getRole().equals("")){
+                    commandOrOperation.setActor(steps.getRole());
+                }
                 commandOrOperation.setCommand(commandEvent);
                 stepOne.setAggregate(aggregate);
                 stepOne.setAction(commandOrOperation);
@@ -69,13 +70,14 @@ public class EventStorming implements ICmlArtifact {
                 stepOne.setEventProduction(singleEventProduction);
 
                 //step two flow
-                //CommandEvent triggerCommand = TacticdslFactory.eINSTANCE.createCommandEvent();
-                //commandEvent.setName(StringValidator.convertForVariableName(steps.getTriggers().get(0)));
-                //application.getCommands().add(commandEvent);
+                CommandEvent triggerCommand = TacticdslFactory.eINSTANCE.createCommandEvent();
+                //TODO triggers
+                triggerCommand.setName(steps.getTriggers());
+                application.getCommands().add(triggerCommand);
                 CommandInvokationStep stepTwo = ContextMappingDSLFactory.eINSTANCE.createCommandInvokationStep();
                 stepTwo.getEvents().add(domainEvent);
                 CommandInvokation commandInvokation = ContextMappingDSLFactory.eINSTANCE.createSingleCommandInvokation();
-                commandInvokation.getCommands().add(commandEvent);
+                commandInvokation.getCommands().add(triggerCommand);
                 stepTwo.setAction(commandInvokation);
                 flowCML.getSteps().add(stepOne);
                 flowCML.getSteps().add(stepTwo);
@@ -84,79 +86,6 @@ public class EventStorming implements ICmlArtifact {
         }
     }
 
-   /*private void addFlowElements(Aggregate aggregate, AggregatesCML thisAggregate, ArrayList<FlowStep> flow, Application application, Flow flowCML) {
-        //add event
-        DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-        domainEvent.setName(entry.getKey());
-        //add command
-        CommandEvent commandEvent = TacticdslFactory.eINSTANCE.createCommandEvent();
-        commandEvent.setName(entry.getKey());
-        commandEvent.setComment(entry.getValue());
-        aggregate.getDomainObjects().add(commandEvent);
-        //step one flow
-
-        //step two flow
-
-    }
-
-    private void addElementsToFlow(Application application, Flow flowCML) {
-        for(FlowStep step : flow){
-            //add command
-            CommandEvent command = TacticdslFactory.eINSTANCE.createCommandEvent();
-            command.setName(step.getCommand());
-            application.getCommands().add(command);
-            //add domain Event
-            DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-            domainEvent.setName(step.getEvent());
-            //step One
-            DomainEventProductionStep stepOne = ContextMappingDSLFactory.eINSTANCE.createDomainEventProductionStep();
-            EitherCommandOrOperation commandOrOperation = ContextMappingDSLFactory.eINSTANCE.createEitherCommandOrOperation();
-            commandOrOperation.setCommand(command);
-            stepOne.setAction(commandOrOperation);
-            SingleEventProduction singleEventProduction = ContextMappingDSLFactory.eINSTANCE.createSingleEventProduction();
-            singleEventProduction.getEvents().add(domainEvent);
-            stepOne.setEventProduction(singleEventProduction);
-            flowCML.getSteps().add(stepOne);
-            //Step two
-            //add trigger command
-            if(!step.getTriggers().isEmpty()){
-                CommandEvent triggerCommand = TacticdslFactory.eINSTANCE.createCommandEvent();
-                command.setName(StringValidator.convertForVariableName(step.getTriggers().get(0)));
-                application.getCommands().add(command);
-                CommandInvokationStep stepTwo = ContextMappingDSLFactory.eINSTANCE.createCommandInvokationStep();
-                stepTwo.getEvents().add(domainEvent);
-                CommandInvokation commandInvokation = ContextMappingDSLFactory.eINSTANCE.createSingleCommandInvokation();
-                commandInvokation.getCommands().add(triggerCommand);
-                stepTwo.setAction(commandInvokation);
-                flowCML.getSteps().add(stepTwo);
-            }
-        }
-    }
-
-    private void addFlow() {
-        Application application = ContextMappingDSLFactory.eINSTANCE.createApplication();
-        Flow flow = ContextMappingDSLFactory.eINSTANCE.createFlow();
-        application.getFlows().add(flow);
-
-    }
-
-    private void addCommands(Aggregate aggregate, AggregatesCML thisAggregate) {
-        for ( Map.Entry<String, String> entry : thisAggregate.getCommands().entrySet()) {
-            CommandEvent commandEvent = TacticdslFactory.eINSTANCE.createCommandEvent();
-            commandEvent.setName(entry.getKey());
-            commandEvent.setComment(entry.getValue());
-            aggregate.getDomainObjects().add(commandEvent);
-        }
-    }
-
-    private void addDomainEvents(Aggregate aggregate, AggregatesCML thisAggregate) {
-        for ( Map.Entry<String, ArrayList<String>> entry : thisAggregate.getDomainEvents().entrySet()) {
-            DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-            domainEvent.setName(entry.getKey());
-            aggregate.getDomainObjects().add(domainEvent);
-        }
-    }
-*/
     @Override
     public String toString() {
         return "EventStorming{" +
