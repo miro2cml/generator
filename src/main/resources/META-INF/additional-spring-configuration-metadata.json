@@ -14,6 +14,11 @@
       "name": "miro.redirectUri",
       "type": "java.lang.String",
       "description": "Redirect URI sent to Miro for OAuth."
+    },
+    {
+      "name": "UserStoryBoard.activitesColor",
+      "type": "java.lang.String",
+      "description": "Description for UserStoryBoard.activitesColor."
     }
   ]
 }

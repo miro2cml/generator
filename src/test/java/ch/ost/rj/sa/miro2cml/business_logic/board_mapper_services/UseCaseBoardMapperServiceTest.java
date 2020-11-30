@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
+import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
@@ -27,7 +28,7 @@ class UseCaseBoardMapperServiceTest {
     }
 
     @Test
-    void testMapWidgetObjectsToCmlArtifacts() {
+    void testMapWidgetObjectsToCmlArtifacts() throws WrongBoardException {
         // Setup
         final Card card = new Card(new BigInteger(String.valueOf(1)), 1, 1, 1, "<p>As an user I want to create a account so that I could authorize myself</p>", "description", "#FFFFFF");
         final ArrayList<WidgetObject> widgetObjectArrayList = new ArrayList<>();
