@@ -33,7 +33,7 @@ class UseCaseBoardMapperServiceTest {
         final ArrayList<WidgetObject> widgetObjectArrayList = new ArrayList<>();
         widgetObjectArrayList.add(card);
         final InputBoard inputBoard = new InputBoard("boardId", widgetObjectArrayList);
-        final UserStory story = new UserStory("user", "create", "account", "I could authorize myself");
+        final UserStory story = new UserStory("user", "create", "account", "I could authorize myself", "an");
         final ArrayList<ICmlArtifact> list = new ArrayList<>();
         list.add(story);
         final CmlModel expectedResult = new CmlModel();

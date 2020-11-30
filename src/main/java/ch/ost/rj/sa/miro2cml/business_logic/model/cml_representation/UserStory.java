@@ -73,6 +73,10 @@ public class UserStory implements ICmlArtifact {
         this.benefit = benefit;
     }
 
+    public String getArticle() { return article; }
+
+    public void setArticle(String article) { this.article = article; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
