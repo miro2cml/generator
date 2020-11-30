@@ -50,4 +50,8 @@ public class StringValidator {
     public static String replaceLineWithComma(String input) {
         return input.replaceAll("-", ",");
     }
+
+    public static String removeSpace(String s) {
+        return s.replaceAll(" ", "");
+    }
 }
