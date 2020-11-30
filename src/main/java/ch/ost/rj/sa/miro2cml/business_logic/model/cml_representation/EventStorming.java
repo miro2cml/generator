@@ -9,6 +9,7 @@ import org.contextmapper.tactic.dsl.tacticdsl.TacticdslFactory;
 import org.eclipse.emf.ecore.EObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class EventStorming implements ICmlArtifact {
@@ -25,37 +26,38 @@ public class EventStorming implements ICmlArtifact {
         org.contextmapper.dsl.contextMappingDSL.BoundedContext boundedContext = ContextMappingDSLFactory.eINSTANCE.createBoundedContext();
         Application application = ContextMappingDSLFactory.eINSTANCE.createApplication();
         Flow flowCML = ContextMappingDSLFactory.eINSTANCE.createFlow();
+        HashMap<String, CommandEvent> commandList = new HashMap<>();
         application.getFlows().add(flowCML);
         for (AggregatesCML thisAggregate: aggregates) {
             ContextMappingDSLFactory factory =ContextMappingDSLFactory.eINSTANCE;
             Aggregate aggregate = factory.createAggregate();
             aggregate.setName(thisAggregate.getName());
             boundedContext.getAggregates().add(aggregate);
-            addCommandsEventsFlow(aggregate, thisAggregate, application, flowCML);
-            //addDomainEvents(aggregate, thisAggregate);
-            //addCommands(aggregate, thisAggregate);
+            addCommandsEventsFlow(aggregate, thisAggregate, application, flowCML, commandList);
         }
         boundedContext.setComment(issues);
         boundedContext.setName("EventStormingBoundedContext");
-        //Application application = ContextMappingDSLFactory.eINSTANCE.createApplication();
-        //Flow flowCML = ContextMappingDSLFactory.eINSTANCE.createFlow();
-        //application.getFlows().add(flowCML);
-        //addElementsToFlow(application, flowCML);
         boundedContext.setApplication(application);
         return boundedContext;
     }
 
-    private void addCommandsEventsFlow(Aggregate aggregate, AggregatesCML thisAggregate, Application application, Flow flowCML) {
+    private void addCommandsEventsFlow(Aggregate aggregate, AggregatesCML thisAggregate, Application application, Flow flowCML, HashMap<String, CommandEvent> list) {
         for(FlowStep steps: thisAggregate.getFlow()){
             //add event
             if(!steps.getCommand().equals("") && !steps.getEvent().equals("") && !steps.getTriggers().isEmpty()){
                 DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
                 domainEvent.setName(steps.getEvent());
                 aggregate.getDomainObjects().add(domainEvent);
-                //add command
-                CommandEvent commandEvent = TacticdslFactory.eINSTANCE.createCommandEvent();
-                commandEvent.setName(steps.getCommand());
-                aggregate.getDomainObjects().add(commandEvent);
+                //add command (and check if already exists)
+                CommandEvent commandEvent;
+                if(list.containsKey(steps.getCommand())){
+                    commandEvent = list.get(steps.getCommand());
+                }else{
+                    commandEvent = TacticdslFactory.eINSTANCE.createCommandEvent();
+                    commandEvent.setName(steps.getCommand());
+                    application.getCommands().add(commandEvent);
+                    list.put(steps.getCommand(), commandEvent);
+                }
                 //steps one flow
                 DomainEventProductionStep stepOne = ContextMappingDSLFactory.eINSTANCE.createDomainEventProductionStep();
                 EitherCommandOrOperation commandOrOperation = ContextMappingDSLFactory.eINSTANCE.createEitherCommandOrOperation();
@@ -70,10 +72,16 @@ public class EventStorming implements ICmlArtifact {
                 stepOne.setEventProduction(singleEventProduction);
 
                 //step two flow
-                CommandEvent triggerCommand = TacticdslFactory.eINSTANCE.createCommandEvent();
-                //TODO triggers
-                triggerCommand.setName(steps.getTriggers());
-                application.getCommands().add(triggerCommand);
+                CommandEvent triggerCommand;
+                //check if already exists
+                if(list.containsKey(steps.getTriggers())){
+                    triggerCommand = list.get(steps.getTriggers());
+                }else{
+                    triggerCommand = TacticdslFactory.eINSTANCE.createCommandEvent();
+                    triggerCommand.setName(steps.getTriggers());
+                    application.getCommands().add(triggerCommand);
+                    list.put(steps.getEvent(), triggerCommand);
+                }
                 CommandInvokationStep stepTwo = ContextMappingDSLFactory.eINSTANCE.createCommandInvokationStep();
                 stepTwo.getEvents().add(domainEvent);
                 CommandInvokation commandInvokation = ContextMappingDSLFactory.eINSTANCE.createSingleCommandInvokation();
