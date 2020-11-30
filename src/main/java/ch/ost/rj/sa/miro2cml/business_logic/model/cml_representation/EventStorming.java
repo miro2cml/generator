@@ -80,7 +80,7 @@ public class EventStorming implements ICmlArtifact {
                     triggerCommand = TacticdslFactory.eINSTANCE.createCommandEvent();
                     triggerCommand.setName(steps.getTriggers());
                     application.getCommands().add(triggerCommand);
-                    list.put(steps.getEvent(), triggerCommand);
+                    list.put(steps.getTriggers(), triggerCommand);
                 }
                 CommandInvokationStep stepTwo = ContextMappingDSLFactory.eINSTANCE.createCommandInvokationStep();
                 stepTwo.getEvents().add(domainEvent);

@@ -66,7 +66,7 @@ public class EventStormingBoard {
             String command = sticker.getText();
             double xStart = sticker.getX();
             double yMiddle = sticker.getY();
-            //TODO: testing with other examples if constants work well
+            //TODO: testing with other examples if constants work well 1.2 0.5 0.5
             double xEnd= xStart+ (1.2*width);
             double yStart = yMiddle - 0.5*height;
             double yEnd = yMiddle+ (0.5 *height);
@@ -94,17 +94,19 @@ public class EventStormingBoard {
 
     private List<String> getTrigger(String domainEvent) {
         ArrayList<String> output=new ArrayList<>();
-        for(ArrayList<String>  text: triggers){
-            if(text.get(0).contains(domainEvent)){
-                for (String s : text) {
-                    output.add(s);
-                    mappingLog.addSuccessLogEntry("Trigger "+s+" found for "+domainEvent);
+        if(!domainEvent.equals("")){
+            for(ArrayList<String>  text: triggers){
+                if(text.get(0).contains(domainEvent)){
+                    for (String s : text) {
+                        output.add(s);
+                        mappingLog.addSuccessLogEntry("Trigger "+s+" found for "+domainEvent);
+                    }
                 }
             }
-        }
-        if(output.isEmpty()){
-            mappingLog.addErrorLogEntry("For "+domainEvent+" no triggers found");
-            messages.add("For "+domainEvent+" no triggers found. Check if the lines are correct connected.");
+            if(output.isEmpty()){
+                mappingLog.addErrorLogEntry("For "+domainEvent+" no triggers found");
+                messages.add("For "+domainEvent+" no triggers found. Check if the lines are correct connected.");
+            }
         }
         return output;
     }
