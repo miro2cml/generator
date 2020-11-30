@@ -8,11 +8,11 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
 
 public interface IBoardMapperService {
 
-    default MappedBoard mapBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) {
+    default MappedBoard mapBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws Exception {
         CmlModel cmlModel = mapWidgetObjectsToCmlArtifacts(inputBoard, mappingLog, messages);
         return new MappedBoard(inputBoard, cmlModel);
     }
 
-    CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages);
+    CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws Exception;
 
 }
