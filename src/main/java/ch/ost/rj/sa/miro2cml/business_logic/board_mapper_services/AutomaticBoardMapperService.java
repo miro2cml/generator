@@ -8,7 +8,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 
 public class AutomaticBoardMapperService implements IBoardMapperService {
     @Override
-    public MappedBoard mapBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) {
+    public MappedBoard mapBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws Exception {
         MappedBoard mappedBoard = null;
         //TODO: inspect inputBoard -> decide which analyzer should be called. (currently default in UseCaseBoardAnalyzer)
         //Switch (based on inputBoard inspect)

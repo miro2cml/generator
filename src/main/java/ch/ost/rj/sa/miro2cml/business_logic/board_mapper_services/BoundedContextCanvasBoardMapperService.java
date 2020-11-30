@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
+import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter.BoundedContextConverter;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -13,11 +14,14 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.Bound
 public class BoundedContextCanvasBoardMapperService implements IBoardMapperService {
 
     @Override
-    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) {
-        CmlModel cmlModel= new CmlModel();
-        BoundedContextBoard extractedBoard = BoundedContextBoard.createBoundedContextBoard(inputBoard);
-        BoundedContext boundedContextModel = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(extractedBoard);
-        cmlModel.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) boundedContextModel.provideEObject());
-        return cmlModel;
+    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws Exception {
+            CmlModel cmlModel= new CmlModel();
+            BoundedContextBoard extractedBoard= BoundedContextBoard.createBoundedContextBoard(inputBoard, mappingLog, messages);
+            BoundedContext boundedContextModel = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(extractedBoard, mappingLog, messages);
+            cmlModel.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) boundedContextModel.provideEObject());
+            if(!messages.getMessages().isEmpty()){
+                messages.setMappingState(false);
+            }
+            return cmlModel;
     }
 }
