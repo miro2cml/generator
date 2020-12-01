@@ -25,7 +25,11 @@ public class UserStory implements ICmlArtifact {
         story.setName(name);
         story.setRole(role);
         Feature feature = ContextMappingDSLFactory.eINSTANCE.createStoryFeature();
-        feature.setVerb(verb);
+        if(verb.equals("create")|| verb.equals("update")|| verb.equals("delete")|| verb.equals("read")){
+            feature.setVerb(verb);
+        }else {
+            feature.setVerb("\""+verb+"\"");
+        }
         feature.setEntityArticle(article);
         feature.setEntity(entity);
         story.getFeatures().add(feature);
