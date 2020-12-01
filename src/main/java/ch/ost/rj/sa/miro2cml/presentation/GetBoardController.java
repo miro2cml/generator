@@ -28,12 +28,12 @@ public class GetBoardController {
     //Todo: limit mapsizes to 100 -> probably over a fifo queue -> (if size >= 100 -> pop -> delete from map and after that save
 
     @PostMapping("/getBoard")
-    public String getOutput(BoardForm form, Model model, HttpSession session) {
+    public String getOutput(BoardForm form, Model model, HttpSession session) throws Exception{
         model.addAttribute("form", form);
         logger.debug("boardID: " + form.getBoardId());
         logger.debug("commence with board mapping");
         MappingController mappingController = new MappingController(form.getBoardType(), form.getBoardId(), SessionHandlerService.getMiroAccessToken(session));
-        boolean succes = mappingController.run();
+        boolean succes = mappingController.startMappingProcess();
         logger.debug("finished board mapping, success?: " + succes);
 
         mappingLogRessourceMap.put(form.getBoardId(), mappingController.getServableMappingLog());

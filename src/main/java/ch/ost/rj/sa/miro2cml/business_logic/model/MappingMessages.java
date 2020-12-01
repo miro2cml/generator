@@ -22,4 +22,6 @@ public class MappingMessages {
     public void setMappingState(boolean mappingState) {
         this.mappingState = mappingState;
     }
+
+    public void clear(){this.messages.clear();}
 }
