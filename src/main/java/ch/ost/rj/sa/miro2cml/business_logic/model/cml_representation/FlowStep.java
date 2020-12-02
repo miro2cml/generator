@@ -30,11 +30,8 @@ public class FlowStep {
 
     public String getRole(){ return role; }
 
-    public String getTriggers() {
-        if(triggers.isEmpty()){
-            return "blabla";
-        }
-        return StringValidator.convertForVariableName(triggers.get(0));
+    public ArrayList<String> getTriggers() {
+        return triggers;
     }
 
     public double getPosition() {

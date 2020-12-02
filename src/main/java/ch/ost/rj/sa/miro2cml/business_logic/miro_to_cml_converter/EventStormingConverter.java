@@ -4,28 +4,23 @@ import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.*;
 import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingGroup;
-import com.google.inject.internal.util.$AsynchronousComputationException;
 
 import java.util.*;
 
 public class EventStormingConverter {
     public static EventStorming convertEventStormingBoardtoCML(EventStormingBoard board){
         var inputs = board.getConnections();
-        ArrayList<String> aggregateList = new ArrayList<>();
+        ArrayList<String> aggregateList = getAggregateList(inputs);
+        ArrayList<AggregatesCML> aggregatesCMLList = getAggregateCMLList(inputs, aggregateList);
+        return new EventStorming(aggregatesCMLList, "/* " + board.getIssues().toString() + "*/");
+    }
+
+    private static ArrayList<AggregatesCML> getAggregateCMLList(ArrayList<EventStormingGroup> inputs, ArrayList<String> aggregateList) {
         ArrayList<AggregatesCML> aggregatesCMLList = new ArrayList<>();
-        for(ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingGroup input : inputs) {
-            List<String> aggregates = input.getAgggregate();
-            for(String aggregate: aggregates){
-                if (aggregateList.contains(aggregate)) {
-                    break;
-                } else { aggregateList.add(aggregate);
-                }
-            }
-        }
         for (String aggregate: aggregateList) {
             String name = StringValidator.convertForVariableName(aggregate);
             ArrayList<FlowStep> step = new ArrayList<>();
-            for (ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingGroup input : inputs) {
+            for (EventStormingGroup input : inputs) {
                 if (input.getAgggregate().get(0).equals(aggregate)) {
                     step.add(new FlowStep(input.getPosition(), StringValidator.convertForVariableName(input.getCommand()), StringValidator.convertForVariableName(input.getDomainEvent()), StringValidator.convertForVariableName(input.getRole()), generateTriggers((ArrayList<String>) input.getTrigger())));
                 }
@@ -33,19 +28,29 @@ public class EventStormingConverter {
             aggregatesCMLList.add(new AggregatesCML(name, step));
 
         }
-        return new EventStorming(aggregatesCMLList, "/* " + board.getIssues().toString() + "*/");
+        return aggregatesCMLList;
+    }
+
+    private static ArrayList<String> getAggregateList(ArrayList<EventStormingGroup> inputs) {
+        ArrayList<String> output = new ArrayList<>();
+        for(EventStormingGroup input : inputs) {
+            List<String> aggregates = input.getAgggregate();
+            for(String aggregate: aggregates){
+                if (output.contains(aggregate)) {
+                    break;
+                } else { output.add(aggregate);
+                }
+            }
+        }
+        return output;
     }
 
 
     private static ArrayList<String> generateTriggers(ArrayList<String> trigger) {
-        if(trigger.isEmpty()){
-            return trigger;
-        }else{
+        if (!trigger.isEmpty()) {
             trigger.remove(0);
-            for (String s: trigger) {
-                StringValidator.convertForVariableName(s);
-            }
-            return trigger;
+            trigger.replaceAll(StringValidator::convertForVariableName);
         }
+        return trigger;
     }
 }

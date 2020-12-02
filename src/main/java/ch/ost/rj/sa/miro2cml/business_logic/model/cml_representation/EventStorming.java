@@ -1,6 +1,5 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation;
 
-import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
 import org.contextmapper.dsl.contextMappingDSL.*;
 import org.contextmapper.dsl.contextMappingDSL.Flow;
 import org.contextmapper.tactic.dsl.tacticdsl.CommandEvent;
@@ -10,7 +9,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class EventStorming implements ICmlArtifact {
     private ArrayList<AggregatesCML> aggregates;
@@ -44,54 +42,67 @@ public class EventStorming implements ICmlArtifact {
     private void addCommandsEventsFlow(Aggregate aggregate, AggregatesCML thisAggregate, Application application, Flow flowCML, HashMap<String, CommandEvent> list) {
         for(FlowStep steps: thisAggregate.getFlow()){
             //add event
-            if(!steps.getCommand().equals("") && !steps.getEvent().equals("") && !steps.getTriggers().isEmpty()){
-                DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-                domainEvent.setName(steps.getEvent());
-                aggregate.getDomainObjects().add(domainEvent);
-                //add command (and check if already exists)
-                CommandEvent commandEvent;
-                if(list.containsKey(steps.getCommand())){
-                    commandEvent = list.get(steps.getCommand());
-                }else{
-                    commandEvent = TacticdslFactory.eINSTANCE.createCommandEvent();
-                    commandEvent.setName(steps.getCommand());
-                    application.getCommands().add(commandEvent);
-                    list.put(steps.getCommand(), commandEvent);
-                }
+            if(!steps.getCommand().equals("") && !steps.getEvent().equals("")){
+                DomainEvent domainEvent = getDomainEvent(aggregate, steps);
+                CommandEvent commandEvent = getCommandEvent(application, list, steps.getCommand());
                 //steps one flow
-                DomainEventProductionStep stepOne = ContextMappingDSLFactory.eINSTANCE.createDomainEventProductionStep();
-                EitherCommandOrOperation commandOrOperation = ContextMappingDSLFactory.eINSTANCE.createEitherCommandOrOperation();
-                if(!steps.getRole().equals("")){
-                    commandOrOperation.setActor(steps.getRole());
-                }
-                commandOrOperation.setCommand(commandEvent);
-                stepOne.setAggregate(aggregate);
-                stepOne.setAction(commandOrOperation);
-                SingleEventProduction singleEventProduction = ContextMappingDSLFactory.eINSTANCE.createSingleEventProduction();
-                singleEventProduction.getEvents().add(domainEvent);
-                stepOne.setEventProduction(singleEventProduction);
+                generateStepOne(aggregate, flowCML, steps, domainEvent, commandEvent);
 
-                //step two flow
-                CommandEvent triggerCommand;
-                //check if already exists
-                if(list.containsKey(steps.getTriggers())){
-                    triggerCommand = list.get(steps.getTriggers());
-                }else{
-                    triggerCommand = TacticdslFactory.eINSTANCE.createCommandEvent();
-                    triggerCommand.setName(steps.getTriggers());
-                    application.getCommands().add(triggerCommand);
-                    list.put(steps.getTriggers(), triggerCommand);
+                if(steps.getTriggers().size()==1){
+                    generateStepTwo(application, flowCML, list, steps.getTriggers().get(0), domainEvent);
                 }
-                CommandInvokationStep stepTwo = ContextMappingDSLFactory.eINSTANCE.createCommandInvokationStep();
-                stepTwo.getEvents().add(domainEvent);
-                CommandInvokation commandInvokation = ContextMappingDSLFactory.eINSTANCE.createSingleCommandInvokation();
-                commandInvokation.getCommands().add(triggerCommand);
-                stepTwo.setAction(commandInvokation);
-                flowCML.getSteps().add(stepOne);
-                flowCML.getSteps().add(stepTwo);
+                if(steps.getTriggers().size()==2){
+                    generateStepTwo(application, flowCML, list, steps.getTriggers().get(0), domainEvent);
+                    generateStepTwo(application, flowCML, list, steps.getTriggers().get(1), domainEvent);
+                }
             }
 
         }
+    }
+
+    private DomainEvent getDomainEvent(Aggregate aggregate, FlowStep steps) {
+        DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
+        domainEvent.setName(steps.getEvent());
+        aggregate.getDomainObjects().add(domainEvent);
+        return domainEvent;
+    }
+
+    private void generateStepOne(Aggregate aggregate, Flow flowCML, FlowStep steps, DomainEvent domainEvent, CommandEvent commandEvent) {
+        DomainEventProductionStep stepOne = ContextMappingDSLFactory.eINSTANCE.createDomainEventProductionStep();
+        EitherCommandOrOperation commandOrOperation = ContextMappingDSLFactory.eINSTANCE.createEitherCommandOrOperation();
+        if(!steps.getRole().equals("")){
+            commandOrOperation.setActor(steps.getRole());
+        }
+        commandOrOperation.setCommand(commandEvent);
+        stepOne.setAggregate(aggregate);
+        stepOne.setAction(commandOrOperation);
+        SingleEventProduction singleEventProduction = ContextMappingDSLFactory.eINSTANCE.createSingleEventProduction();
+        singleEventProduction.getEvents().add(domainEvent);
+        stepOne.setEventProduction(singleEventProduction);
+        flowCML.getSteps().add(stepOne);
+    }
+
+    private void generateStepTwo(Application application, Flow flowCML, HashMap<String, CommandEvent> list, String command, DomainEvent domainEvent) {
+        CommandEvent triggerCommand = getCommandEvent(application, list, command);
+        CommandInvokationStep stepTwo = ContextMappingDSLFactory.eINSTANCE.createCommandInvokationStep();
+        stepTwo.getEvents().add(domainEvent);
+        CommandInvokation commandInvokation = ContextMappingDSLFactory.eINSTANCE.createSingleCommandInvokation();
+        commandInvokation.getCommands().add(triggerCommand);
+        stepTwo.setAction(commandInvokation);
+        flowCML.getSteps().add(stepTwo);
+    }
+
+    private CommandEvent getCommandEvent(Application application, HashMap<String, CommandEvent> list, String command) {
+        CommandEvent commandEvent;
+        if (list.containsKey(command)) {
+            commandEvent = list.get(command);
+        } else {
+            commandEvent = TacticdslFactory.eINSTANCE.createCommandEvent();
+            commandEvent.setName(command);
+            application.getCommands().add(commandEvent);
+            list.put(command, commandEvent);
+        }
+        return commandEvent;
     }
 
     @Override

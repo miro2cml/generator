@@ -67,7 +67,7 @@ public class EventStormingBoard {
             double xStart = sticker.getX();
             double yMiddle = sticker.getY();
             //TODO: testing with other examples if constants work well 1.2 0.5 0.5
-            double xEnd= xStart+ (1.2*width);
+            double xEnd= xStart+ (2.5*width);
             double yStart = yMiddle - 0.5*height;
             double yEnd = yMiddle+ (0.5 *height);
             double position = sticker.getX();
