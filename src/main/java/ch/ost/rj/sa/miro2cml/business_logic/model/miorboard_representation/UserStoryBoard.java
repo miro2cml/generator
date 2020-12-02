@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
+import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
 import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -107,7 +108,8 @@ public class UserStoryBoard {
                 String verb = getPart(strings.get(2), strings.get(3), text, strings.get(1).length() + role.length());
                 String entity = getPart(strings.get(3), strings.get(4), text, strings.get(1).length() + strings.get(2).length() + verb.length() + role.length());
                 String benefit = getPart(strings.get(4), strings.get(5), text, strings.get(1).length() + strings.get(2).length() + strings.get(3).length() + verb.length() + role.length() + entity.length());
-                return new UserStory(role, verb, entity, benefit);
+                String article = StringValidator.removeSpace(strings.get(3));
+                return new UserStory(role, verb, entity, benefit, article);
             }
         }
         return null;

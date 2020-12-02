@@ -33,12 +33,14 @@ class UserStoryBoardTest {
         String expectedVerb = "create";
         String expectedEntity = "board";
         String expectedBenefit = "I could see it";
+        String expectedArticle = "a";
         UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
         assertEquals(expectedEntity, result.getUserStories().get(0).getEntity());
         assertEquals(expectedBenefit, result.getUserStories().get(0).getBenefit());
+        assertEquals(expectedArticle, result.getUserStories().get(0).getArticle());
 
     }
     @Test
@@ -53,12 +55,14 @@ class UserStoryBoardTest {
         String expectedVerb = "create";
         String expectedEntity = "object";
         String expectedBenefit = "I could see it";
+        String expectedArticle = "an";
         UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board, new MappingLog(""), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
         assertEquals(expectedEntity, result.getUserStories().get(0).getEntity());
         assertEquals(expectedBenefit, result.getUserStories().get(0).getBenefit());
+        assertEquals(expectedArticle, result.getUserStories().get(0).getArticle());
 
     }
     @Test
@@ -73,12 +77,14 @@ class UserStoryBoardTest {
         String expectedVerb = "create";
         String expectedEntity = "board";
         String expectedBenefit = "I could see it";
+        String expectedArticle = "a";
         UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
         assertEquals(expectedEntity, result.getUserStories().get(0).getEntity());
         assertEquals(expectedBenefit, result.getUserStories().get(0).getBenefit());
+        assertEquals(expectedArticle, result.getUserStories().get(0).getArticle());
 
     }
     @Test
@@ -93,12 +99,14 @@ class UserStoryBoardTest {
         String expectedVerb = "create";
         String expectedEntity = "object";
         String expectedBenefit = "I could see it";
+        String expectedArticle = "an";
         UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
         assertEquals(expectedEntity, result.getUserStories().get(0).getEntity());
         assertEquals(expectedBenefit, result.getUserStories().get(0).getBenefit());
+        assertEquals(expectedArticle, result.getUserStories().get(0).getArticle());
 
     }
     @Test

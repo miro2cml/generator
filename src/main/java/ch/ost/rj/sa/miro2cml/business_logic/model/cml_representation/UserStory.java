@@ -7,14 +7,15 @@ import org.eclipse.emf.ecore.EObject;
 import java.util.Objects;
 
 public class UserStory implements ICmlArtifact {
-    private String name, role, verb, entity, benefit;
+    private String name, role, verb, entity, benefit, article;
 
-    public UserStory(String role, String verb, String entity, String benefit) {
+    public UserStory(String role, String verb, String entity, String benefit, String article) {
         this.role = role;
         this.verb = verb;
         this.entity = entity;
         this.benefit = benefit;
         this.name = verb + entity;
+        this.article = article;
     }
 
     @Override
@@ -24,11 +25,20 @@ public class UserStory implements ICmlArtifact {
         story.setName(name);
         story.setRole(role);
         Feature feature = ContextMappingDSLFactory.eINSTANCE.createStoryFeature();
-        feature.setVerb(verb);
+        if(isCRUDVerb()){
+            feature.setVerb(verb);
+        }else {
+            feature.setVerb("\""+verb+"\"");
+        }
+        feature.setEntityArticle(article);
         feature.setEntity(entity);
         story.getFeatures().add(feature);
         story.setBenefit(benefit);
         return story;
+    }
+
+    private boolean isCRUDVerb() {
+        return verb.equals("create")|| verb.equals("update")|| verb.equals("delete")|| verb.equals("read");
     }
 
     public String getName() {
@@ -70,6 +80,10 @@ public class UserStory implements ICmlArtifact {
     public void setBenefit(String benefit) {
         this.benefit = benefit;
     }
+
+    public String getArticle() { return article; }
+
+    public void setArticle(String article) { this.article = article; }
 
     @Override
     public boolean equals(Object o) {
