@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
+import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter.UserStoryConverter;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -15,7 +16,7 @@ import java.util.List;
 public class UseCaseBoardMapperService implements IBoardMapperService {
 
     @Override
-    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) {
+    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
         CmlModel cmlModel= new CmlModel();
         mappingLog.addInfoLogEntry("Commence with UserStory generation");
         UserStoryBoard extractedBoard = UserStoryBoard.createUserStoryBoard(inputBoard, mappingLog, messages);
