@@ -62,4 +62,14 @@ public class EventStormingGroup {
     public double getPosition() {
         return position;
     }
+
+    public int compareTo(Object o) {
+        EventStormingGroup group = (EventStormingGroup) o;
+        if (getPosition() < group.getPosition()) {
+            return -1;
+        } else if (getPosition() > group.getPosition()) {
+            return 1;
+        }
+        return 0;
+    }
 }

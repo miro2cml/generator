@@ -54,6 +54,11 @@ public class EventStormingBoard {
         this.height = getHeight();
         this.width = getWidth();
         this.connections = generateMap();
+        sortEventStormingGroups();
+    }
+
+    private void sortEventStormingGroups() {
+        connections.sort(EventStormingGroup::compareTo);
     }
 
     public static EventStormingBoard createEventStormingBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
@@ -66,18 +71,22 @@ public class EventStormingBoard {
             String command = sticker.getText();
             double xStart = sticker.getX();
             double yMiddle = sticker.getY();
-            //TODO: testing with other examples if constants work well 1.2 0.5 0.5
             double xEnd= xStart+ (2.5*width);
             double yStart = yMiddle - 0.5*height;
             double yEnd = yMiddle+ (0.5 *height);
             double position = sticker.getX();
             String domainEvent= getTextFromStickerWithCorrectPosition(domainEvents, xStart, xEnd, yStart, yEnd);
-            String role= getTextFromStickerWithCorrectPosition(userRole, xStart, xEnd, yStart, yEnd);
-            List<String> aggregate= getTextsFromStickerWithCorrectPosition(aggregates, xStart, xEnd, yStart, yEnd);
+            String role= getTextFromStickerWithCorrectPosition(userRole, xStart, xEnd+(2*width), yStart-(1*height), yEnd);
+            List<String> aggregate= getTextsFromStickerWithCorrectPosition(aggregates, xStart, xEnd, yStart-(2*height), yEnd);
             List<String> trigger = getTrigger(domainEvent);
-            EventStormingGroup eventStormingGroup = new EventStormingGroup(position, domainEvent, command,  aggregate, role, trigger);
-            mappingLog.addSuccessLogEntry("Group found with elements: DomainEvent -> "+domainEvent+"( triggers "+trigger+"), Command -> "+command+", Aggregate ->"+ aggregate+", User Role -> "+role+".");
-            output.add(eventStormingGroup);
+            if(!domainEvent.equals("") && !aggregate.contains("")){
+                EventStormingGroup eventStormingGroup = new EventStormingGroup(position, domainEvent, command,  aggregate, role, trigger);
+                mappingLog.addSuccessLogEntry("Group found with elements: DomainEvent -> "+domainEvent+"( triggers "+trigger+"), Command -> "+command+", Aggregate ->"+ aggregate+", User Role -> "+role+".");
+                output.add(eventStormingGroup);
+            }else{
+                mappingLog.addErrorLogEntry("No groups elements for "+command+".");
+            }
+
         }
 
         return output;
@@ -105,7 +114,7 @@ public class EventStormingBoard {
             }
             if(output.isEmpty()){
                 mappingLog.addErrorLogEntry("For "+domainEvent+" no triggers found");
-                messages.add("For "+domainEvent+" no triggers found. Check if the lines are correct connected.");
+                messages.add("For "+StringValidator.validatorForStrings(domainEvent)+" no triggers found. Check if the lines are correct connected.");
             }
         }
         return output;
@@ -148,7 +157,7 @@ public class EventStormingBoard {
                 String start = getWidgetText(startWidgetId);
                 String end = getWidgetText(endWidgetId);
                 mappingLog.addSuccessLogEntry("Connection found: "+start + " triggers " + end);
-                if(!exists(lines, start, end)){
+                if(!exists(lines, start, end) && !start.equals(end)){
                     ArrayList<String> newConnection = new ArrayList<>();
                     newConnection.add(start);
                     newConnection.add(end);
