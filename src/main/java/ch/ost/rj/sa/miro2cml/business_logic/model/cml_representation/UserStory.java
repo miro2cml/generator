@@ -25,7 +25,7 @@ public class UserStory implements ICmlArtifact {
         story.setName(name);
         story.setRole(role);
         Feature feature = ContextMappingDSLFactory.eINSTANCE.createStoryFeature();
-        if(verb.equals("create")|| verb.equals("update")|| verb.equals("delete")|| verb.equals("read")){
+        if(isCRUDVerb()){
             feature.setVerb(verb);
         }else {
             feature.setVerb("\""+verb+"\"");
@@ -35,6 +35,10 @@ public class UserStory implements ICmlArtifact {
         story.getFeatures().add(feature);
         story.setBenefit(benefit);
         return story;
+    }
+
+    private boolean isCRUDVerb() {
+        return verb.equals("create")|| verb.equals("update")|| verb.equals("delete")|| verb.equals("read");
     }
 
     public String getName() {
