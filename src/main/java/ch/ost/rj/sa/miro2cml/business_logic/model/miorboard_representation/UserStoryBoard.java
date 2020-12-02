@@ -1,6 +1,7 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
+import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserStoryBoard {
+
     public static final String BLUECARD = "#2d9bf0";
     public static final String YELLOWCARD = "#fbc800";
     private static final List<List<String>> regex = UserStoryRegex.createUserStoriesRegex();
@@ -20,14 +22,14 @@ public class UserStoryBoard {
     private final InputBoard inputBoard;
     private final ArrayList<UserStory> userStories;
 
-    private UserStoryBoard(InputBoard inputBoard, MappingLog log, MappingMessages messages) {
+    private UserStoryBoard(InputBoard inputBoard, MappingLog log, MappingMessages messages) throws WrongBoardException {
         this.inputBoard = inputBoard;
         this.log = log;
         this.messages = messages;
         this.userStories = extractUserStories();
     }
 
-    public static UserStoryBoard createUserStoryBoard(InputBoard inputBoard, MappingLog log, MappingMessages messages) {
+    public static UserStoryBoard createUserStoryBoard(InputBoard inputBoard, MappingLog log, MappingMessages messages) throws WrongBoardException {
         return new UserStoryBoard(inputBoard, log, messages);
     }
 
@@ -60,7 +62,7 @@ public class UserStoryBoard {
         return false;
     }
 
-    private ArrayList<UserStory> extractUserStories() {
+    private ArrayList<UserStory> extractUserStories() throws WrongBoardException {
         ArrayList<UserStory> output = new ArrayList<>();
         List<WidgetObject> input = inputBoard.getWidgetObjects();
         int cardCounter = 0;
@@ -88,6 +90,12 @@ public class UserStoryBoard {
             messages.add(output.size() + " of these cards have been successfully converted to UserStories");
             messages.add("Consult the logfile for more information");
             messages.setMappingState(false);
+        }
+        if(cardCounter==0){
+            throw new WrongBoardException("Input Board doesn't match with expected Board Type: User Story. No Cards found.");
+        }
+        if(output.isEmpty()){
+            throw new WrongBoardException("Input Board doesn't match with expected Board Type: User Story. No UserStories found.");
         }
         return output;
     }
