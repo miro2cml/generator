@@ -1,27 +1,31 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AggregatesCML{
     private String name;
-    private Map<String, String> domainEvents;
-    private Map<String, String> commands;
+    private final List<FlowStep> flow;
 
-    public AggregatesCML(String name, Map<String, String> domainEvents, Map<String, String> commands) {
+    public AggregatesCML(String name, List<FlowStep> flow) {
         this.name = name;
-        this.domainEvents = domainEvents;
-        this.commands = commands;
+        this.flow = flow;
     }
 
     public String getName() {
         return name;
     }
 
-    public Map<String, String> getDomainEvents() {
-        return domainEvents;
+    public List<FlowStep> getFlow() {
+        return flow;
     }
 
-    public Map<String, String> getCommands() {
-        return commands;
+    @Override
+    public String toString() {
+        return "AggregatesCML{" +
+                "name='" + name + '\'' +
+                ", flow=" + flow.toString() +
+                '}';
     }
 }

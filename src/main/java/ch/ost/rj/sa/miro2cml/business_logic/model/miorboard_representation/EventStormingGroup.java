@@ -1,13 +1,17 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
+import java.util.List;
+
 public class EventStormingGroup {
+    private double position;
     private String domainEvent;
     private String command;
-    private String agggregate;
+    private List<String> agggregate;
     private String role;
-    private String trigger;
+    private List<String> trigger;
     //TODO: modify with logic from event-storming CheatSheet (exapmle more than one aggregate possible)
-    public EventStormingGroup(String domainEvent, String command, String agggregate, String role, String trigger) {
+    public EventStormingGroup(double position, String domainEvent, String command, List<String> agggregate, String role, List<String> trigger) {
+        this.position = position;
         this.domainEvent = domainEvent;
         this.command = command;
         this.agggregate = agggregate;
@@ -31,11 +35,11 @@ public class EventStormingGroup {
         this.command = command;
     }
 
-    public String getAgggregate() {
+    public List<String> getAgggregate() {
         return agggregate;
     }
 
-    public void setAgggregate(String agggregate) {
+    public void setAgggregate(List<String> agggregate) {
         this.agggregate = agggregate;
     }
 
@@ -47,11 +51,25 @@ public class EventStormingGroup {
         this.role = role;
     }
 
-    public String getTrigger() {
+    public List<String> getTrigger() {
         return trigger;
     }
 
-    public void setTrigger(String trigger) {
+    public void setTrigger(List<String> trigger) {
         this.trigger = trigger;
+    }
+
+    public double getPosition() {
+        return position;
+    }
+
+    public int compareTo(Object o) {
+        EventStormingGroup group = (EventStormingGroup) o;
+        if (getPosition() < group.getPosition()) {
+            return -1;
+        } else if (getPosition() > group.getPosition()) {
+            return 1;
+        }
+        return 0;
     }
 }

@@ -268,7 +268,6 @@ class BoundedContextBoardTest {
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Name: Test</strong></p>", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        //var boundedContextBoard = BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages);
         Throwable exception = assertThrows(WrongBoardException.class, () -> BoundedContextBoard.createBoundedContextBoard(board, mappingLog, messages));
         assertEquals("Input Board doesn't match with expected Board Type: Bounded Context Canvas", exception.getMessage());
     }

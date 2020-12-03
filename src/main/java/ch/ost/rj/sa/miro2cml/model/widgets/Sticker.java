@@ -161,6 +161,6 @@ public class Sticker extends WidgetObject {
 
     @Override
     public String getMappingRelevantText() {
-        return super.getMappingRelevantText();
+        return text;
     }
 }
