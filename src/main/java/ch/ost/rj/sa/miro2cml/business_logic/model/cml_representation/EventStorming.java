@@ -41,13 +41,10 @@ public class EventStorming implements ICmlArtifact {
 
     private void addCommandsEventsFlow(Aggregate aggregate, AggregatesCML thisAggregate, Application application, Flow flowCML, HashMap<String, CommandEvent> list) {
         for(FlowStep steps: thisAggregate.getFlow()){
-            //add event
             if(!steps.getCommand().equals("") && !steps.getEvent().equals("")){
                 DomainEvent domainEvent = getDomainEvent(aggregate, steps);
                 CommandEvent commandEvent = getCommandEvent(application, list, steps.getCommand());
-                //steps one flow
                 generateStepOne(aggregate, flowCML, steps, domainEvent, commandEvent);
-
                 if(steps.getTriggers().size()==1){
                     generateStepTwo(application, flowCML, list, steps.getTriggers().get(0), domainEvent);
                 }
