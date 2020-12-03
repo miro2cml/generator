@@ -51,8 +51,6 @@ public class EventStormingBoard {
         this.userRole = getStickerWithRelevantColor(userRoleColor, "UserRoles ");
         this.issues = getStringWithColor(issueColor);
         this.triggers = getLines();
-        this.height = getHeight();
-        this.width = getWidth();
         this.connections = generateMap();
         sortEventStormingGroups();
     }
@@ -139,12 +137,12 @@ public class EventStormingBoard {
         return output;
     }
 
-    private int getWidth() {
-        return (int) domainEvents.get(0).getWidth();
+    private void getWidth(Sticker widget) {
+        width = widget.getWidth();
     }
 
-    private int getHeight() {
-        return (int) domainEvents.get(0).getHeight();
+    private void getHeight(Sticker widget) {
+        height = widget.getHeight();
     }
 
 
@@ -223,12 +221,17 @@ public class EventStormingBoard {
     private String getColor(String matcher) {
         for (WidgetObject widget:inputBoard.getWidgetObjects()) {
             if(widget instanceof Sticker && (((Sticker) widget).getText().contains(matcher))){
+                if(matcher.equals(DOMAIN_EVENT_P)){
+                    getHeight((Sticker) widget);
+                    getWidth((Sticker) widget);
+                }
                 String color = ((Sticker)widget).getBackgroundColor();
                 inputBoard.getWidgetObjects().remove(widget);
                 mappingLog.addSuccessLogEntry(matcher + " found.");
                 return color;
             }
         }
+
         mappingLog.addErrorLogEntry(matcher+ " not found.");
         messages.add("Sticker " + matcher + "  not found, there are mapping errors possible. Make sure you use the template correct!");
         return "";

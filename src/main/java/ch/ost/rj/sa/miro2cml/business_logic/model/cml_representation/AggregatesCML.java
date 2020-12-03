@@ -25,7 +25,7 @@ public class AggregatesCML{
     public String toString() {
         return "AggregatesCML{" +
                 "name='" + name + '\'' +
-                ", flow=" + flow +
+                ", flow=" + flow.toString() +
                 '}';
     }
 }

@@ -38,4 +38,14 @@ public class FlowStep {
         return position;
     }
 
+    @Override
+    public String toString() {
+        return "FlowStep{" +
+                "position=" + position +
+                ", command='" + command + '\'' +
+                ", event='" + event + '\'' +
+                ", role='" + role + '\'' +
+                ", triggers=" + triggers +
+                '}';
+    }
 }

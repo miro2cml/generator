@@ -16,7 +16,9 @@ public class EventStormingBoardMapperService implements IBoardMapperService {
         CmlModel cmlModel= new CmlModel();
         EventStormingBoard extractedBoard = EventStormingBoard.createEventStormingBoard(inputBoard, mappingLog, messages);
         EventStorming eventStormingModel = EventStormingConverter.convertEventStormingBoardtoCML(extractedBoard);
-        System.out.println(eventStormingModel);
+        if(!messages.getMessages().isEmpty()){
+            messages.setMappingState(false);
+        }
         cmlModel.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) eventStormingModel.provideEObject());
         return cmlModel;
     }

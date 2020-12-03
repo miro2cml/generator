@@ -18,7 +18,6 @@ public class BoundedContextCanvasBoardMapperService implements IBoardMapperServi
             CmlModel cmlModel= new CmlModel();
             BoundedContextBoard extractedBoard= BoundedContextBoard.createBoundedContextBoard(inputBoard, mappingLog, messages);
             BoundedContext boundedContextModel = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(extractedBoard, mappingLog, messages);
-            System.out.println(boundedContextModel);
             cmlModel.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) boundedContextModel.provideEObject());
             if(!messages.getMessages().isEmpty()){
                 messages.setMappingState(false);

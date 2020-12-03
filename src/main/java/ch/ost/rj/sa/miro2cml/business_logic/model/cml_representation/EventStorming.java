@@ -52,12 +52,23 @@ public class EventStorming implements ICmlArtifact {
                     generateStepTwo(application, flowCML, list, steps.getTriggers().get(0), domainEvent);
                 }
                 if(steps.getTriggers().size()==2){
-                    generateStepTwo(application, flowCML, list, steps.getTriggers().get(0), domainEvent);
-                    generateStepTwo(application, flowCML, list, steps.getTriggers().get(1), domainEvent);
+                    generateStepTwoWithTwoTriggers(application, flowCML, list, steps.getTriggers(), domainEvent);
                 }
             }
 
         }
+    }
+
+    private void generateStepTwoWithTwoTriggers(Application application, Flow flowCML, HashMap<String, CommandEvent> list, ArrayList<String> triggers, DomainEvent domainEvent) {
+        CommandEvent triggerCommand = getCommandEvent(application, list, triggers.get(0));
+        CommandEvent triggerCommandTwo = getCommandEvent(application, list, triggers.get(1));
+        CommandInvokationStep stepTwo = ContextMappingDSLFactory.eINSTANCE.createCommandInvokationStep();
+        stepTwo.getEvents().add(domainEvent);
+        CommandInvokation commandInvokation = ContextMappingDSLFactory.eINSTANCE.createExclusiveAlternativeCommandInvokation();
+        commandInvokation.getCommands().add(triggerCommand);
+        commandInvokation.getCommands().add(triggerCommandTwo);
+        stepTwo.setAction(commandInvokation);
+        flowCML.getSteps().add(stepTwo);
     }
 
     private DomainEvent getDomainEvent(Aggregate aggregate, FlowStep steps) {
