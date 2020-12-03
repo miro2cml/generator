@@ -6,10 +6,7 @@ import org.contextmapper.dsl.contextMappingDSL.Aggregate;
 import org.contextmapper.dsl.contextMappingDSL.BoundedContextType;
 import org.contextmapper.dsl.contextMappingDSL.ContextMappingDSLFactory;
 import org.contextmapper.dsl.contextMappingDSL.KnowledgeLevel;
-import org.contextmapper.tactic.dsl.tacticdsl.ComplexType;
-import org.contextmapper.tactic.dsl.tacticdsl.DomainEvent;
-import org.contextmapper.tactic.dsl.tacticdsl.DomainObjectOperation;
-import org.contextmapper.tactic.dsl.tacticdsl.TacticdslFactory;
+import org.contextmapper.tactic.dsl.tacticdsl.*;
 import org.eclipse.emf.ecore.EObject;
 
 import java.util.ArrayList;
@@ -63,11 +60,11 @@ public class BoundedContext implements ICmlArtifact{
             mappingLog.addErrorLogEntry("No Commands were found");
             messages.add("No Commands found. Check if you use the blue Command box in the field Inbound Communication");
         }else{
-            DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-            domainEvent.setName(name + "_Commands");
-            aggregate.getDomainObjects().add(domainEvent);
+            Entity entity = TacticdslFactory.eINSTANCE.createEntity();
+            entity.setName(name + "_Commands");
+            aggregate.getDomainObjects().add(entity);
             mappingLog.addInfoLogEntry("Automatic generated Domain Event with name: "+name+"_Commands");
-            addOperations(domainEvent, commands);
+            addOperations(entity, commands);
         }
     }
 
@@ -76,11 +73,11 @@ public class BoundedContext implements ICmlArtifact{
             mappingLog.addErrorLogEntry("No Queries were found");
             messages.add("No Queries found. Check if you use the green Query box in the field Inbound Communication");
         }else{
-            DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-            domainEvent.setName(name + "_Queries");
-            aggregate.getDomainObjects().add(domainEvent);
+            Entity entity = TacticdslFactory.eINSTANCE.createEntity();
+            entity.setName(name + "_Queries");
+            aggregate.getDomainObjects().add(entity);
             mappingLog.addInfoLogEntry("Automatic generated Domain Event with name: "+name+"_Queries");
-            addOperations(domainEvent, queries);
+            addOperations(entity, queries);
         }
     }
 
@@ -97,16 +94,16 @@ public class BoundedContext implements ICmlArtifact{
         }
     }
 
-    private void addOperations(DomainEvent domainEvent, ArrayList<String> operations)  {
+    private void addOperations(Entity entity, ArrayList<String> operations)  {
         for(String str: operations){
             DomainObjectOperation operation = TacticdslFactory.eINSTANCE.createDomainObjectOperation();
             operation.setName(str);
             ComplexType returnType = TacticdslFactory.eINSTANCE.createComplexType();
             returnType.setType("String");
             operation.setReturnType(returnType);
-            mappingLog.addInfoLogEntry("Automatic generated return type Strin for "+str);
-            domainEvent.getOperations().add(operation);
-            mappingLog.addSuccessLogEntry("Add Operation to Aggregate with name: "+str);
+            mappingLog.addInfoLogEntry("Automatic generated return type String for "+str);
+            entity.getOperations().add(operation);
+            mappingLog.addSuccessLogEntry("Add Operation to Entity with name: "+str);
         }
 
     }
