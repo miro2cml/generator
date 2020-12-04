@@ -11,13 +11,13 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.data_access.MiroApiServiceAdapter;
 import ch.ost.rj.sa.miro2cml.data_access.model.WidgetCollection;
 import ch.ost.rj.sa.miro2cml.model.boards.BoardType;
+import org.contextmapper.dsl.contextMappingDSL.ContextMappingModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class MappingController {
@@ -27,7 +27,6 @@ public class MappingController {
     private final String boardId;
     private final String accessToken;
     private final MappingMessages mappingMessages = new MappingMessages();
-    private MappedBoard mappedBoard = null;
     private ByteArrayResource resource = null;
     private String cmlPreview = null;
 
@@ -36,6 +35,7 @@ public class MappingController {
         this.boardId = boardId;
         this.accessToken = accessToken;
         this.mappingLog = new MappingLog(boardId);
+        addMetaDataToLog();
     }
 
     @Override
@@ -85,6 +85,7 @@ public class MappingController {
             logger.debug("Commence Board mapping");
             mappingLog.addInfoLogEntry("Commence Board mapping");
             try{
+                MappedBoard mappedBoard = null;
                 InputBoard validatedBoard = InputValidation.validate(inputBoard);
                 mappingLog.addInfoLogEntry("Input is validated. Maximum size of text is 1200 characters.");
 
@@ -111,6 +112,9 @@ public class MappingController {
                     break;
                 }
                 mappingLog.addInfoLogEntry("BoardMapping finished");
+
+                addMetaDataToCml(mappedBoard.getCmlModel().getResource().getContextMappingModel());
+
                 mappingLog.addInfoLogEntry("commence with cml serialization");
                 resource = new ByteArrayResource(mappedBoard.getCmlModel().toByteArray());
                 mappingLog.addInfoLogEntry("finished cml serialization");
@@ -134,4 +138,35 @@ public class MappingController {
         return false;
     }
 
+    private void addMetaDataToCml(ContextMappingModel cml) {
+        String oldTopComment = cml.getTopComment();
+        oldTopComment = oldTopComment == null ? "" : oldTopComment;
+        oldTopComment = oldTopComment.replace("/*", "");
+        oldTopComment = oldTopComment.replace("*/", "");
+        StringBuilder topCommentWithMetaData = new StringBuilder()
+                .append("/*").append(System.lineSeparator())
+                .append(provideMetaDataString()).append(System.lineSeparator())
+                .append(oldTopComment).append(System.lineSeparator())
+                .append("*/");
+        cml.setTopComment(topCommentWithMetaData.toString());
+    }
+
+    private void addMetaDataToLog() {
+        mappingLog.setMetaData(provideMetaDataString());
+    }
+
+    private String provideMetaDataString() {
+        String boardLink = "https://miro.com/app/board/" + boardId;
+        String timestamp = new Timestamp(new Date().getTime()).toString();
+        String miro2cmlVersion = "0.0.1"; //ToDo: automate this or at least externalize it into a properties.file
+        String contextMapperVersion = "6.1.1-SNAPSHOT";  //ToDo: automate this or at least externalize it into a properties.file
+
+        StringBuilder stringBuilder = new StringBuilder()
+                .append("Converted MiroBoard: ").append(boardLink).append(System.lineSeparator())
+                .append("Converted at: ").append(timestamp).append(System.lineSeparator())
+                .append("Converted with Miro2CML Version: ").append(miro2cmlVersion).append(System.lineSeparator())
+                .append("Generated CML for ContextMapper Version: ").append(contextMapperVersion).append(System.lineSeparator());
+
+        return stringBuilder.toString();
+    }
 }
