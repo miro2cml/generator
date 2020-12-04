@@ -5,7 +5,6 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.model.widgets.Card;
-import ch.ost.rj.sa.miro2cml.model.widgets.Line;
 import ch.ost.rj.sa.miro2cml.model.widgets.Text;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ class UserStoryBoardTest {
         String expectedEntity = "board";
         String expectedBenefit = "I could see it";
         String expectedArticle = "a";
-        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
+        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
@@ -56,7 +55,7 @@ class UserStoryBoardTest {
         String expectedEntity = "object";
         String expectedBenefit = "I could see it";
         String expectedArticle = "an";
-        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board, new MappingLog(""), new MappingMessages());
+        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board, new MappingLog(), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
@@ -78,7 +77,7 @@ class UserStoryBoardTest {
         String expectedEntity = "board";
         String expectedBenefit = "I could see it";
         String expectedArticle = "a";
-        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
+        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
@@ -100,7 +99,7 @@ class UserStoryBoardTest {
         String expectedEntity = "object";
         String expectedBenefit = "I could see it";
         String expectedArticle = "an";
-        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
+        UserStoryBoard result = UserStoryBoard.createUserStoryBoard(board,new MappingLog(), new MappingMessages());
 
         assertEquals(expectedActor, result.getUserStories().get(0).getRole());
         assertEquals(expectedVerb, result.getUserStories().get(0).getVerb());
@@ -116,7 +115,7 @@ class UserStoryBoardTest {
         widgetObjects.add(new Card(BigInteger.ONE, 0, 0, 0, "Text", "", ""));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        Throwable exception = assertThrows(WrongBoardException.class, () -> UserStoryBoard.createUserStoryBoard(board, new MappingLog(""), new MappingMessages()));
+        Throwable exception = assertThrows(WrongBoardException.class, () -> UserStoryBoard.createUserStoryBoard(board, new MappingLog(), new MappingMessages()));
         assertEquals("Input Board doesn't match with expected Board Type: User Story. No UserStories found.", exception.getMessage());
     }
     @Test
@@ -126,7 +125,7 @@ class UserStoryBoardTest {
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "some text", "", 0, ""));
         InputBoard board = new InputBoard("123", widgetObjects);
 
-        Throwable exception = assertThrows(WrongBoardException.class, () -> UserStoryBoard.createUserStoryBoard(board, new MappingLog(""), new MappingMessages()));
+        Throwable exception = assertThrows(WrongBoardException.class, () -> UserStoryBoard.createUserStoryBoard(board, new MappingLog(), new MappingMessages()));
         assertEquals("Input Board doesn't match with expected Board Type: User Story. No Cards found.", exception.getMessage());
     }
 }

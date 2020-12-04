@@ -18,13 +18,13 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class UseCaseBoardMapperServiceTest {
+class UserStoryMapperServiceTest {
 
-    private UseCaseBoardMapperService useCaseBoardMapperServiceUnderTest;
+    private UserStoryMapperService userStoryMapperServiceUnderTest;
 
     @BeforeEach
     void setUp() {
-        useCaseBoardMapperServiceUnderTest = new UseCaseBoardMapperService();
+        userStoryMapperServiceUnderTest = new UserStoryMapperService();
     }
 
     @Test
@@ -39,7 +39,7 @@ class UseCaseBoardMapperServiceTest {
         list.add(story);
         final CmlModel expectedResult = new CmlModel();
         // Run the test
-        final CmlModel result = useCaseBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(inputBoard,new MappingLog("testId"),new MappingMessages());
+        final CmlModel result = userStoryMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(inputBoard,new MappingLog(),new MappingMessages());
 
         // Verify the results
         assertEquals(expectedResult, result);

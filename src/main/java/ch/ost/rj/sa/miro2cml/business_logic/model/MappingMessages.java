@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MappingMessages {
-    private ArrayList<String> messages= new ArrayList<>();
     private boolean mappingState = true;
+    private final ArrayList<String> messages= new ArrayList<>();
+
 
     public List<String> getMessages() {
         return messages;
@@ -24,4 +25,12 @@ public class MappingMessages {
     }
 
     public void clear(){this.messages.clear();}
+
+    @Override
+    public String toString() {
+        return "MappingMessages{" +
+                "mappingState=" + mappingState +
+                ", messages=" + messages +
+                '}';
+    }
 }

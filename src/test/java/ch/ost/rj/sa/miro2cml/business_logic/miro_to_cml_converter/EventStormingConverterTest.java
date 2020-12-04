@@ -20,7 +20,7 @@ class EventStormingConverterTest {
     @Test
     void convertEventStormingBoardtoCML() throws WrongBoardException {
         ArrayList<WidgetObject> widgetObjectArrayList = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjectArrayList.add(new Sticker(BigInteger.ONE, 0, 0, 0, 228,199, "orange", "",0,  "", "", "<p>Domain Event</p>"));
         widgetObjectArrayList.add(new Sticker(BigInteger.ONE, 0, 0, 0, 30,20, "blue", "",0,  "", "", "<p>Command</p>"));

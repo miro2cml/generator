@@ -21,6 +21,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.contextmapper:context-mapper-dsl:6.1.1-SNAPSHOT'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

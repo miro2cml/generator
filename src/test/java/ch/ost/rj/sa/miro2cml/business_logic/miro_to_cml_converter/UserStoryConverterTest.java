@@ -24,7 +24,7 @@ class UserStoryConverterTest {
         widgetObjects.add(new Card(BigInteger.ONE, 0, 0, 0, "input  text", "", ""));
         widgetObjects.add(new Card(BigInteger.ONE, 0, 0, 0, "<p>As an User I want to create a board so that I could see it</p>", "", ""));
         InputBoard board = new InputBoard("123", widgetObjects);
-        UserStoryBoard userStoryBoard = UserStoryBoard.createUserStoryBoard(board,new MappingLog(""), new MappingMessages());
+        UserStoryBoard userStoryBoard = UserStoryBoard.createUserStoryBoard(board,new MappingLog(), new MappingMessages());
 
         List<UserStory> userStories = UserStoryConverter.convertExtractedBoardToCMLUserStories(userStoryBoard);
         String expectedName = "createboard";

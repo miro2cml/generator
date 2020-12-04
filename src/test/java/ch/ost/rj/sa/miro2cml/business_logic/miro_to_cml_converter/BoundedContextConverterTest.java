@@ -21,7 +21,7 @@ class BoundedContextConverterTest {
     void generateBoundedContext() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Name: Test</strong></p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 20, 15, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>What benefits does this context provide, and how does it provide them?</p>", "", 0, ""));
@@ -55,7 +55,7 @@ class BoundedContextConverterTest {
     void createBoundedContextWithLessElements() throws Exception{
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p>", "", 0, ""));
