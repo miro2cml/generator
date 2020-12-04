@@ -14,7 +14,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.Bound
 public class BoundedContextCanvasBoardMapperService implements IBoardMapperService {
 
     @Override
-    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws Exception {
+    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
             CmlModel cmlModel= new CmlModel();
             BoundedContextBoard extractedBoard= BoundedContextBoard.createBoundedContextBoard(inputBoard, mappingLog, messages);
             BoundedContext boundedContextModel = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(extractedBoard, mappingLog, messages);
