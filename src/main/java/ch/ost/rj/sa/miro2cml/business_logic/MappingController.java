@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic;
 
+import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.AutomaticBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.BoundedContextCanvasBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.EventStormingBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.UseCaseBoardMapperService;
@@ -15,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MappingController {
@@ -94,11 +97,15 @@ public class MappingController {
                         mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                         break;
                 case EventStorming:
+                        mappingLog.addInfoLogEntry("Board Type: Event Storming");
                         mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                         break;
-                    default:
+
+                default:
                 case EducatedGuess:
-                        break;
+                        mappingLog.addInfoLogEntry("Board Type: EducatedGuess");
+                        mappedBoard = new AutomaticBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                    break;
                 }
                 mappingLog.addInfoLogEntry("BoardMapping finished");
                 mappingLog.addInfoLogEntry("commence with cml serialization");
@@ -107,15 +114,11 @@ public class MappingController {
                 cmlPreview = new String(resource.getByteArray());
                 return true;
             }catch(WrongBoardException e){
-                mappingMessages.clear();
                 mappingMessages.add(e.getMessage());
-                mappingLog.addErrorLogEntry("Board doesn't match expected Input Board. Take a look at the section Supported Templates for more information.");
+                mappingMessages.add("Input Board doesn't match expected Board Format. Take a look at the section Supported Templates for more information.");
+                mappingLog.addErrorLogEntry("Input Board doesn't match expected Board Format. Take a look at the section Supported Templates for more information.");
                 return false;
             } catch (Exception e){
-                System.out.println(e.getMessage());
-                System.out.println(e.getStackTrace());
-                System.out.println(e.getClass());
-                System.out.println();
                 mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
                 mappingMessages.add("Critical ERROR during cml serialization");
                 mappingMessages.add("Please take a look at the logfile for further information");
