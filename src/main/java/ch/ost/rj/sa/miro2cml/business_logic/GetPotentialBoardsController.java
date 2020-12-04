@@ -14,7 +14,11 @@ public class GetPotentialBoardsController {
         this.teamId = teamId;
     }
 
-    public List<BoardPresentation> run() {
+    private List<BoardPresentation> retrivePossibleBoards() {
         return MiroApiServiceAdapter.getMiroBoards(accessToken, teamId);
+    }
+    public static List<BoardPresentation> getPossibleBoards(String accessToken, String teamId){
+        GetPotentialBoardsController controller = new GetPotentialBoardsController(accessToken,teamId);
+        return controller.retrivePossibleBoards();
     }
 }

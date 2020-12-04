@@ -54,8 +54,9 @@ public class MiroApiServiceAdapter {
             InputStream responseStream = connection.getInputStream();
 
             BoardCollection boardCollection = convertJsonResponseStreamIntoMiroBoardCollection(responseStream);
-
-            return createMiroBoardListFromJsonBoardCollection(boardCollection);
+            List<BoardPresentation> boardPresentationList = createMiroBoardListFromJsonBoardCollection(boardCollection);
+            boardPresentationList.sort(((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName())));
+            return boardPresentationList;
         } catch (IOException e) {
             e.printStackTrace();
         }

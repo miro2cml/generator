@@ -5,12 +5,12 @@ import ch.ost.rj.sa.miro2cml.model.boards.BoardType;
 public class BoardForm {
     private String boardId;
     private BoardType boardType;
-    private String module;
+    private String filter;
 
-    public BoardForm(String boardId, BoardType boardType) {
+    public BoardForm(String boardId, BoardType boardType, String filter) {
         this.boardId = boardId;
         this.boardType = boardType;
-        this.module = module;
+        this.filter = filter;
     }
 
     public BoardForm() {
@@ -33,11 +33,11 @@ public class BoardForm {
         this.boardType = boardType;
     }
 
-    public String getModule() {
-        return module;
+    public String getFilter() {
+        return filter;
     }
 
-    public void setModule(String module) {
-        this.module = module;
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 }

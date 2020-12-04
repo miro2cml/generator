@@ -14,8 +14,12 @@ body {
     font-family: Arial, serif;
     padding: 0;
     margin: 0;
-    background-image: linear-gradient(160deg, #f9d12c 20%, white 70%);
+    background-image: linear-gradient(160deg, #f9d12c 20%, white 70%) !important;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-attachment: fixed;
 }
+
 
 #mirologo {
     top: 60px;
@@ -60,4 +64,24 @@ button > a {
 
 .container {
     margin-top: 50px;
+}
+.show {
+    display: block;
+}
+.hide {
+    display: none;
+}
+
+.vertical-overflow-container {
+    width: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 23em;
+}
+
+.responsiveBox {
+    resize: none;
+    overflow: auto;
+    width: 100%;
+    height: 23em;
 }

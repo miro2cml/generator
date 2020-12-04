@@ -13,7 +13,7 @@ module = 'home'
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
 
-    <title>Spring Boot Thymeleaf Hello World Example</title>
+    <title>miro2cml</title>
 
     <link rel="stylesheet" href="webjars/bootstrap/4.2.1/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/testing/css/main.css"/>
