@@ -120,10 +120,6 @@ public class Line extends WidgetObject {
         this.lineType = lineType;
     }
 
-    public void validate(){
-        super.validate();
-    }
-
     private BigInteger resolveEndWIdgetId(MiroWidget miroWidget){
         if (miroWidget.getEndWidget()!=null && miroWidget.getEndWidget().getId()!=null){
             return new BigInteger(miroWidget.getEndWidget().getId());
@@ -137,8 +133,4 @@ public class Line extends WidgetObject {
         return new BigInteger(String.valueOf(0));
     }
 
-    @Override
-    public String getMappingRelevantText(){
-        return super.getMappingRelevantText();
-    }
 }

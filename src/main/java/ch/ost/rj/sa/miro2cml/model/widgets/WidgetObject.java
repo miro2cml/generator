@@ -17,9 +17,11 @@ public abstract class WidgetObject {
         this.id = id;
     }
 
-    public void validate(){return;}//TODO: refactor, remove this method from this(and subclasses) and move it elsewhere, See Gitlab Issue #29
 
-    public String getMappingRelevantText(){return "";} //TODO: refactor, remove this method from this(and subclasses) and move it elsewhere, See Gitlab Issue #29
+    public String getMappingRelevantText(){return "";}
+
+    public void setMappingRelevantText(String text){return;}
+
     @Override
     public String toString() {
         return "WidgetObject{" +

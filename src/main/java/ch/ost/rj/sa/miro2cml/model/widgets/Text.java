@@ -217,16 +217,14 @@ public class Text extends WidgetObject {
     public void setTextAlign(String textAlign) {
         this.textAlign = textAlign;
     }
-    public void validate(){
-        if(text != null){
-        text = StringValidator.removeDoubleSpace(text);
-        }else{
-            text = "";
-        }
-    }
 
     @Override
     public String getMappingRelevantText() {
         return text;
+    }
+
+    @Override
+    public void setMappingRelevantText(String text) {
+        this.text = text;
     }
 }
