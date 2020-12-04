@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<div th:replace="fragments/header ::header"></div>
+<main class="container" role="main">
+    <div class="card">
+        <div class="card-header">
+            <h5>User Guide for UserStories</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h5>Step One: create the MiroBoard</h5>
+            <p>First you select in Miro the template User Story Map Framework. Shown in the picture bellow.<img alt="Template: User Story Map Framework" th:src="@{/images/UserStoryTemplate.PNG}" style="width: 25%">
+            Then you could fill in the User Stories. The miro2cml converter note only the title of the Cards, you could use the rest of the Cards like you want. In the picture is an empty and a filled out Card to see.
+            <img alt="Empty Card" th:src="@{/images/EmptyCard.PNG}">
+            <img alt="Empty Card" th:src="@{/images/EmptyCard.PNG}">
+            Make sure that you use, one of these formats for the User Stories:</p>
+            <ul class="list-group">
+                <li class="list-group-item"> As a < actor > I want to < verb > a < entity > so that < benefit >.</li>
+                <li class="list-group-item"> As an < actor > I want to < verb > an < entity > so that < benefit >.</li>
+                <li class="list-group-item"> As a < actor > I want to < verb > an < entity > so that < benefit >.</li>
+                <li class="list-group-item"> As an < actor > I want to < verb > a < entity > so that < benefit >.</li>
+            </ul><br>
+            <a>The yellow and blue Cards are not converted, in the picture red bordered. They are used as Tasks and Activities in the Template and therefore are not relevant for the mapping.</a>
+            <img alt="Empty User Story Map Template" th:src="@{/images/MarkedUserStory.png}"></li>
+                <li class="list-group-item"><h5>Step Two: convert the Board</h5>
+            <a>After you have created your board, you could convert it with the miro2cml Tool. Choose your board and the Template: User Stories.
+            For the example in the figure one the following output will be generated:</a>
+            <pre><code>
+                UserStory createaccount {
+                    As a "User"
+                    I want to "create" an "account"
+                    so that "I could register".
+                }
+            </code></pre>
+                    <p>The name of the User Story is composed of the verb and the entity. The rest is the same as your input</p></li>
+                <li class="list-group-item"><h5>Step Three: use the CML ouput</h5>
+            <p>The CML File with your User Stories is a good start for design work with the Context Mapper Tool. Here is a <a href="https://ozimmer.ch/practices/2020/06/10ICWEKeynoteAndDemo.html">Link</a> to a step by step tutorial for further design work. You could skip the first step because you already have your Requirements defined.
+                If you're new to the Context Mapper here a <a href="http://www.sharelatex.com">Link</a> to how you get started with it.</p></li>
+            </ul>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>

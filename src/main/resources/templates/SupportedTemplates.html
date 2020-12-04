@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<div th:replace="fragments/header ::header"></div>
+<main class="container" role="main">
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h5>Overview</h5>
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <h6>Templates</h6>
+                    <p>miro2cml supports three templates: User Stories, EventStorming and Bounded Context Canvas.</p>
+                    <h6>Precondition</h6>
+                    <p>To be able to follow this user guide, we expect you to be familiar with Miro and the concepts of Tactic and Strategic Domain Driven Design.</p>
+                    <h6>Mapping-Heuristics</h6>
+                    <p>The mapping-heuristics are described in the sections bellow. The mapping-heuristic explain in details, how the mapping is done by miro2cml.
+                        For step by step descriptions for the miro2cml visit the page <a th:href="@{/UserStories}">Tutorials</a>.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <h5>User Story Mapping-Heuristics</h5>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    <h6>Which inputs are converted?</h6>
+                    <p>The User Story Map contains only Cards. Therefore just Cards will be converted. All other Miro elements are ignored.
+                        The Card which are yellow and blue are ignored. Because they illustrate the Tasks and Activites in the User Story Map.
+                        The title of the Cards are relevant for the mapping. The description and the other fields of the Card will be ignored.
+                    </p>
+                    <h6>Example Mappings</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">Card Title</th>
+                            <th scope="col">Card Color (Hex)</th>
+                            <th scope="col">Context Mapper Output</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>As an User I want to create a new album so that I am able to collect my songs.</td>
+                            <td>red (#FF5733)</td>
+                            <td><pre><code>UserStory createnewalbum { <br>As a "User"<br> I want to create a "new album" <br> so that "I am able to collect my songs".<br>} </code></pre></td>
+                        </tr>
+                        <tr>
+                            <td>As a Customer I want to buy a song so that I am able to add it to my list.</td>
+                            <td>green (#0FAF51)</td>
+                            <td><pre><code>UserStory buysong { <br>As a "Customer"<br> I want to "buy" an "song" <br> so that "I am able to add it to my list".<br>} </code></pre></td>
+                        </tr>
+                        <tr>
+                            <td>As an User I want to create a new album so that I am able to collect my songs.</td>
+                            <td>yellow (#fbc800)</td>
+                            <td>no output, because the card is yellow</td>
+                        </tr>
+                        <tr>
+                            <td>As an User I want to create a new album so that I am able to collect my songs.</td>
+                            <td>blue (#2d9bf0)</td>
+                            <td>no output, because the card is blue</td>
+                        </tr>
+                        <tr>
+                            <td>Card One: As a Customer I want to buy a song so that I am able to add it to my list.<br>
+                                Card Two: As a Singer I want to buy a song so that I could use its lyrics.</td>
+                            <td>both green (#0FAF51)</td>
+                            <td><pre><code>UserStory buysong { <br>As a "Customer"<br> I want to "buy" an "song" <br> so that "I am able to add it to my list".<br>} </code></pre>
+                                <pre><code>UserStory buysong1 { <br>As a "Singer"<br> I want to "buy" an "song" <br> so that "I could use its lyrics".<br>} </code></pre></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h6>Frequently Asked Questions (FAQ)</h6>
+                    <p><b>Why are my Cards not converted?</b></p>
+                    <ul>
+                        <li>The Cards are yellow or blue.</li>
+                        <li>They have not the correct text format. Check if you use the correct format like introduced in the <a th:href="@{/UserStories}">tutorial</a>.</li>
+                        <li>The User Stories are not in the title defined of the Miro Cards.</li>
+                    </ul>
+                    <p><b>How is the title of the User Story generated?</b></p>
+                    <p>The title is the verb concatenated with the entity of the User Story.</p>
+                    <p><b>Why there are some numbers added to the title of the User Story?</b></p>
+                    <p>The Context Mapper expect unique titles for the User Stories. If there are exists equal titles the miro2cml
+                        converter add an 1 at the end of the name to make sure that the conversion produce a correct CML File.</p>
+                    <p><b>Why some verbs have quotations mark at the beginning and at the end and some not?</b></p>
+                    <p>The Context Mapper knows the CRUD verbs (create, read, update, delete). Therefore they do not need quotation marks. All other verbs are between the quotations marks to mark them as a string.</p>
+                    <a class="btn btn-primary" th:href="@{/UserStories}">Go to Tutorial</a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <h5>Event Storming Mapping-Heuristics</h5>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    <h5>Event Storming</h5> <a class="btn btn-primary" th:href="@{/EventStorming}">Go to Tutorial</a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFour">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <h5>Bounded Context Mapping-Heuristics</h5>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                <div class="card-body">
+                    <h5>Bounded Context Canvas</h5> <a class="btn btn-primary" th:href="@{/BoundedContext}">Go to Tutorial</a></div>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>

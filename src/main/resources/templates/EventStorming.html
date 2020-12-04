@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<div th:replace="fragments/header ::header"></div>
+<main class="container" role="main">
+    <div class="card">
+        <div class="card-header">
+            <h5>User Guide for Event Stormings</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h5>Step One: create the MiroBoard</h5>
+                <li class="list-group-item"><h5>Step Two: convert the Board</h5>
+                <li class="list-group-item"><h5>Step Three: use the CML ouput</h5>
+            </ul>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>
