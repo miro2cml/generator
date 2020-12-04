@@ -7,38 +7,45 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
 import ch.ost.rj.sa.miro2cml.model.boards.BoardType;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class AutomaticBoardMapperService implements IBoardMapperService {
     @Override
     public MappedBoard mapBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
         MappedBoard mappedBoard = null;
-        ArrayList<BoardType> succesfullMappings = new ArrayList<>();
-        List<BoardType> boardTypes = Arrays.asList(BoardType.UserStory, BoardType.BoundedContextCanvas, BoardType.EventStorming);
+        MappingLog localLog = new MappingLog();
+        MappingMessages localMessages = new MappingMessages();
+        ArrayList<BoardType> successfulMappings = new ArrayList<>();
+        List<BoardType> boardTypes = Arrays.asList(BoardType.BoundedContextCanvas, BoardType.EventStorming, BoardType.UserStory);
         for (BoardType specificBoardType : boardTypes) {
+            InputBoard localInputBoard = SerializationUtils.clone(inputBoard);
             try {
-                mappingSwitch(specificBoardType, inputBoard,mappingLog,messages);
-                succesfullMappings.add(specificBoardType);
+                localLog.addInfoLogEntry(specificBoardType.toString());
+                mappingSwitch(specificBoardType, localInputBoard,localLog,localMessages);
+                successfulMappings.add(specificBoardType);
             } catch (WrongBoardException ignored) {
             } finally {
-                messages.clear();
+                localMessages.clear();
+                localLog.clear();
             }
         }
-        if(succesfullMappings.isEmpty()){
+        if(successfulMappings.isEmpty()){
             throw new WrongBoardException("Input Board doesn't match with any of the supported Board Types.");
-        } else if (succesfullMappings.size() > 1){
-            messages.add("Input Board can be interpreted as one of the following board types: " + succesfullMappings.toString());
-            messages.add("We used "+succesfullMappings.get(0) + ", please explicitly specify another board type if needed.");
-            mappingLog.addInfoLogEntry("We used "+succesfullMappings.get(0) + ", please explicitly specify another board type if needed.");
-            mappedBoard = mappingSwitch(succesfullMappings.get(0), inputBoard,mappingLog,messages);
+        } else if (successfulMappings.size() > 1){
+            messages.add("Input Board can be interpreted as one of the following board types: " + successfulMappings.toString());
+            messages.add("We used "+successfulMappings.get(0) + ", please explicitly specify another board type if needed.");
+            mappingLog.addInfoLogEntry("We used "+successfulMappings.get(0) + ", please explicitly specify another board type if needed.");
+            mappingLog.addSectionSeparator();
+            mappedBoard = mappingSwitch(successfulMappings.get(0), inputBoard,mappingLog,messages);
         } else {
-            messages.add("We detected, that your board is most likely a "+succesfullMappings.get(0) + " board.");
-            mappingLog.addInfoLogEntry("We detected, that your board is most likely a "+succesfullMappings.get(0) + " board.");
-            mappedBoard = mappingSwitch(succesfullMappings.get(0), inputBoard,mappingLog,messages);
+            messages.add("We detected, that your board is most likely a "+successfulMappings.get(0) + " board.");
+            mappingLog.addInfoLogEntry("We detected, that your board is most likely a "+successfulMappings.get(0) + " board.");
+            mappingLog.addSectionSeparator();
+            mappedBoard = mappingSwitch(successfulMappings.get(0), inputBoard,mappingLog,messages);
         }
         return mappedBoard;
     }
@@ -47,7 +54,7 @@ public class AutomaticBoardMapperService implements IBoardMapperService {
         MappedBoard mappedBoard= null;
         switch (boardType) {
             case UserStory:
-                mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, messages);
+                mappedBoard = new UserStoryMapperService().mapBoard(inputBoard, mappingLog, messages);
                 break;
             case EventStorming:
                 mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, messages);

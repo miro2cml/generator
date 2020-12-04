@@ -3,7 +3,7 @@ package ch.ost.rj.sa.miro2cml.business_logic;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.AutomaticBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.BoundedContextCanvasBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.EventStormingBoardMapperService;
-import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.UseCaseBoardMapperService;
+import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.UserStoryMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -34,7 +34,7 @@ public class MappingController {
         this.boardType = boardType;
         this.boardId = boardId;
         this.accessToken = accessToken;
-        this.mappingLog = new MappingLog(boardId);
+        this.mappingLog = new MappingLog();
         addMetaDataToLog();
     }
 
@@ -74,10 +74,11 @@ public class MappingController {
     public boolean startMappingProcess() {
         logger.debug("Get BoardData from data source");
         mappingLog.addInfoLogEntry("Get BoardData from data source");
+
         WidgetCollection widgetCollection = MiroApiServiceAdapter.getBoardWidgets(accessToken, boardId);
         InputBoard inputBoard = new InputBoard(boardId, widgetCollection.getWidgets());
         mappingLog.addDataAccessLogEntries(widgetCollection.getDataAccessLog());
-
+        mappingLog.addSectionSeparator();
         if (widgetCollection.isSuccess()) {
             logger.debug("BoardData received");
             mappingLog.addInfoLogEntry("BoardData received");
@@ -88,29 +89,24 @@ public class MappingController {
                 MappedBoard mappedBoard = null;
                 InputBoard validatedBoard = InputValidation.validate(inputBoard);
                 mappingLog.addInfoLogEntry("Input is validated. Maximum size of text is 1200 characters.");
-
+                mappingLog.addSectionSeparator();
                 switch (boardType) {
                 case UserStory:
-                        logger.debug("Board Type: UserStory");
-                        mappingLog.addInfoLogEntry("Board Type: UserStory");
-                        mappedBoard = new UseCaseBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
+                        mappedBoard = new UserStoryMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                         break;
                 case BoundedContextCanvas:
-                        logger.debug("Board Type: Bounded Context Canvas");
-                        mappingLog.addInfoLogEntry("Board Type: Bounded Context Canvas");
                         mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                         break;
                 case EventStorming:
-                        mappingLog.addInfoLogEntry("Board Type: Event Storming");
                         mappedBoard = new EventStormingBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                         break;
-
                 default:
                 case EducatedGuess:
                         mappingLog.addInfoLogEntry("Board Type: EducatedGuess");
                         mappedBoard = new AutomaticBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                     break;
                 }
+                mappingLog.addSectionSeparator();
                 mappingLog.addInfoLogEntry("BoardMapping finished");
 
                 addMetaDataToCml(mappedBoard.getCmlModel().getResource().getContextMappingModel());
@@ -123,9 +119,11 @@ public class MappingController {
             }catch(WrongBoardException e){
                 mappingMessages.add(e.getMessage());
                 mappingMessages.add("Input Board doesn't match expected Board Format. Take a look at the section Supported Templates for more information.");
+                mappingLog.addSectionSeparator();
                 mappingLog.addErrorLogEntry("Input Board doesn't match expected Board Format. Take a look at the section Supported Templates for more information.");
                 return false;
             } catch (Exception e){
+                mappingLog.addSectionSeparator();
                 mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
                 mappingMessages.add("Critical ERROR during cml serialization");
                 mappingMessages.add("Please take a look at the logfile for further information");
@@ -134,6 +132,7 @@ public class MappingController {
         } else {
             mappingMessages.add("Critical ERROR during MiroApiCall");
             mappingMessages.add("Please take a look at the logfile for further information");
+            mappingLog.addSectionSeparator();
         }
         return false;
     }
@@ -145,7 +144,7 @@ public class MappingController {
         oldTopComment = oldTopComment.replace("*/", "");
         StringBuilder topCommentWithMetaData = new StringBuilder()
                 .append("/*").append(System.lineSeparator())
-                .append(provideMetaDataString()).append(System.lineSeparator())
+                .append(provideMetaDataString())
                 .append(oldTopComment).append(System.lineSeparator())
                 .append("*/");
         cml.setTopComment(topCommentWithMetaData.toString());
@@ -162,10 +161,12 @@ public class MappingController {
         String contextMapperVersion = "6.1.1-SNAPSHOT";  //ToDo: automate this or at least externalize it into a properties.file
 
         StringBuilder stringBuilder = new StringBuilder()
+                .append("---------------------------------------------------------------------").append(System.lineSeparator())
                 .append("Converted MiroBoard: ").append(boardLink).append(System.lineSeparator())
                 .append("Converted at: ").append(timestamp).append(System.lineSeparator())
                 .append("Converted with Miro2CML Version: ").append(miro2cmlVersion).append(System.lineSeparator())
-                .append("Generated CML for ContextMapper Version: ").append(contextMapperVersion).append(System.lineSeparator());
+                .append("Generated CML for ContextMapper Version: ").append(contextMapperVersion).append(System.lineSeparator())
+                .append("---------------------------------------------------------------------").append(System.lineSeparator());
 
         return stringBuilder.toString();
     }

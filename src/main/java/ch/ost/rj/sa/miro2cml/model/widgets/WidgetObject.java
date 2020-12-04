@@ -1,8 +1,9 @@
 package ch.ost.rj.sa.miro2cml.model.widgets;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
-public abstract class WidgetObject {
+public abstract class WidgetObject implements Serializable {
     private BigInteger id;
 
     public WidgetObject(BigInteger id) {

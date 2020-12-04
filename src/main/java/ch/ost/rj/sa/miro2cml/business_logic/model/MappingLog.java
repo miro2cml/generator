@@ -6,13 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MappingLog {
-    private final String boardID;
     private final ArrayList<String> logEntries = new ArrayList<>();
     private String metaData = "";
-
-    public MappingLog(String boardID) {
-        this.boardID = boardID;
-    }
 
     public void setMetaData(String metaData) {
         this.metaData = metaData;
@@ -55,5 +50,16 @@ public class MappingLog {
 
     public void addErrorLogEntry(String entry) {
         logEntries.add("ERROR: " + entry);
+    }
+
+    public void addMappingLog(MappingLog additionalMappingLog){
+        logEntries.addAll(additionalMappingLog.getLogEntries());
+    }
+    public void clear(){
+        logEntries.clear();
+    }
+
+    public void addSectionSeparator(){
+        logEntries.add("---------------------------------------------------------------------");
     }
 }

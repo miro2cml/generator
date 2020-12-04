@@ -13,6 +13,7 @@ public class EventStormingBoardMapperService implements IBoardMapperService {
 
     @Override
     public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+        mappingLog.addInfoLogEntry("Commence Board Mapping, Board Type: Event Storming");
         CmlModel cmlModel= new CmlModel();
         EventStormingBoard extractedBoard = EventStormingBoard.createEventStormingBoard(inputBoard, mappingLog, messages);
         EventStorming eventStormingModel = EventStormingConverter.convertEventStormingBoardtoCML(extractedBoard);

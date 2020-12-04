@@ -6,7 +6,6 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
-import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.BoundedContextBoard;
 import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
 import ch.ost.rj.sa.miro2cml.model.widgets.Text;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
@@ -31,7 +30,7 @@ class BoundedContextCanvasBoardMapperServiceTest {
     void mapWidgetObjectsToCmlArtifacts() throws Exception {
         //setup
         InputBoard board = getInputBoard();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         //setup cml object
         ArrayList<String> responsibilites = new ArrayList<>();
@@ -49,7 +48,7 @@ class BoundedContextCanvasBoardMapperServiceTest {
         expectedResult.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) expectedBoundedContext.provideEObject());
 
         //run
-        CmlModel cmlModel = boundedContextCanvasBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(board,new MappingLog(""),new MappingMessages());
+        CmlModel cmlModel = boundedContextCanvasBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(board,new MappingLog(),new MappingMessages());
 
         //check
         assertEquals(true, cmlModel.equals(expectedResult));
@@ -57,7 +56,7 @@ class BoundedContextCanvasBoardMapperServiceTest {
     @Test
     public void createBoundedContextBoard_ThrowException() throws Exception{
         InputBoard board = getInputBoardWithException();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
 
         Throwable exception = assertThrows(WrongBoardException.class, () -> boundedContextCanvasBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(board, mappingLog, messages));
@@ -66,7 +65,7 @@ class BoundedContextCanvasBoardMapperServiceTest {
     @Test
     public void createBoundedContextBoard_Messages() throws Exception{
         InputBoard board = getInputBoardWithException();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
 
         Throwable exception = assertThrows(WrongBoardException.class, () -> boundedContextCanvasBoardMapperServiceUnderTest.mapWidgetObjectsToCmlArtifacts(board, mappingLog, messages));

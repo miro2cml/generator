@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UseCaseBoardMapperService implements IBoardMapperService {
+public class UserStoryMapperService implements IBoardMapperService {
 
     @Override
     public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+        mappingLog.addInfoLogEntry("Commence Mapping, Board Type: UserStory");
         CmlModel cmlModel= new CmlModel();
-        mappingLog.addInfoLogEntry("Commence with UserStory generation");
         UserStoryBoard extractedBoard = UserStoryBoard.createUserStoryBoard(inputBoard, mappingLog, messages);
         List<UserStory> userStories = UserStoryConverter.convertExtractedBoardToCMLUserStories(extractedBoard);
         ArrayList<String> userStoryNames = new ArrayList<>();

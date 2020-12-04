@@ -7,9 +7,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
 import ch.ost.rj.sa.miro2cml.model.widgets.Text;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestExecutionListeners;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ class BoundedContextBoardTest {
     void createBoundedContextBoard_Name() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -40,7 +38,7 @@ class BoundedContextBoardTest {
     void createBoundedContext_Description() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -64,7 +62,7 @@ class BoundedContextBoardTest {
     void createBoundedContextBoard_Domain() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -82,7 +80,7 @@ class BoundedContextBoardTest {
     void createBoundedContextBoard_BusinessModel() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -100,7 +98,7 @@ class BoundedContextBoardTest {
     void createBoundedContextBoard_Evolution() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -118,7 +116,7 @@ class BoundedContextBoardTest {
     void createBoundedContextBoard_RoleTypes() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -136,7 +134,7 @@ class BoundedContextBoardTest {
     void createBoundedContextBoard_Commands() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -157,7 +155,7 @@ class BoundedContextBoardTest {
     void createBounded_DomainEvent() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -178,7 +176,7 @@ class BoundedContextBoardTest {
     void createBounded_Query() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -199,7 +197,7 @@ class BoundedContextBoardTest {
     void createBounded_DomainEventOutbound() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -220,7 +218,7 @@ class BoundedContextBoardTest {
     void createBoundedContextBoard_CommandsOutbound() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -241,7 +239,7 @@ class BoundedContextBoardTest {
     void createBounded_QueryOutbound() throws Exception {
         //setup
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         widgetObjects.add(new Text(BigInteger.ONE, 30, 20, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p>Inbound Communication</p>", "", 0, ""));
         widgetObjects.add(new Text(BigInteger.ONE, 50, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Domain</strong></p><p>- core</p><p>- supporting</p><p>- generic</p><p>- other?</p>", "", 0, ""));
@@ -262,7 +260,7 @@ class BoundedContextBoardTest {
     @Test
     void createBoundedContextBoard_ThrowException() throws Exception{
         ArrayList<WidgetObject> widgetObjects = new ArrayList<>();
-        MappingLog mappingLog = new MappingLog("123");
+        MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
         //add name
         widgetObjects.add(new Text(BigInteger.ONE, 0, 0, 0, 0, 0, "", 0, "", 0, "", 0, "", "<p><strong>Name: Test</strong></p>", "", 0, ""));

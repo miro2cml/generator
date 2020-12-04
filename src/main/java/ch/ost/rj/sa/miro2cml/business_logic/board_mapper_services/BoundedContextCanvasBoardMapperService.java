@@ -15,8 +15,9 @@ public class BoundedContextCanvasBoardMapperService implements IBoardMapperServi
 
     @Override
     public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+            mappingLog.addInfoLogEntry("Commence Board Mapping, Board Type: Bounded Context Canvas");
             CmlModel cmlModel= new CmlModel();
-            BoundedContextBoard extractedBoard= BoundedContextBoard.createBoundedContextBoard(inputBoard, mappingLog, messages);
+            BoundedContextBoard extractedBoard = BoundedContextBoard.createBoundedContextBoard(inputBoard, mappingLog, messages);
             BoundedContext boundedContextModel = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(extractedBoard, mappingLog, messages);
             cmlModel.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) boundedContextModel.provideEObject());
             if(!messages.getMessages().isEmpty()){
