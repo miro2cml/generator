@@ -20,12 +20,13 @@ import java.util.List;
 public class MappingController {
     private static final Logger logger = LoggerFactory.getLogger(MappingController.class);
     private final MappingLog mappingLog;
-    BoardType boardType;
-    String boardId;
-    String accessToken;
-    MappingMessages mappingMessages = new MappingMessages();
+    private final BoardType boardType;
+    private final String boardId;
+    private final String accessToken;
+    private final MappingMessages mappingMessages = new MappingMessages();
     private MappedBoard mappedBoard = null;
-    private Resource resource = null;
+    private ByteArrayResource resource = null;
+    private String cmlPreview = null;
 
     public MappingController(BoardType boardType, String boardId, String accessToken) {
         this.boardType = boardType;
@@ -43,7 +44,7 @@ public class MappingController {
                 '}';
     }
 
-    public Resource getServableOutput() {
+    public ByteArrayResource getServableOutput() {
         return resource;
     }
 
@@ -55,8 +56,16 @@ public class MappingController {
         return mappingMessages.isMappingState();
     }
 
-    public Resource getServableMappingLog() {
+    public ByteArrayResource getServableMappingLog() {
         return new ByteArrayResource(mappingLog.toString().getBytes());
+    }
+
+    public String getLogPreview() {
+        return mappingLog.toString();
+    }
+
+    public String getCmlPreview() {
+        return cmlPreview;
     }
 
     public boolean startMappingProcess() {
@@ -74,35 +83,33 @@ public class MappingController {
             mappingLog.addInfoLogEntry("Commence Board mapping");
             try{
                 switch (boardType) {
-                    case USE_CASE:
+                case UserStory:
                         logger.debug("Board Type: UserStory");
                         mappingLog.addInfoLogEntry("Board Type: UserStory");
                         mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                         break;
-                    case BOUNDED_CONTEXT_CANVAS:
+                case BoundedContextCanvas:
                         logger.debug("Board Type: Bounded Context Canvas");
                         mappingLog.addInfoLogEntry("Board Type: Bounded Context Canvas");
                         mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                         break;
-                    case EVENT_STORMING:
+                case EventStorming:
                         mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
                         break;
-                    case CONTEXT_MAP:
-                        break;
                     default:
-                    case AUTOMATIC:
+                case EducatedGuess:
                         break;
                 }
                 mappingLog.addInfoLogEntry("BoardMapping finished");
                 mappingLog.addInfoLogEntry("commence with cml serialization");
-                resource = ByteArrayResourceGenerator.generateByteArrayResource(mappedBoard);
+                resource = new ByteArrayResource(mappedBoard.getCmlModel().toByteArray());
                 mappingLog.addInfoLogEntry("finished cml serialization");
+                cmlPreview = new String(resource.getByteArray());
                 return true;
-
             }catch(WrongBoardException e){
                 mappingMessages.clear();
                 mappingMessages.add(e.getMessage());
-                mappingLog.addErrorLogEntry("Board doesn't match expected Input Board. Take a look at the section Supported Templates for more informations.");
+                mappingLog.addErrorLogEntry("Board doesn't match expected Input Board. Take a look at the section Supported Templates for more information.");
                 return false;
             } catch (Exception e){
                 System.out.println(e.getMessage());

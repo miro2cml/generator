@@ -1,6 +1,6 @@
 FROM openjdk:11
 
-MAINTAINER miro2cml SA @ HSR
+MAINTAINER miro2cml SA @ RJ-OST
 EXPOSE 8080 
 COPY ./build/libs/*.jar /
 COPY ./src/main/resources/*.properties /

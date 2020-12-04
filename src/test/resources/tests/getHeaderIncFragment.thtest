@@ -1,7 +1,7 @@
 %TEMPLATE_MODE HTML
 %NAME TestHeaderIncFragment
 # ------------------------------------------
-%INPUT (classpath:templates/fragments/headerinc.html)
+%INPUT (classpath:templates/fragments/head.html)
 %TEMPLATE_MODE HTML5
 # ------------------------------------------
 %OUTPUT

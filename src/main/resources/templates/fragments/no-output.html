@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="no-output">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="text-left">ContextMapper Output</h5>
+        </div>
+        <div class="card-body">
+            <div class="row no-gutters my-0 mx-0">
+                <div class="form-group align-items-center col-12 alert alert-danger px-1 " role="alert">
+                    <h4 class="alert-heading">Something went wrong</h4>
+                    <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br>
+                    <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br>
+                    <th:block th:each="message : ${mappingMessages}">
+                        <span style="font-weight: bold" th:text="${message}"></span><br>
+                    </th:block>
+                </div>
+                <div class="col-10 pr-0"></div>
+                <Button class="btn btn-raised btn-primary align-self-end col-2"><a
+                        target="_blank" th:href="${convertedBoard.getBoardLink()}">Open Board in Miro</a></Button>
+                <div class="col-12 pr-0">
+                    <span>Log-Preview:</span>
+                    <textarea class="responsiveBox pr-0" cols="50" readonly th:rows="${logPreviewLinesCount}"
+                              th:text="${logPreview}"></textarea>
+                </div>
+                <label class="col-2 align-middle col-form-label" for="logfile">Your Log-File:</label>
+                <input class="form-control col-5 text-right" id="logfile" readonly
+                       th:placeholder="@{|M2C-${convertedBoard.getName()}-${form.getBoardId()}.log|}" type="text">
+                <div class="col-3"></div>
+                <Button class="btn btn-raised btn-primary col-2"><a
+                        th:href="@{|/downloadLog?id=${form.getBoardId()}&boardType=${form.getBoardType()}&accessToken=${#session.getAttribute('miroAccessToken')}&boardName=${convertedBoard.getName()}|}">Download Logfile</a></Button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
