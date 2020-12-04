@@ -154,13 +154,14 @@ public class Sticker extends WidgetObject {
         this.textAlignVertical = textAlignVertical;
     }
 
-    @Override
-    public void validate() {
-        super.validate();
-    }
 
     @Override
     public String getMappingRelevantText() {
         return text;
+    }
+
+    @Override
+    public void setMappingRelevantText(String text) {
+        this.text = text;
     }
 }

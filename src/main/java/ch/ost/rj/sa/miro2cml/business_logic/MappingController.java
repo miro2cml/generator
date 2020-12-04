@@ -85,26 +85,29 @@ public class MappingController {
             logger.debug("Commence Board mapping");
             mappingLog.addInfoLogEntry("Commence Board mapping");
             try{
+                InputBoard validatedBoard = InputValidation.validate(inputBoard);
+                mappingLog.addInfoLogEntry("Input is validated. Maximum size of text is 1200 characters.");
+
                 switch (boardType) {
                 case UserStory:
                         logger.debug("Board Type: UserStory");
                         mappingLog.addInfoLogEntry("Board Type: UserStory");
-                        mappedBoard = new UseCaseBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        mappedBoard = new UseCaseBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                         break;
                 case BoundedContextCanvas:
                         logger.debug("Board Type: Bounded Context Canvas");
                         mappingLog.addInfoLogEntry("Board Type: Bounded Context Canvas");
-                        mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        mappedBoard = new BoundedContextCanvasBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                         break;
                 case EventStorming:
                         mappingLog.addInfoLogEntry("Board Type: Event Storming");
-                        mappedBoard = new EventStormingBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        mappedBoard = new EventStormingBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                         break;
 
                 default:
                 case EducatedGuess:
                         mappingLog.addInfoLogEntry("Board Type: EducatedGuess");
-                        mappedBoard = new AutomaticBoardMapperService().mapBoard(inputBoard, mappingLog, mappingMessages);
+                        mappedBoard = new AutomaticBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                     break;
                 }
                 mappingLog.addInfoLogEntry("BoardMapping finished");

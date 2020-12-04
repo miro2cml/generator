@@ -95,16 +95,13 @@ public class Card extends WidgetObject {
         this.backgroundColor = backgroundColor;
     }
 
-    public void validate(){
-        if(title != null) {
-            title = StringValidator.removeDoubleSpace(title);
-        }else{
-            title="";
-        }
-    }
-
     @Override
     public String getMappingRelevantText() {
         return title;
+    }
+
+    @Override
+    public void setMappingRelevantText(String text) {
+        this.title=text;
     }
 }

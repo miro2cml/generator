@@ -1,9 +1,11 @@
 package ch.ost.rj.sa.miro2cml.business_logic;
 
+import java.util.List;
+
 public class StringValidator {
 
     public static String removeDoubleSpace(String input){
-        return input.replaceAll("  ", " ");
+        return input.replaceAll(" {2}", " ");
     }
 
     public static String removeSimpleHtmlTags(String input){
@@ -39,6 +41,7 @@ public class StringValidator {
     public static String convertForVariableName(String input){
         input = removeAllHtmlTags(input);
         input = removeSpecialCharacters(input);
+        input = removeLeadingNumbers(input);
         return replaceSpaceWithLine(input);
     }
     public static String validatorForStrings(String input){
@@ -54,5 +57,31 @@ public class StringValidator {
 
     public static String removeSpace(String s) {
         return s.replaceAll(" ", "");
+    }
+    
+    public static String validateInput(String input){
+        input = removeDoubleSpace(input);
+        return cutStringForValidation(input);
+    }
+
+    private static String cutStringForValidation(String input) {
+        if(input.length() > 1200){
+            input = input.substring(0, 1200);
+        }
+        return input;
+    }
+
+    public static String removeLeadingNumbers(String input){
+        return input.replaceFirst("[0-9]*", "");
+    }
+
+    public static String uniqueValue(List<String> list, String input){
+        if(list.contains(input)){
+            input=input+"1";
+            return uniqueValue(list, input);
+        }else{
+            list.add(input);
+            return input;
+        }
     }
 }

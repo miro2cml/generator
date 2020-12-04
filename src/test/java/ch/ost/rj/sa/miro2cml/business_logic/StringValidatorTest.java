@@ -2,6 +2,8 @@ package ch.ost.rj.sa.miro2cml.business_logic;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StringValidatorTest {
@@ -22,8 +24,15 @@ class StringValidatorTest {
     }
     @Test
     void removeDoubleSpace_3() {
-        final String inputOne = "  String  ";
-        final String expectedOne = " String ";
+        final String inputOne = "<p>  String  bla  bla";
+        final String expectedOne = "<p> String bla bla";
+        final String resultOne = StringValidator.removeDoubleSpace(inputOne);
+        assertEquals(expectedOne, resultOne);
+    }
+    @Test
+    void removeDoubleSpace_4() {
+        final String inputOne = "<p>As an  UseCase Designer I want to specify a UseCase in Miro and then transfer it to cml so that  I can collaborativly work on my UseCases and use the functionality of the context mapper(correct, abstände doppelt).</p>";
+        final String expectedOne = "<p>As an UseCase Designer I want to specify a UseCase in Miro and then transfer it to cml so that I can collaborativly work on my UseCases and use the functionality of the context mapper(correct, abstände doppelt).</p>";
         final String resultOne = StringValidator.removeDoubleSpace(inputOne);
         assertEquals(expectedOne, resultOne);
     }
@@ -131,5 +140,43 @@ class StringValidatorTest {
         final String expectedTwo = "&lt;HealthInsurance&gt";
         final String resultTwo = StringValidator.removeAllHtmlTags(inputTwo);
         assertEquals(expectedTwo, resultTwo);
+    }
+    @Test
+    void removeLeadingNumbers(){
+        final String inputOne = "123test";
+        final String expectedOne = "test";
+        final String resultOne = StringValidator.removeLeadingNumbers(inputOne);
+        assertEquals(expectedOne, resultOne);
+
+        final String inputTwo = "test123";
+        final String expectedTwo = "test123";
+        final String resultTwo = StringValidator.removeLeadingNumbers(inputTwo);
+        assertEquals(expectedTwo, resultTwo);
+
+        final String inputThree = "123test123";
+        final String expectedThree = "test123";
+        final String resultThree = StringValidator.removeLeadingNumbers(inputThree);
+        assertEquals(expectedThree, resultThree);
+    }
+    @Test
+    void uniqueValue(){
+        ArrayList<String> list = new ArrayList<>();
+        list.add("FirstValue");
+
+        final String expectedOne = "FirstValue1";
+        final String resultOne = StringValidator.uniqueValue(list, "FirstValue");
+        assertEquals(expectedOne, resultOne);
+        assertEquals(list.get(1), resultOne);
+
+        final String expectedTwo = "FirstValue11";
+        final String resultTwo = StringValidator.uniqueValue(list, "FirstValue");
+        assertEquals(list.get(2), "FirstValue11");
+        assertEquals(expectedTwo, resultTwo);
+
+
+        final String expectedThree = "SecondValue";
+        final String resultThree = StringValidator.uniqueValue(list, "SecondValue");
+        assertEquals(expectedThree, resultThree);
+        assertEquals(list.get(3), resultThree);
     }
 }
