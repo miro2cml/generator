@@ -60,6 +60,7 @@ public class StringValidator {
     }
     
     public static String validateInput(String input){
+        input = input==null ? "" : input;
         input = removeDoubleSpace(input);
         return cutStringForValidation(input);
     }

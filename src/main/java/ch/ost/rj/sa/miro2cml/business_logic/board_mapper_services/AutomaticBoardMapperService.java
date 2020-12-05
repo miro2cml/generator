@@ -16,7 +16,9 @@ import java.util.List;
 public class AutomaticBoardMapperService implements IBoardMapperService {
     @Override
     public MappedBoard mapBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
-        MappedBoard mappedBoard = null;
+        mappingLog.addInfoLogEntry("Selected Board Type: EducatedGuess");
+        mappingLog.addInfoLogEntry("Commence with BoardType deducting");
+        MappedBoard mappedBoard;
         MappingLog localLog = new MappingLog();
         MappingMessages localMessages = new MappingMessages();
         ArrayList<BoardType> successfulMappings = new ArrayList<>();
@@ -27,7 +29,9 @@ public class AutomaticBoardMapperService implements IBoardMapperService {
                 localLog.addInfoLogEntry(specificBoardType.toString());
                 mappingSwitch(specificBoardType, localInputBoard,localLog,localMessages);
                 successfulMappings.add(specificBoardType);
+                mappingLog.addInfoLogEntry("Board might be a " + specificBoardType + ". Add BoardType + " + specificBoardType + " to list of BoardType candidates.");
             } catch (WrongBoardException ignored) {
+                mappingLog.addInfoLogEntry("Board is not of type: " + specificBoardType);
             } finally {
                 localMessages.clear();
                 localLog.clear();
@@ -37,21 +41,23 @@ public class AutomaticBoardMapperService implements IBoardMapperService {
             throw new WrongBoardException("Input Board doesn't match with any of the supported Board Types.");
         } else if (successfulMappings.size() > 1){
             messages.add("Input Board can be interpreted as one of the following board types: " + successfulMappings.toString());
-            messages.add("We used "+successfulMappings.get(0) + ", please explicitly specify another board type if needed.");
-            mappingLog.addInfoLogEntry("We used "+successfulMappings.get(0) + ", please explicitly specify another board type if needed.");
+            BoardType selectedBoardType = successfulMappings.get(0);
+            messages.add("We used "+selectedBoardType + ", please explicitly specify another board type if needed.");
+            mappingLog.addInfoLogEntry("We used "+selectedBoardType + ", please explicitly specify another board type if needed.");
             mappingLog.addSectionSeparator();
-            mappedBoard = mappingSwitch(successfulMappings.get(0), inputBoard,mappingLog,messages);
+            mappedBoard = mappingSwitch(selectedBoardType, inputBoard,mappingLog,messages);
         } else {
-            messages.add("We detected, that your board is most likely a "+successfulMappings.get(0) + " board.");
-            mappingLog.addInfoLogEntry("We detected, that your board is most likely a "+successfulMappings.get(0) + " board.");
+            BoardType detectedBoardType = successfulMappings.get(0);
+            messages.add("We detected, that your board is most likely a "+detectedBoardType + " board.");
+            mappingLog.addInfoLogEntry("We detected, that your board is most likely a "+detectedBoardType + " board.");
             mappingLog.addSectionSeparator();
-            mappedBoard = mappingSwitch(successfulMappings.get(0), inputBoard,mappingLog,messages);
+            mappedBoard = mappingSwitch(detectedBoardType, inputBoard,mappingLog,messages);
         }
         return mappedBoard;
     }
 
     private MappedBoard mappingSwitch(BoardType boardType, InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
-        MappedBoard mappedBoard= null;
+        MappedBoard mappedBoard;
         switch (boardType) {
             case UserStory:
                 mappedBoard = new UserStoryMapperService().mapBoard(inputBoard, mappingLog, messages);
@@ -68,7 +74,7 @@ public class AutomaticBoardMapperService implements IBoardMapperService {
     }
 
     @Override
-    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard board, MappingLog mappingLog, MappingMessages messages) {
-        return new CmlModel();
+    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard board, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+        throw new WrongBoardException("Invalid Access to mapping Chain");
     }
 }
