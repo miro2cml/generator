@@ -29,4 +29,20 @@ public class DataAccessLog {
     public void addErrorLogEntry(String entry) {
         logEntries.add("ERROR: " + entry);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("---------------------------------------------------------------------------------------------------------------------------------------------------------").append(System.lineSeparator());
+        builder.append("---------------------------------------------------------------------Data Access Log---------------------------------------------------------------------").append(System.lineSeparator()).append(System.lineSeparator());
+        for (String entry : logEntries
+        ) {
+            builder.append(entry).append(System.lineSeparator());
+        }
+        builder.append("---------------------------------------------------------------------------------------------------------------------------------------------------------").append(System.lineSeparator());
+        return builder.toString();
+    }
+    public void addSectionSeparator(){
+        logEntries.add("---------------------------------------------------------------------");
+    }
 }

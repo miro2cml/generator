@@ -5,16 +5,17 @@ import ch.ost.rj.sa.miro2cml.data_access.model.DataAccessLog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MappingLog {
+public class MappingLog implements IOutputArtifact{
     private final ArrayList<String> logEntries = new ArrayList<>();
     private String metaData = "";
+    private DataAccessLog dataAccessLog = null;
 
     public void setMetaData(String metaData) {
         this.metaData = metaData;
     }
 
-    public void addDataAccessLogEntries(DataAccessLog dataAccessLog) {
-        logEntries.addAll(dataAccessLog.getLogEntries());
+    public void setDataAccessLog(DataAccessLog dataAccessLog) {
+        this.dataAccessLog = dataAccessLog;
     }
 
     @Override
@@ -25,6 +26,7 @@ public class MappingLog {
         ) {
             builder.append(entry).append(System.lineSeparator());
         }
+        builder.append(dataAccessLog.toString());
         return builder.toString();
     }
 
@@ -61,5 +63,10 @@ public class MappingLog {
 
     public void addSectionSeparator(){
         logEntries.add("---------------------------------------------------------------------");
+    }
+
+    @Override
+    public byte[] toByteArray() {
+        return toString().getBytes();
     }
 }

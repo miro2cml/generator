@@ -17,27 +17,25 @@ repositories {
 
 dependencies {
     implementation 'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.5'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.5'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.contextmapper:context-mapper-dsl:6.1.1-SNAPSHOT'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+    compile group: 'org.webjars', name: 'jquery', version: '3.5.1'
+    compile group: 'org.webjars.npm', name: 'prettier', version: '2.0.5'
+    compile group: 'org.webjars', name: 'bootstrap', version: '4.5.3'
 
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'org.springframework.security:spring-security-test'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    compile group: 'org.webjars', name: 'jquery', version: '3.5.1'
-    compile group: 'org.webjars.npm', name: 'prettier', version: '2.0.5'
-    compile group: 'org.webjars', name: 'bootstrap', version: '4.5.3'
-    compile group: 'org.webjars.bower', name: 'jquery', version: '3.5.1'
+
 }
 
 test {

@@ -6,8 +6,8 @@ import ch.ost.rj.sa.miro2cml.model.boards.BoardPresentation;
 import java.util.List;
 
 public class BoardSelectionService {
-    private String accessToken;
-    private String teamId;
+    private final String accessToken;
+    private final String teamId;
 
     public BoardSelectionService(String accessToken, String teamId) {
         this.accessToken = accessToken;
@@ -15,6 +15,6 @@ public class BoardSelectionService {
     }
 
     public List<BoardPresentation> run() {
-        return MiroApiServiceAdapter.getMiroBoards("5832d294-d90a-40b2-a83b-9aa5232b1493", "3074457349657634050");
+        return MiroApiServiceAdapter.getMiroBoards(accessToken, teamId);
     }
 }

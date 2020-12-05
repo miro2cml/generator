@@ -24,6 +24,7 @@ public class MiroApiServiceAdapter {
 
     public static WidgetCollection getBoardWidgets(String accessToken, String boardID) {
         DataAccessLog dataAccessLog = new DataAccessLog();
+        dataAccessLog.addInfoLogEntry("Send GetAllWidgets Request to MiroApi");
         String query = "access_token=" + accessToken;
         String url = "https://api.miro.com/v1/boards/" + boardID + "/widgets/";
         Charset charset = java.nio.charset.StandardCharsets.UTF_8;
@@ -31,10 +32,14 @@ public class MiroApiServiceAdapter {
             URLConnection connection = new URL(url + "?" + query).openConnection();
             connection.setRequestProperty("Accept-Charset", charset.displayName());
             InputStream responseStream = connection.getInputStream();
-
+            dataAccessLog.addInfoLogEntry("Received BoardWidgets from Miro");
+            dataAccessLog.addSectionSeparator();
+            dataAccessLog.addInfoLogEntry("Start reading miroResponse");
             WidgetsCollection widgetList = convertJsonResponseStreamIntoWidgetCollection(responseStream);
+
             List<WidgetObject> genericWidgetObjectsFromJsonStructuredObjects = createGenericWidgetObjectsFromJsonStructuredObjects(widgetList);
-            dataAccessLog.addInfoLogEntry("Recieved BoardWidgets from Miro");
+
+            dataAccessLog.addInfoLogEntry("Finished Data retrieval from MiroBoard");
             return new WidgetCollection(genericWidgetObjectsFromJsonStructuredObjects,dataAccessLog, true);
         } catch (IOException e) {
             e.printStackTrace();

@@ -60,7 +60,7 @@ public class MappingController {
     }
 
     public ByteArrayResource getServableMappingLog() {
-        return new ByteArrayResource(mappingLog.toString().getBytes());
+        return new ByteArrayResource(mappingLog.toByteArray());
     }
 
     public String getLogPreview() {
@@ -73,22 +73,20 @@ public class MappingController {
 
     public boolean startMappingProcess() {
         logger.debug("Get BoardData from data source");
-        mappingLog.addInfoLogEntry("Get BoardData from data source");
+        mappingLog.addInfoLogEntry("Get BoardData from data source (for more information, see Data Access Log Section down below.)");
 
         WidgetCollection widgetCollection = MiroApiServiceAdapter.getBoardWidgets(accessToken, boardId);
         InputBoard inputBoard = new InputBoard(boardId, widgetCollection.getWidgets());
-        mappingLog.addDataAccessLogEntries(widgetCollection.getDataAccessLog());
-        mappingLog.addSectionSeparator();
+        mappingLog.setDataAccessLog(widgetCollection.getDataAccessLog());
         if (widgetCollection.isSuccess()) {
             logger.debug("BoardData received");
-            mappingLog.addInfoLogEntry("BoardData received");
 
             logger.debug("Commence Board mapping");
             mappingLog.addInfoLogEntry("Commence Board mapping");
             try{
-                MappedBoard mappedBoard = null;
+                MappedBoard mappedBoard;
                 InputBoard validatedBoard = InputValidation.validate(inputBoard);
-                mappingLog.addInfoLogEntry("Input is validated. Maximum size of text is 1200 characters.");
+                mappingLog.addInfoLogEntry("Input is validated. Maximum size of text has been set to 1200 characters.");
                 mappingLog.addSectionSeparator();
                 switch (boardType) {
                 case UserStory:
@@ -102,7 +100,6 @@ public class MappingController {
                         break;
                 default:
                 case EducatedGuess:
-                        mappingLog.addInfoLogEntry("Board Type: EducatedGuess");
                         mappedBoard = new AutomaticBoardMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);
                     break;
                 }
@@ -112,21 +109,30 @@ public class MappingController {
                 addMetaDataToCml(mappedBoard.getCmlModel().getResource().getContextMappingModel());
 
                 mappingLog.addInfoLogEntry("commence with cml serialization");
-                resource = new ByteArrayResource(mappedBoard.getCmlModel().toByteArray());
+                serializeCml(mappedBoard);
                 mappingLog.addInfoLogEntry("finished cml serialization");
-                cmlPreview = new String(resource.getByteArray());
                 return true;
-            }catch(WrongBoardException e){
-                mappingMessages.add(e.getMessage());
+            }catch(WrongBoardException wrongBoardException){
+                mappingMessages.add(wrongBoardException.getMessage());
                 mappingMessages.add("Input Board doesn't match expected Board Format. Take a look at the section Supported Templates for more information.");
                 mappingLog.addSectionSeparator();
                 mappingLog.addErrorLogEntry("Input Board doesn't match expected Board Format. Take a look at the section Supported Templates for more information.");
+                mappingLog.addErrorLogEntry("Error Message: " + wrongBoardException.getMessage());
                 return false;
-            } catch (Exception e){
-                mappingLog.addSectionSeparator();
-                mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
+            } catch (CmlSerializerException cmlSerializerException) {
                 mappingMessages.add("Critical ERROR during cml serialization");
                 mappingMessages.add("Please take a look at the logfile for further information");
+                mappingLog.addSectionSeparator();
+                mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
+                mappingLog.addErrorLogEntry("Error Message: " + cmlSerializerException.getMessage());
+                return false;
+            }
+            catch (Exception e){
+                mappingMessages.add("A critical ERROR occurred during Mapping");
+                mappingMessages.add("Please take a look at the logfile for further information");
+                mappingLog.addSectionSeparator();
+                mappingLog.addErrorLogEntry("A critical ERROR occurred during Mapping");
+                mappingLog.addErrorLogEntry("Error Message: " + e.getMessage());
                 return false;
             }
         } else {
@@ -135,6 +141,15 @@ public class MappingController {
             mappingLog.addSectionSeparator();
         }
         return false;
+    }
+
+    private void serializeCml(MappedBoard mappedBoard) throws CmlSerializerException {
+        try {
+            resource = new ByteArrayResource(mappedBoard.getCmlModel().toByteArray());
+            cmlPreview = new String(resource.getByteArray());
+        } catch (Exception e){
+            throw new CmlSerializerException(e.getMessage());
+        }
     }
 
     private void addMetaDataToCml(ContextMappingModel cml) {
@@ -161,12 +176,12 @@ public class MappingController {
         String contextMapperVersion = "6.1.1-SNAPSHOT";  //ToDo: automate this or at least externalize it into a properties.file
 
         StringBuilder stringBuilder = new StringBuilder()
-                .append("---------------------------------------------------------------------").append(System.lineSeparator())
+                .append("---------------------------------------------------------------------------------------------------------------------------------------------------------").append(System.lineSeparator())
                 .append("Converted MiroBoard: ").append(boardLink).append(System.lineSeparator())
                 .append("Converted at: ").append(timestamp).append(System.lineSeparator())
                 .append("Converted with Miro2CML Version: ").append(miro2cmlVersion).append(System.lineSeparator())
                 .append("Generated CML for ContextMapper Version: ").append(contextMapperVersion).append(System.lineSeparator())
-                .append("---------------------------------------------------------------------").append(System.lineSeparator());
+                .append("---------------------------------------------------------------------------------------------------------------------------------------------------------").append(System.lineSeparator());
 
         return stringBuilder.toString();
     }
