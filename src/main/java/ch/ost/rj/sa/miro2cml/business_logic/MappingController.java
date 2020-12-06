@@ -172,7 +172,7 @@ public class MappingController {
     private String provideMetaDataString() {
         String boardLink = "https://miro.com/app/board/" + boardId;
         String timestamp = new Timestamp(new Date().getTime()).toString();
-        String miro2cmlVersion = "0.0.1"; //ToDo: automate this or at least externalize it into a properties.file
+        String miro2cmlVersion = "0.2.1"; //ToDo: automate this or at least externalize it into a properties.file
         String contextMapperVersion = "6.1.1-SNAPSHOT";  //ToDo: automate this or at least externalize it into a properties.file
 
         StringBuilder stringBuilder = new StringBuilder()
