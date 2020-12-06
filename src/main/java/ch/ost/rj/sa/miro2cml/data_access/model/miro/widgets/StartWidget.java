@@ -10,4 +10,11 @@ public class StartWidget {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "StartWidget{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

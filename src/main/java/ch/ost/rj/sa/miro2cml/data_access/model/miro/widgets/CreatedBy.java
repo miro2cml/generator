@@ -30,4 +30,13 @@ public class CreatedBy {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "CreatedBy{" +
+                "type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }
