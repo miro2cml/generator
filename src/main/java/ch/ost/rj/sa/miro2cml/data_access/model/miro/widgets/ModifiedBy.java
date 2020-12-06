@@ -30,4 +30,13 @@ public class ModifiedBy {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "ModifiedBy{" +
+                "type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

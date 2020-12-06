@@ -32,20 +32,25 @@ public class MiroApiServiceAdapter {
             URLConnection connection = new URL(url + "?" + query).openConnection();
             connection.setRequestProperty("Accept-Charset", charset.displayName());
             InputStream responseStream = connection.getInputStream();
-            dataAccessLog.addInfoLogEntry("Received BoardWidgets from Miro");
+            dataAccessLog.addInfoLogEntry("Received BoardWidgets from Miro (as JSON)");
             dataAccessLog.addSectionSeparator();
-            dataAccessLog.addInfoLogEntry("Start reading miroResponse");
-            WidgetsCollection widgetList = convertJsonResponseStreamIntoWidgetCollection(responseStream);
+            dataAccessLog.addInfoLogEntry("Start reading miroResponse (JSON-Parsing)");
+            WidgetsCollection widgetList = convertJsonResponseStreamIntoWidgetCollection(responseStream, dataAccessLog);
+            dataAccessLog.addInfoLogEntry("JSON reading finished");
+            dataAccessLog.addSectionSeparator();
 
-            List<WidgetObject> genericWidgetObjectsFromJsonStructuredObjects = createGenericWidgetObjectsFromJsonStructuredObjects(widgetList);
+            dataAccessLog.addInfoLogEntry("Start restructuring data (convert it into useful typed instances)");
+            List<WidgetObject> widgetObjectList = createGenericWidgetObjectsFromJsonStructuredObjects(widgetList, dataAccessLog);
+            dataAccessLog.addInfoLogEntry("Finished data restructuring");
+            dataAccessLog.addSectionSeparator();
 
-            dataAccessLog.addInfoLogEntry("Finished Data retrieval from MiroBoard");
-            return new WidgetCollection(genericWidgetObjectsFromJsonStructuredObjects,dataAccessLog, true);
+            dataAccessLog.addInfoLogEntry("Finished Data retrieval for MiroBoard: " + boardID);
+            return new WidgetCollection(widgetObjectList,dataAccessLog, true);
         } catch (IOException e) {
             e.printStackTrace();
             dataAccessLog.addErrorLogEntry("Error during MiroApiCall: " + e.getMessage());
+            return new WidgetCollection(new ArrayList<>(),dataAccessLog, false);
         }
-        return new WidgetCollection(new ArrayList<>(),dataAccessLog, false);
     }
 
     public static List<BoardPresentation> getMiroBoards(String accessToken, String teamId) {

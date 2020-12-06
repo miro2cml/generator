@@ -145,4 +145,26 @@ public class Style {
     public void setTextAlignVertical(String textAlignVertical) {
         this.textAlignVertical = textAlignVertical;
     }
+
+    @Override
+    public String toString() {
+        return "Style{" +
+                "backgroundColor='" + backgroundColor + '\'' +
+                ", fontFamily='" + fontFamily + '\'' +
+                ", fontSize=" + fontSize +
+                ", textAlign='" + textAlign + '\'' +
+                ", textAlignVertical='" + textAlignVertical + '\'' +
+                ", borderColor='" + borderColor + '\'' +
+                ", borderStyle='" + borderStyle + '\'' +
+                ", borderOpacity=" + borderOpacity +
+                ", borderWidth=" + borderWidth +
+                ", shapeType='" + shapeType + '\'' +
+                ", textColor='" + textColor + '\'' +
+                ", lineEndType='" + lineEndType + '\'' +
+                ", lineStartType='" + lineStartType + '\'' +
+                ", lineType='" + lineType + '\'' +
+                ", backgroundOpacity=" + backgroundOpacity +
+                ", padding=" + padding +
+                '}';
+    }
 }

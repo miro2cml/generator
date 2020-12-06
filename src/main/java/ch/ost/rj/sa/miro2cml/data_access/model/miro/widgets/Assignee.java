@@ -12,4 +12,11 @@ public class Assignee {
     public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "Assignee{" +
+                "userId=" + userId +
+                '}';
+    }
 }
