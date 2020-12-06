@@ -25,8 +25,8 @@ public class ViewTest {
         executor.setProcessingContextBuilder(springPCBuilder);
         executor.setDialects(dialects);
 
-        //executor.execute("classpath:tests/getHeaderIncFragment.thtest");
-        //Assertions.assertTrue(executor.isAllOK());
+        executor.execute("classpath:tests/getHeaderIncFragment.thtest");
+        Assertions.assertTrue(executor.isAllOK());
     }
 
     @Test
@@ -41,8 +41,8 @@ public class ViewTest {
         executor.setProcessingContextBuilder(springPCBuilder);
         executor.setDialects(dialects);
 
-        //executor.execute("classpath:tests/getHeaderFragment.thtest");
-        //Assertions.assertTrue(executor.isAllOK());
+        executor.execute("classpath:tests/getHeaderFragment.thtest");
+        Assertions.assertTrue(executor.isAllOK());
     }
 
     @Test
@@ -57,39 +57,7 @@ public class ViewTest {
         executor.setProcessingContextBuilder(springPCBuilder);
         executor.setDialects(dialects);
 
-        //executor.execute("classpath:tests/getFooterFragment.thtest");
-        //Assertions.assertTrue(executor.isAllOK());
-    }
-
-    @Test
-    public void cmlOutputViewTest() {
-        final List<IDialect> dialects = new ArrayList<IDialect>();
-        final SpringWebProcessingContextBuilder springPCBuilder = new SpringWebProcessingContextBuilder();
-        final TestExecutor executor = new TestExecutor();
-
-        dialects.add(new SpringStandardDialect());
-        springPCBuilder.setApplicationContextConfigLocation(null);
-
-        executor.setProcessingContextBuilder(springPCBuilder);
-        executor.setDialects(dialects);
-
-        //executor.execute("classpath:tests/cml-output.thtest");
-        //Assertions.assertTrue(executor.isAllOK()); //TODO: fix outputViewTest
-    }
-
-    @Test
-    public void TestTestingFunctionality() {
-        final List<IDialect> dialects = new ArrayList<IDialect>();
-        final SpringWebProcessingContextBuilder springPCBuilder = new SpringWebProcessingContextBuilder();
-        final TestExecutor executor = new TestExecutor();
-
-        dialects.add(new SpringStandardDialect());
-        springPCBuilder.setApplicationContextConfigLocation(null);
-
-        executor.setProcessingContextBuilder(springPCBuilder);
-        executor.setDialects(dialects);
-
-        //executor.execute("classpath:tests/HelloWorld.thtest");
-        //Assertions.assertTrue(executor.isAllOK());
+        executor.execute("classpath:tests/getFooterFragment.thtest");
+        Assertions.assertTrue(executor.isAllOK());
     }
 }
