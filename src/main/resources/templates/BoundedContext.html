@@ -3,7 +3,10 @@
 <head th:replace="fragments/head :: head">
 </head>
 <body>
-<div th:replace="fragments/header ::header"></div>
+<header>
+    <div th:replace="fragments/header ::header"></div>
+</header>
+<br>
 <main class="container" role="main">
     <div class="card">
         <div class="card-header">
@@ -11,9 +14,66 @@
         </div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h5>Step One: create the MiroBoard</h5>
-                <li class="list-group-item"><h5>Step Two: convert the Board</h5>
-                <li class="list-group-item"><h5>Step Three: use the CML ouput</h5>
+                <li class="list-group-item"><h5>Step One: Create the MiroBoard</h5>
+                    <p>First you have to select the Template <i>The Bounded Context Canvas</i> by Nick Tune. It is available in (<a href="https://miro.com/miroverse/category/strategy-and-planning/strategic-domain-driven-design-template" > Miroverse</a>. In the picture below you can see the template in an empty state.</p>
+                    <img alt="Empty Bounded Context Canvas Template" th:src="@{/images/EmptyCanvas.PNG}" class="img-tutorial">
+                    <p>Now you can fill in your specifications about the Bounded Context that you want to model. For further information about the
+                        template take a look at the <a href="https://github.com/ddd-crew/bounded-context-canvas" target="_blank">corresponding instructions</a>. It
+                        is important that you do not change the headings in the Template as they are used for the conversion. For the fields Strategic Classification and User Role it is important to separate the elements with the usage of hyphens.
+                        In the picture below, you can see a correctly filled out template.</p>
+                    <img alt="Example of Bounded Context Canvas" th:src="@{/images/BoundedContextCanvas.PNG}" class="img-tutorial">
+                <li class="list-group-item"><h5>Step Two: Convert the Board</h5>
+                    <p>After you have created your board, you can convert it with the miro2cml Tool. Choose your board and the Board Type:
+                        Bounded Context Canvas. The following Lines summarize, how the different parts of the Template will be mapped to CML: <br>
+                        All three fields in the Strategic Classification, the Ubiquitous Language, the Business Decisions and the
+                        Outbound Communications will be converted in to a comment. The Name is converted in the name of the Bounded Context. The description
+                        is represented in the domain Vision Statement. The Role Types are interpreted as responsibilities. The type and the knowledge level are
+                        defined by the converter. The Knowledgelevel is CONCRETE and the type is FEATURE. In the Bounded Context is a aggregate which contains the
+                        Inbound Communications as Domain Events and Entities which have the Command and Query functions.<br>
+                        For further information on how the mapping exactly works take a look at the Bounded Context mapping heuristics in the Supported Templates page.
+                        The example from the picture above will produce this output:<p>
+                <pre><code>
+                    /**
+                    * Domain: core
+                    * Business Model: revenue, engagement, compliance
+                    * Evolution: custom built
+                    * Ubiquitous Language: &lt;HealthInsurance&gt; &lt;see glossary&gt;,
+                        &lt;many more&gt; &lt;see glossary&gt;
+                    * Business Descisions: separate customer self service and core  ,
+                         Many more, won't fit here
+                    * Outbound Communications: lookup by property,
+                         change Address, Customer Updated, lookupById
+                    */
+                    BoundedContext Policy_Management_Context_Lakeside_Mutual {
+                        domainVisionStatement "The  Policy Management
+                            Context allows Lakeside Mutual employees to view and manage
+                            the insurance policies of individual customers.
+                            It sends a message (via http://activemq.apache.org
+                            /ActiveMQ messaging)
+                            to the Risk Management Context
+                            whenever an insurance policy is created / updated."
+                        type FEATURE
+                        responsibilities "- Manage quotation workflow
+                            (MAPs: Processing Resource with SCOs,
+                            https://microservice-api-patterns.org/patterns/responsibility/
+                            operationResponsibilities/StateTransitionOperationSTOs)" ,
+                            "- CRUD on policies"
+                        knowledgeLevel CONCRETE
+                        Aggregate Policy_Management_Context_Lakeside_Mutual_Aggregate {
+                            DomainEvent OfferQuotation__Requested
+                            Entity Policy_Management_Context_Lakeside_Mutual_Queries {
+                                def String policies_By_Customer;
+                                def String list_all_policies;
+                            }
+                            Entity Policy_Management_Context_Lakeside_Mutual_Commands {
+                                def String makeOffer_etc_see_LM_source_code;
+                            }
+                        }
+                    }
+                </code></pre>
+                <li class="list-group-item"><h5>Step Three: Use the CML output</h5>
+                    <p>After you have received  your CML output you can make more specifications in the
+                        Bounded Context. Here is a <a href="https://contextmapper.org/docs/tactic-ddd/" target="_blank">Link</a> to the context mapper specifications.</p>
             </ul>
         </div>
     </div>
