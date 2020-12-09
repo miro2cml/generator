@@ -33,10 +33,10 @@
                         <li>optional one Command that triggers the Domain Event (incoming arrow)</li>
                         <li>optional the Command triggers one or two other Domain Event (outgoing arrow)</li>
                     </ul><br>
-                    <p>In the picture bellow is an example of an Event Storming Board. You see some of the different formats for the phases.
-                        The Stickers that belong together have to be positioned near each other.The Issue Stickers are used as comments. They will also be converted by miro2cml.</p>
+                    <p>In the picture bellow is an example of an Event Storming Board. Some different formats for the phases are shown.
+                        The Stickers that belong together have to be positioned near each other. The Issue Stickers will be converted to comments and are not positionally dependent.</p>
                     <img alt="Event Storming Example Map" th:src="@{/images/EventStormingExample.PNG}" class="img-tutorial">
-                    <p>In order that the convert could recognize the arrows, the arrows must start at the Domain Event Sticker and end at the Command Sticker.</p>
+                    <p>The converter can only recognize the triggers correctly if the arrows start at the Domain Event Sticker and end at the Command Sticker.</p>
                     <img alt="Arrow in Miro conntected with two Stickers" th:src="@{/images/Arrow.PNG}" class="img-tutorial">
                 <li class="list-group-item"><h5>Step Two: Convert the Board</h5>
                     <p>After you have created your board, you can convert it with the miro2cml Tool. Choose your board and the Board Type: Event Storming.<br>

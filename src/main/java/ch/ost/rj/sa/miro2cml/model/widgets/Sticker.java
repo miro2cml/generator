@@ -3,6 +3,7 @@ package ch.ost.rj.sa.miro2cml.model.widgets;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 public class Sticker extends WidgetObject {
     private int x;
@@ -51,19 +52,8 @@ public class Sticker extends WidgetObject {
 
     @Override
     public String toString() {
-        return super.toString() + "Sticker{" +
-                "x=" + x +
-                ", y=" + y +
-                ", scale=" + scale +
-                ", height=" + height +
-                ", width=" + width +
-                ", backgroundColor='" + backgroundColor + '\'' +
-                ", fontFamily='" + fontFamily + '\'' +
-                ", fontSize=" + fontSize +
-                ", textAlign='" + textAlign + '\'' +
-                ", textAlignVertical='" + textAlignVertical + '\'' +
-                ", text='" + text + '\'' +
-                '}';
+        return "Sticker{" +
+                " widgetID: " +super.getId() + " color: " + backgroundColor +" text: " + text + '}';
     }
 
     public String getText() {
@@ -163,5 +153,28 @@ public class Sticker extends WidgetObject {
     @Override
     public void setMappingRelevantText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sticker)) return false;
+        Sticker sticker = (Sticker) o;
+        return x == sticker.x &&
+                y == sticker.y &&
+                Double.compare(sticker.scale, scale) == 0 &&
+                Double.compare(sticker.height, height) == 0 &&
+                Double.compare(sticker.width, width) == 0 &&
+                fontSize == sticker.fontSize &&
+                backgroundColor.equals(sticker.backgroundColor) &&
+                fontFamily.equals(sticker.fontFamily) &&
+                textAlign.equals(sticker.textAlign) &&
+                textAlignVertical.equals(sticker.textAlignVertical) &&
+                text.equals(sticker.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, scale, height, width, backgroundColor, fontFamily, fontSize, textAlign, textAlignVertical, text);
     }
 }

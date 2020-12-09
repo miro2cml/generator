@@ -6,6 +6,8 @@ import ch.ost.rj.sa.miro2cml.data_access.model.miro.boards.BoardCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.WidgetsCollection;
 import ch.ost.rj.sa.miro2cml.model.boards.BoardPresentation;
 import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,14 +21,17 @@ import static ch.ost.rj.sa.miro2cml.data_access.MiroToGenericConverter.createGen
 import static ch.ost.rj.sa.miro2cml.data_access.MiroToGenericConverter.createMiroBoardListFromJsonBoardCollection;
 import static ch.ost.rj.sa.miro2cml.data_access.ResponseToMiroJsonConverter.*;
 
+@Service
 public class MiroApiServiceAdapter {
-    private MiroApiServiceAdapter(){}
 
-    public static WidgetCollection getBoardWidgets(String accessToken, String boardID) {
+    @Value("${miro.api.baseUrl}")
+    private String apiBaseUrl;
+
+    public WidgetCollection getBoardWidgets(String accessToken, String boardID) {
         DataAccessLog dataAccessLog = new DataAccessLog();
         dataAccessLog.addInfoLogEntry("Send GetAllWidgets Request to MiroApi");
         String query = "access_token=" + accessToken;
-        String url = "https://api.miro.com/v1/boards/" + boardID + "/widgets/";
+        String url = apiBaseUrl+"/boards/" + boardID + "/widgets/";
         Charset charset = java.nio.charset.StandardCharsets.UTF_8;
         try {
             URLConnection connection = new URL(url + "?" + query).openConnection();
@@ -53,10 +58,10 @@ public class MiroApiServiceAdapter {
         }
     }
 
-    public static List<BoardPresentation> getMiroBoards(String accessToken, String teamId) {
+    public List<BoardPresentation> getMiroBoards(String accessToken, String teamId) {
         final int limit = 300;
         String query = "access_token=" + accessToken + "&" + "limit=" + limit;
-        String url = "https://api.miro.com/v1/teams/" + teamId + "/boards/";
+        String url = apiBaseUrl+"/teams/" + teamId + "/boards/";
         Charset charset = java.nio.charset.StandardCharsets.UTF_8;
         try {
             URLConnection connection = new URL(url + "?" + query).openConnection();

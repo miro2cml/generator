@@ -1,14 +1,14 @@
 {
   "properties": [
     {
-      "name": "miro.clientId",
+      "name": "miro.client.id",
       "type": "java.math.BigInteger",
-      "description": "Client ID of the miro Application"
+      "description": "Client ID of the miro Application."
     },
     {
-      "name": "miro.clientSecret",
+      "name": "miro.client.secret",
       "type": "java.lang.String",
-      "description": "Client Secret of the miro Application"
+      "description": "Client Secret of the miro Application."
     },
     {
       "name": "miro.redirectUri",
@@ -19,6 +19,46 @@
       "name": "UserStoryBoard.activitesColor",
       "type": "java.lang.String",
       "description": "Description for UserStoryBoard.activitesColor."
+    },
+    {
+      "name": "miro2cml.version",
+      "type": "java.lang.String",
+      "description": "Version Identifier for miro2cml."
+    },
+    {
+      "name": "contextMapper.version",
+      "type": "java.lang.String",
+      "description": "Version Identifier for ContextMapper."
+    },
+    {
+      "name": "miro2cml.baseUrl",
+      "type": "java.lang.String",
+      "description": "Description for miro2cml.baseUrl."
+    },
+    {
+      "name": "miro.baseUrl",
+      "type": "java.lang.String",
+      "description": "Description for miro.baseUrl."
+    },
+    {
+      "name": "miro.api.baseUrl",
+      "type": "java.lang.String",
+      "description": "Description for miro.api.baseUrl."
+    },
+    {
+      "name": "miro.api.oauthTokenEndpoint",
+      "type": "java.lang.String",
+      "description": "Description for miro.api.oauthTokenEndpoint."
+    },
+    {
+      "name": "miro.oauthEndpoint",
+      "type": "java.lang.String",
+      "description": "Description for miro.oauthEndpoint."
+    },
+    {
+      "name": "miro2cml.authorizeReceiverEndpoint",
+      "type": "java.lang.String",
+      "description": "Description for miro2cml.authorizeReceiverEndpoint."
     }
   ]
 }

@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
+import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
 import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class AutomaticBoardMapperService implements IBoardMapperService {
     @Override
-    public MappedBoard mapBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+    public MappedBoard mapBoard(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException, InvalidBoardFormatException {
         mappingLog.addInfoLogEntry("Selected Board Type: EducatedGuess");
         mappingLog.addInfoLogEntry("Commence with BoardType deducting");
         MappedBoard mappedBoard;
@@ -32,6 +33,9 @@ public class AutomaticBoardMapperService implements IBoardMapperService {
                 mappingLog.addInfoLogEntry("Board might be a " + specificBoardType + ". Add BoardType + " + specificBoardType + " to list of BoardType candidates.");
             } catch (WrongBoardException ignored) {
                 mappingLog.addInfoLogEntry("Board is not of type: " + specificBoardType);
+            } catch (InvalidBoardFormatException ignored){
+                mappingLog.addWarningLogEntry("Board seems to have a format issue if interpreted as "+ specificBoardType + ", ignoring the issue for now.");
+                successfulMappings.add(specificBoardType);
             } finally {
                 localMessages.clear();
                 localLog.clear();
@@ -40,23 +44,23 @@ public class AutomaticBoardMapperService implements IBoardMapperService {
         if(successfulMappings.isEmpty()){
             throw new WrongBoardException("Input Board doesn't match with any of the supported Board Types.");
         } else if (successfulMappings.size() > 1){
-            messages.add("Input Board can be interpreted as one of the following board types: " + successfulMappings.toString());
+            messages.add("Input Board can be interpreted as one of the following Board Types: " + successfulMappings.toString());
             BoardType selectedBoardType = successfulMappings.get(0);
             messages.add("We used "+selectedBoardType + ", please explicitly specify another board type if needed.");
-            mappingLog.addInfoLogEntry("We used "+selectedBoardType + ", please explicitly specify another board type if needed.");
+            mappingLog.addInfoLogEntry("We used "+selectedBoardType + ", please explicitly specify another Board Type if needed.");
             mappingLog.addSectionSeparator();
             mappedBoard = mappingSwitch(selectedBoardType, inputBoard,mappingLog,messages);
         } else {
             BoardType detectedBoardType = successfulMappings.get(0);
-            messages.add("We detected, that your board is most likely a "+detectedBoardType + " board.");
-            mappingLog.addInfoLogEntry("We detected, that your board is most likely a "+detectedBoardType + " board.");
+            messages.add("We detected that your board is most likely a(n) "+detectedBoardType + " Board.");
+            mappingLog.addInfoLogEntry("We detected that your board is most likely a(n) "+detectedBoardType + " Board.");
             mappingLog.addSectionSeparator();
             mappedBoard = mappingSwitch(detectedBoardType, inputBoard,mappingLog,messages);
         }
         return mappedBoard;
     }
 
-    private MappedBoard mappingSwitch(BoardType boardType, InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+    private MappedBoard mappingSwitch(BoardType boardType, InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException, InvalidBoardFormatException {
         MappedBoard mappedBoard;
         switch (boardType) {
             case UserStory:

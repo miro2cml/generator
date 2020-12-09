@@ -4,7 +4,7 @@
 <div th:fragment="output">
     <div class="card">
         <div class="card-header">
-            <h5 class="text-left">ContextMapper Output</h5>
+            <h5 class="text-left">Context Mapper Output</h5>
         </div>
         <div class="card-body">
             <form>
@@ -32,20 +32,20 @@
                         <div class="col-12 pr-0">
                             <div class="row">
                                 <span class="col-9 align-middle col-form-label">ContextMapperLanguage-Preview:</span>
-                                <a class="col-3 align-middle text-right col-form-label" target="_blank" href="https://contextmapper.org/docs/language-reference/">Open Language Reference</a>
+                                <a class="col-3 align-middle text-right col-form-label" target="_blank" href="https://contextmapper.org/docs/language-reference/">Open CML Reference</a>
                             </div>
                             <textarea class="responsiveBox pr-0" cols="50" readonly th:rows="${cmlPreviewLinesCount}"
                                       th:text="${cmlPreview}"></textarea>
                         </div>
-                        <span class="col-12 align-middle">For syntax highlighting, please download the cml-file and open it with your favourite ContextMapper-enabled IDE simply copy-paste the CML-Preview into the ContextMapper-enabled IDE of your choice</span>
+                        <span class="col-12 align-middle">For syntax highlighting, please download the CML File and open it with your favourite ContextMapper-enabled IDE or simply copy-paste the CML-Preview into the ContextMapper-enabled IDE of your choice</span>
                         <label class="col-2 align-middle col-form-label" for="output_cml">Your CML-File:</label>
                         <input class="form-control col-5" id="output_cml" readonly
-                               th:placeholder="@{|M2C-${convertedBoard.getName()}-${form.getBoardId()}.cml|}" type="text">
+                               th:placeholder="@{|M2C-${convertedBoard.getName()}-${convertedBoard.getBoardId()}.cml|}" type="text">
                         <div class="col-1"></div>
                         <Button class="btn btn-raised btn-primary align-self-end col-2"><a
-                                target="_blank" th:href="@{|/downloadLog?id=${form.getBoardId()}&boardType=${form.getBoardType()}&accessToken=${#session.getAttribute('miroAccessToken')}&boardName=${convertedBoard.getName()}|}">Download Logfile</a></Button>
+                                target="_blank" th:href="${logDownloadLink}">Download Logfile</a></Button>
                         <Button class="btn btn-raised btn-primary align-self-end col-2"><a
-                                th:target="_blank" th:href="@{|/download?id=${form.getBoardId()}&boardType=${form.getBoardType()}&accessToken=${#session.getAttribute('miroAccessToken')}&boardName=${convertedBoard.getName()}|}">Download CML</a></Button>
+                                target="_blank" th:href="${cmlDownloadLink}">Download CML</a></Button>
                     </div>
                 </div>
             </form>

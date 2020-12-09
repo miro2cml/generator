@@ -4,38 +4,44 @@ function clearFilter() {
 }
 
 function filterBoards() {
-    let filterCriteria = document.getElementById('keyword').value
-    var filterableElements, index;
+    let filterCriteria =document.getElementById('keyword').value.toString().toLocaleLowerCase();
+    let filterableElements;
+    let count = 0;
     filterableElements = document.getElementsByClassName("filterable");
 
-    for (index = 0; index < filterableElements.length; index++) {
+    for (let index = 0; index < filterableElements.length; index++) {
         let elementAtIndex = filterableElements[index];
-        let rightDescendant = elementAtIndex.querySelector('.boardName');
+        let selectedDescendant = elementAtIndex.querySelector('.boardName');
 
-        if (rightDescendant.innerHTML.includes(filterCriteria)) {
-            showElement(elementAtIndex)
+        if (selectedDescendant.innerHTML.toLocaleLowerCase().includes(filterCriteria)) {
+            showElement(elementAtIndex);
+            count++;
         } else {
-            hideElement(elementAtIndex)
+            hideElement(elementAtIndex);
         }
+    }
+    let resultWrapper =  document.getElementById('resultWrapper')
+    if (count>10){
+        addCssClass(resultWrapper, "vertical-overflow-container");
+    } else {
+        removeCssClass(resultWrapper, "vertical-overflow-container")
     }
 }
 
 function showElement(element) {
-    removeCssClass(element, "show");
     removeCssClass(element, "hide");
     addCssClass(element, "show");
 }
 
 function hideElement(element) {
     removeCssClass(element, "show");
-    removeCssClass(element, "hide");
     addCssClass(element, "hide");
 }
 
-function addCssClass(element, name) {
+function addCssClass(element, classes) {
     var i, arr1, arr2;
     arr1 = element.className.split(" ");
-    arr2 = name.split(" ");
+    arr2 = classes.split(" ");
     for (i = 0; i < arr2.length; i++) {
         if (arr1.indexOf(arr2[i]) == -1) {
             element.className += " " + arr2[i];
@@ -43,10 +49,10 @@ function addCssClass(element, name) {
     }
 }
 
-function removeCssClass(element, name) {
+function removeCssClass(element, classes) {
     var i, arr1, arr2;
     arr1 = element.className.split(" ");
-    arr2 = name.split(" ");
+    arr2 = classes.split(" ");
     for (i = 0; i < arr2.length; i++) {
         while (arr1.indexOf(arr2[i]) > -1) {
             arr1.splice(arr1.indexOf(arr2[i]), 1);

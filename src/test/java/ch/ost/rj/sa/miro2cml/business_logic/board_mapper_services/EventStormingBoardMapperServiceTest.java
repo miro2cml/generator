@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
+import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
 import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -29,7 +30,7 @@ class EventStormingBoardMapperServiceTest {
         eventStormingMapperServiceUnderTest = new EventStormingBoardMapperService();
     }
     @Test
-    void mapWidgetObjectsToCmlArtifacts() throws WrongBoardException {
+    void mapWidgetObjectsToCmlArtifacts() throws WrongBoardException, InvalidBoardFormatException {
         ArrayList<WidgetObject> widgetObjectArrayList = new ArrayList<>();
         MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();

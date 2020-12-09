@@ -9,6 +9,8 @@ public class MappingLog implements IOutputArtifact{
     private final ArrayList<String> logEntries = new ArrayList<>();
     private String metaData = "";
     private DataAccessLog dataAccessLog = null;
+    private int warningCounter;
+    private int errorCounter;
 
     public void setMetaData(String metaData) {
         this.metaData = metaData;
@@ -22,6 +24,8 @@ public class MappingLog implements IOutputArtifact{
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(metaData);
+        builder.append(errorCounter).append(" Error(s) occurred").append(System.lineSeparator());
+        builder.append(warningCounter).append(" Warning(s) occurred").append(System.lineSeparator());
         for (String entry : logEntries
         ) {
             builder.append(entry).append(System.lineSeparator());
@@ -43,7 +47,8 @@ public class MappingLog implements IOutputArtifact{
     }
 
     public void addWarningLogEntry(String entry) {
-        logEntries.add("WARNING: " + entry);
+        logEntries.add("---WARNING: " + entry);
+        warningCounter++;
     }
 
     public void addSuccessLogEntry(String entry) {
@@ -51,7 +56,8 @@ public class MappingLog implements IOutputArtifact{
     }
 
     public void addErrorLogEntry(String entry) {
-        logEntries.add("ERROR: " + entry);
+        logEntries.add("---ERROR: " + entry);
+        errorCounter++;
     }
 
     public void addMappingLog(MappingLog additionalMappingLog){
@@ -68,5 +74,13 @@ public class MappingLog implements IOutputArtifact{
     @Override
     public byte[] toByteArray() {
         return toString().getBytes();
+    }
+
+    public int getWarningCounter() {
+        return warningCounter;
+    }
+
+    public int getErrorCounter() {
+        return errorCounter;
     }
 }

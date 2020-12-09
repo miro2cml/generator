@@ -14,8 +14,12 @@ public class CmlModel implements IOutputArtifact {
     private CMLResource resource;
 
     public CmlModel() {
-        File file = new File("temp.cml");
+        File file = new File("temp.cml"); /*This is a workaround! Standard UseCase of the ContextMapper saves the file directly on the disk.
+        Therefore the CML Wrapper needs a File to instantiate the resource. But: miro2cml never uses this reference as we save our output directly in an OutputStream
+        by using a overridden function call on resource.save() (See CmlModel instance Method "public byte[] toByteArray()" for more details.)
+        */
         this.resource = ContextMapperStandaloneSetup.getStandaloneAPI().createCML(file);
+
     }
 
     @Override

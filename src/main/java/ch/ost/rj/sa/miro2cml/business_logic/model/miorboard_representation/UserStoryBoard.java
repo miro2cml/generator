@@ -85,7 +85,7 @@ public class UserStoryBoard {
             messages.add("No Errors/Warnings occurred during Mapping");
         } else {
             messages.add("Errors/warnings occurred");
-            messages.add("we received " + input.size() + " widgets from Miro");
+            messages.add("We received " + input.size() + " widgets from Miro");
             messages.add(cardCounter + " of them were Cards");
             messages.add(output.size() + " of these cards have been successfully converted to UserStories");
             messages.add("Consult the logfile for more information");
