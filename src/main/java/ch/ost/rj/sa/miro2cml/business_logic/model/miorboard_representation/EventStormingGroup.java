@@ -6,15 +6,15 @@ public class EventStormingGroup {
     private double position;
     private String domainEvent;
     private String command;
-    private List<String> agggregate;
+    private List<String> agggregates;
     private String role;
     private List<String> trigger;
     //TODO: modify with logic from event-storming CheatSheet (exapmle more than one aggregate possible)
-    public EventStormingGroup(double position, String domainEvent, String command, List<String> agggregate, String role, List<String> trigger) {
+    public EventStormingGroup(double position, String domainEvent, String command, List<String> agggregates, String role, List<String> trigger) {
         this.position = position;
         this.domainEvent = domainEvent;
         this.command = command;
-        this.agggregate = agggregate;
+        this.agggregates = agggregates;
         this.role = role;
         this.trigger = trigger;
     }
@@ -35,12 +35,12 @@ public class EventStormingGroup {
         this.command = command;
     }
 
-    public List<String> getAgggregate() {
-        return agggregate;
+    public List<String> getAgggregates() {
+        return agggregates;
     }
 
-    public void setAgggregate(List<String> agggregate) {
-        this.agggregate = agggregate;
+    public void setAggregates(List<String> aggregates) {
+        this.agggregates = aggregates;
     }
 
     public String getRole() {

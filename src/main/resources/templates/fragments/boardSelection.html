@@ -37,7 +37,7 @@
 
                 <div class="form-group align-items-center">
                     <div class="row row-cols-1 no-gutters my-0 py-0 justify-content-end">
-                        <div class="vertical-overflow-container">
+                        <div id="resultWrapper" class="vertical-overflow-container">
                             <th:block th:each="board : ${miroBoards}">
                                 <div class="filterable col-12 pr-0 my-0 py-0 ">
                                     <div class="alert alert-secondary container my-1 py-0" role="alert">
@@ -48,8 +48,11 @@
                                                        type="radio"/>
                                             </div>
                                             <div class="col row align-items-center">
-                                                <div class="col-10">
+                                                <div class="col-8">
                                                     <span class="boardName" th:text="${board.getName()}"></span>
+                                                </div>
+                                                <div class="col-2">
+                                                    <span>(</span><span class="boardName" th:text="${board.getBoardId()}"></span><span>)</span>
                                                 </div>
                                                 <div class="col-2">
                                                 <span><a class="alert-link" target="_blank"

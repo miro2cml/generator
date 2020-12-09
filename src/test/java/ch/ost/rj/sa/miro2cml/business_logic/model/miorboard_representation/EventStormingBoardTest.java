@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
+import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
 import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -25,11 +26,11 @@ class EventStormingBoardTest {
         InputBoard input = new InputBoard("123", widgetObjectArrayList);
 
         Throwable exception = assertThrows(WrongBoardException.class, ()-> EventStormingBoard.createEventStormingBoard(input, mappingLog, messages));
-        assertEquals("Input Board doesn't match with expected Board Type: Event Storming", exception.getMessage());
+        assertEquals("Input Board doesn't match with expected Board Type: Event Storming. Check if you have created a correctly formatted sticker to set the color for DomainEvent Stickers.", exception.getMessage());
 
     }
     @Test
-    void createEventStormingBoard_Issue() throws WrongBoardException {
+    void createEventStormingBoard_Issue() throws WrongBoardException, InvalidBoardFormatException {
         ArrayList<WidgetObject> widgetObjectArrayList = new ArrayList<>();
         MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
@@ -47,7 +48,7 @@ class EventStormingBoardTest {
 
     }
     @Test
-    void createEventStormingBoard_Connections() throws WrongBoardException {
+    void createEventStormingBoard_Connections() throws WrongBoardException, InvalidBoardFormatException {
         ArrayList<WidgetObject> widgetObjectArrayList = new ArrayList<>();
         MappingLog mappingLog = new MappingLog();
         MappingMessages messages = new MappingMessages();
@@ -74,11 +75,11 @@ class EventStormingBoardTest {
         String expectedSecondCommand = "moved in";
         String expectedSecondDomainEvent = "moving in";
 
-        assertEquals(expectedAggregate, board.getConnections().get(0).getAgggregate().get(0));
+        assertEquals(expectedAggregate, board.getConnections().get(0).getAgggregates().get(0));
         assertEquals(expectedCommand, board.getConnections().get(0).getCommand());
         assertEquals(expectedDomainEvent, board.getConnections().get(0).getDomainEvent());
         assertTrue(board.getConnections().get(1).getTrigger().isEmpty());
-        assertEquals(expectedSecondAggregate, board.getConnections().get(1).getAgggregate().get(0));
+        assertEquals(expectedSecondAggregate, board.getConnections().get(1).getAgggregates().get(0));
         assertEquals(expectedSecondCommand, board.getConnections().get(1).getCommand());
         assertEquals(expectedSecondDomainEvent, board.getConnections().get(1).getDomainEvent());
         assertEquals(expectedDomainEvent, board.getConnections().get(0).getTrigger().get(0));

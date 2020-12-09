@@ -9,7 +9,7 @@ import java.util.*;
 
 public class EventStormingConverter {
     public static EventStorming convertEventStormingBoardtoCML(EventStormingBoard board){
-        var inputs = board.getConnections();
+        ArrayList<EventStormingGroup> inputs = board.getConnections();
         ArrayList<String> aggregateList = getAggregateList(inputs);
         ArrayList<AggregatesCML> aggregatesCMLList = getAggregateCMLList(inputs, aggregateList);
         return new EventStorming(aggregatesCMLList, "/* " + board.getIssues().toString() + "*/");
@@ -21,7 +21,7 @@ public class EventStormingConverter {
             String name = StringValidator.convertForVariableName(aggregate);
             ArrayList<FlowStep> step = new ArrayList<>();
             for (EventStormingGroup input : inputs) {
-                if (input.getAgggregate().get(0).equals(aggregate)) {
+                if (!input.getAgggregates().isEmpty() && input.getAgggregates().get(0).equals(aggregate)) {
                     step.add(new FlowStep(input.getPosition(), StringValidator.convertForVariableName(input.getCommand()), StringValidator.convertForVariableName(input.getDomainEvent()), StringValidator.convertForVariableName(input.getRole()), generateTriggers((ArrayList<String>) input.getTrigger())));
                 }
             }
@@ -34,7 +34,7 @@ public class EventStormingConverter {
     private static ArrayList<String> getAggregateList(ArrayList<EventStormingGroup> inputs) {
         ArrayList<String> output = new ArrayList<>();
         for(EventStormingGroup input : inputs) {
-            List<String> aggregates = input.getAgggregate();
+            List<String> aggregates = input.getAgggregates();
             for(String aggregate: aggregates){
                 if (output.contains(aggregate)) {
                     break;

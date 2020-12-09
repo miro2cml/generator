@@ -280,7 +280,7 @@ public class BoundedContextBoard {
     private int getMiddle() {
         for(WidgetObject widget: inputBoard.getWidgetObjects()){
             if((isaBoolean(SEARCH_DOMAIN, widget))){
-                mappingLog.addSuccessLogEntry("Field Domain in Strateic Classification found");
+                mappingLog.addSuccessLogEntry("Field Domain in Strategic Classification found");
                 return ((Text) widget).getX();
             }
         }

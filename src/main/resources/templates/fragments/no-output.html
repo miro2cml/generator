@@ -4,7 +4,7 @@
 <div th:fragment="no-output">
     <div class="card">
         <div class="card-header">
-            <h5 class="text-left">ContextMapper Output</h5>
+            <h5 class="text-left">Context Mapper Output</h5>
         </div>
         <div class="card-body">
             <div class="row no-gutters my-0 mx-0">
@@ -29,7 +29,7 @@
                        th:placeholder="@{|M2C-${convertedBoard.getName()}-${form.getBoardId()}.log|}" type="text">
                 <div class="col-3"></div>
                 <Button class="btn btn-raised btn-primary col-2"><a
-                        th:href="@{|/downloadLog?id=${form.getBoardId()}&boardType=${form.getBoardType()}&accessToken=${#session.getAttribute('miroAccessToken')}&boardName=${convertedBoard.getName()}|}">Download Logfile</a></Button>
+                    target="_blank" th:href="${logDownloadLink}"</a></Button>
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@ public class ResponseToMiroJsonConverter {
 
     static BoardCollection convertJsonResponseStreamIntoMiroBoardCollection(InputStream response) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper.readValue(response, BoardCollection.class);
     }
 }

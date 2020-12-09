@@ -129,7 +129,7 @@ public class BoundedContext implements ICmlArtifact{
         }
         if(responsibilites.isEmpty()){
             mappingLog.addErrorLogEntry("No responsibilities detected");
-            messages.add("Check if you use the template correct in the field Role Types");
+            messages.add("Check whether you use the template correctly in the field Role Types");
         }
     }
 

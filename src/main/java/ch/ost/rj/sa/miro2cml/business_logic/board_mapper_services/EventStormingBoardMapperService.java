@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
+import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
 import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter.EventStormingConverter;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
@@ -12,7 +13,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.Event
 public class EventStormingBoardMapperService implements IBoardMapperService {
 
     @Override
-    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException {
+    public CmlModel mapWidgetObjectsToCmlArtifacts(InputBoard inputBoard, MappingLog mappingLog, MappingMessages messages) throws WrongBoardException, InvalidBoardFormatException {
         mappingLog.addInfoLogEntry("Commence Board Mapping, Board Type: Event Storming");
         CmlModel cmlModel= new CmlModel();
         EventStormingBoard extractedBoard = EventStormingBoard.createEventStormingBoard(inputBoard, mappingLog, messages);

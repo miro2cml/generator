@@ -5,6 +5,8 @@ import java.util.List;
 
 public class DataAccessLog {
     private final ArrayList<String> logEntries = new ArrayList<>();
+    private int warningCounter;
+    private int errorCounter;
 
     public List<String> getLogEntries() {
         return logEntries;
@@ -20,6 +22,7 @@ public class DataAccessLog {
 
     public void addWarningLogEntry(String entry) {
         logEntries.add("WARNING: " + entry);
+        warningCounter++;
     }
 
     public void addSuccessLogEntry(String entry) {
@@ -28,6 +31,7 @@ public class DataAccessLog {
 
     public void addErrorLogEntry(String entry) {
         logEntries.add("ERROR: " + entry);
+        errorCounter++;
     }
 
     @Override
@@ -35,6 +39,8 @@ public class DataAccessLog {
         StringBuilder builder = new StringBuilder();
         builder.append("---------------------------------------------------------------------------------------------------------------------------------------------------------").append(System.lineSeparator());
         builder.append("---------------------------------------------------------------------Data Access Log---------------------------------------------------------------------").append(System.lineSeparator()).append(System.lineSeparator());
+        builder.append(errorCounter).append(" Error(s) occurred").append(System.lineSeparator());
+        builder.append(warningCounter).append(" Warning(s) occurred").append(System.lineSeparator());
         for (String entry : logEntries
         ) {
             builder.append(entry).append(System.lineSeparator());

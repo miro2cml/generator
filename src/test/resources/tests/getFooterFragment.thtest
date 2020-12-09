@@ -10,7 +10,6 @@
 <html lang="en">
 <body>
 <div>
-    <img alt="Miro Logo" id="mirologo" src="/testing/images/miroLogo.png"/>
     <img alt="Context Mapper Logo" id="contextmapperlogo" src="/testing/images/logo.png"/>
 </div>
 </body>
