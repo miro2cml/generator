@@ -9,7 +9,6 @@ public class EventStormingGroup {
     private List<String> agggregates;
     private String role;
     private List<String> trigger;
-    //TODO: modify with logic from event-storming CheatSheet (exapmle more than one aggregate possible)
     public EventStormingGroup(double position, String domainEvent, String command, List<String> agggregates, String role, List<String> trigger) {
         this.position = position;
         this.domainEvent = domainEvent;

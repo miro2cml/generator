@@ -1,6 +1,6 @@
 package ch.ost.rj.sa.miro2cml.presentation.model;
 
-import ch.ost.rj.sa.miro2cml.model.boards.BoardType;
+import ch.ost.rj.sa.miro2cml.business_logic.model.BoardType;
 
 public class BoardForm {
     private String boardId;

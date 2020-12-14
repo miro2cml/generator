@@ -1,6 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter.BoundedContextConverter;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -21,7 +21,7 @@ public class BoundedContextCanvasBoardMapperService implements IBoardMapperServi
             BoundedContext boundedContextModel = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(extractedBoard, mappingLog, messages);
             cmlModel.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) boundedContextModel.provideEObject());
             if(!messages.getMessages().isEmpty()){
-                messages.setMappingState(false);
+                messages.setPerfectMapping(false);
             }
             return cmlModel;
     }

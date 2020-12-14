@@ -34,8 +34,14 @@
                     <input class="col-2" id="btnClear" onclick='clearFilter()' type="button" value="Clear Filter"/>
                     <br>
                 </div>
+                <div th:unless="${getBoardsSuccess}" class="col-12 alert alert-danger">
+                    <strong>Error: </strong> Error during our call to Miro-API. We received empty or incomplete Board Collection. Please reload or try again later.
+                </div>
+                <div th:if="${boardLimitExceeded}" class="col-12 alert alert-warning">
+                    <strong>Warning: </strong> Number of allowed Boards exceeded.
+                </div>
 
-                <div class="form-group align-items-center">
+                <div th:if="${getBoardsSuccess}" class="form-group align-items-center">
                     <div class="row row-cols-1 no-gutters my-0 py-0 justify-content-end">
                         <div id="resultWrapper" class="vertical-overflow-container">
                             <th:block th:each="board : ${miroBoards}">
@@ -48,10 +54,10 @@
                                                        type="radio"/>
                                             </div>
                                             <div class="col row align-items-center">
-                                                <div class="col-8">
+                                                <div class="col-7">
                                                     <span class="boardName" th:text="${board.getName()}"></span>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-3">
                                                     <span>(</span><span class="boardName" th:text="${board.getBoardId()}"></span><span>)</span>
                                                 </div>
                                                 <div class="col-2">
@@ -65,11 +71,18 @@
                             </th:block>
                         </div>
                         <div class="col-12 my-1 py-1"></div>
-                        <button class="btn btn-raised btn-primary align-self-end col-2" id="submitForm" value="submit">
+                        <button type="submit" formmethod="get" class="btn btn-raised btn-primary align-self-start col-2" value="submit">
+                            Reload Boards
+                        </button>
+                        <div class="col-8"></div>
+                        <button type="submit" class="btn btn-raised btn-primary align-self-end col-2" id="submitForm" value="submit">
                             Map Board
                         </button>
                     </div>
                 </div>
+                <a th:unless="${getBoardsSuccess}" th:href="@{/}">
+                    <button class="btn btn-primary">Reload Page</button>
+                </a>
             </form>
         </div>
     </div>

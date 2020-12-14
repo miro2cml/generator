@@ -1,12 +1,12 @@
-package ch.ost.rj.sa.miro2cml.model.widgets;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets;
 
 
-import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
-public class Card extends WidgetObject {
+public class Card extends WidgetObject implements IRelevantText {
     private int x;
     private int y;
     private double scale;
@@ -25,25 +25,22 @@ public class Card extends WidgetObject {
         this.backgroundColor = backgroundColor;
     }
 
-    public Card(MiroWidget miroWidgetMiroWidget) {
-        super(miroWidgetMiroWidget.getId());
-        this.x = miroWidgetMiroWidget.getX();
-        this.y = miroWidgetMiroWidget.getY();
-        this.scale = miroWidgetMiroWidget.getScale();
-        this.title = miroWidgetMiroWidget.getTitle();
-        this.description = miroWidgetMiroWidget.getDescription();
-        this.backgroundColor = miroWidgetMiroWidget.getStyle().getBackgroundColor();
+    public Card(MiroWidget miroWidget) {
+        super(miroWidget.getId());
+        this.x = miroWidget.getX();
+        this.y = miroWidget.getY();
+        this.scale = miroWidget.getScale();
+        this.title = miroWidget.getTitle();
+        this.description = miroWidget.getDescription();
+        this.backgroundColor = miroWidget.getStyle().getBackgroundColor();
     }
 
     @Override
     public String toString() {
-        return super.toString() + "Card{" +
-                "x=" + x +
-                ", y=" + y +
-                ", scale=" + scale +
+        return  "Card{" +
+                "id=" + super.getId()+
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", backgroundColor='" + backgroundColor + '\'' +
                 '}';
     }
 
@@ -97,11 +94,30 @@ public class Card extends WidgetObject {
 
     @Override
     public String getMappingRelevantText() {
-        return title;
+        return getTitle();
     }
 
     @Override
     public void setMappingRelevantText(String text) {
         this.title=text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Card)) return false;
+        if (!super.equals(o)) return false;
+        Card card = (Card) o;
+        return x == card.x &&
+                y == card.y &&
+                Double.compare(card.scale, scale) == 0 &&
+                Objects.equals(title, card.title) &&
+                Objects.equals(description, card.description) &&
+                Objects.equals(backgroundColor, card.backgroundColor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), x, y, scale, title, description, backgroundColor);
     }
 }

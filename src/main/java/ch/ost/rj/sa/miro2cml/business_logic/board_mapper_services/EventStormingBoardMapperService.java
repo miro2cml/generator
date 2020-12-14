@@ -1,7 +1,7 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
-import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter.EventStormingConverter;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -17,9 +17,9 @@ public class EventStormingBoardMapperService implements IBoardMapperService {
         mappingLog.addInfoLogEntry("Commence Board Mapping, Board Type: Event Storming");
         CmlModel cmlModel= new CmlModel();
         EventStormingBoard extractedBoard = EventStormingBoard.createEventStormingBoard(inputBoard, mappingLog, messages);
-        EventStorming eventStormingModel = EventStormingConverter.convertEventStormingBoardtoCML(extractedBoard);
+        EventStorming eventStormingModel = EventStormingConverter.convertEventStormingBoardToCML(extractedBoard);
         if(!messages.getMessages().isEmpty()){
-            messages.setMappingState(false);
+            messages.setPerfectMapping(false);
         }
         cmlModel.getResource().getContextMappingModel().getBoundedContexts().add((org.contextmapper.dsl.contextMappingDSL.BoundedContext) eventStormingModel.provideEObject());
         return cmlModel;

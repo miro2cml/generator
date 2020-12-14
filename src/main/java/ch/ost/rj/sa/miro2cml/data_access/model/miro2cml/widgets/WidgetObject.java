@@ -1,4 +1,4 @@
-package ch.ost.rj.sa.miro2cml.model.widgets;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -19,10 +19,6 @@ public abstract class WidgetObject implements Serializable {
         this.id = id;
     }
 
-
-    public String getMappingRelevantText(){return "";}
-
-    public void setMappingRelevantText(String text){return;}
 
     @Override
     public String toString() {

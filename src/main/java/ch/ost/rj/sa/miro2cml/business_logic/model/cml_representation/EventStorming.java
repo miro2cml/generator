@@ -8,13 +8,14 @@ import org.contextmapper.tactic.dsl.tacticdsl.TacticdslFactory;
 import org.eclipse.emf.ecore.EObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 public class EventStorming implements ICmlArtifact {
-    private ArrayList<AggregatesCML> aggregates;
-    private String issues;
+    private final List<AggregatesCML> aggregates;
+    private final String issues;
 
-    public EventStorming(ArrayList<AggregatesCML> aggregates, String issues) {
+    public EventStorming(List<AggregatesCML> aggregates, String issues) {
         this.aggregates = aggregates;
         this.issues = issues;
     }
@@ -56,7 +57,7 @@ public class EventStorming implements ICmlArtifact {
         }
     }
 
-    private void generateStepTwoWithTwoTriggers(Application application, Flow flowCML, HashMap<String, CommandEvent> list, ArrayList<String> triggers, DomainEvent domainEvent) {
+    private void generateStepTwoWithTwoTriggers(Application application, Flow flowCML, HashMap<String, CommandEvent> list, List<String> triggers, DomainEvent domainEvent) {
         CommandEvent triggerCommand = getCommandEvent(application, list, triggers.get(0));
         CommandEvent triggerCommandTwo = getCommandEvent(application, list, triggers.get(1));
         CommandInvokationStep stepTwo = ContextMappingDSLFactory.eINSTANCE.createCommandInvokationStep();

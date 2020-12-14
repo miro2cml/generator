@@ -16,11 +16,6 @@
       "description": "Redirect URI sent to Miro for OAuth."
     },
     {
-      "name": "UserStoryBoard.activitesColor",
-      "type": "java.lang.String",
-      "description": "Description for UserStoryBoard.activitesColor."
-    },
-    {
       "name": "miro2cml.version",
       "type": "java.lang.String",
       "description": "Version Identifier for miro2cml."
@@ -38,27 +33,37 @@
     {
       "name": "miro.baseUrl",
       "type": "java.lang.String",
-      "description": "Description for miro.baseUrl."
+      "description": "Base URL of our Datasource: Miro."
     },
     {
       "name": "miro.api.baseUrl",
       "type": "java.lang.String",
-      "description": "Description for miro.api.baseUrl."
+      "description": "Base URL for the Miro API."
     },
     {
       "name": "miro.api.oauthTokenEndpoint",
       "type": "java.lang.String",
-      "description": "Description for miro.api.oauthTokenEndpoint."
+      "description": "OAuth Endpoint of the Miro API, used to post the Auth-Token."
     },
     {
       "name": "miro.oauthEndpoint",
       "type": "java.lang.String",
-      "description": "Description for miro.oauthEndpoint."
+      "description": "URI to Miro-OAuth Endpoint."
     },
     {
       "name": "miro2cml.authorizeReceiverEndpoint",
       "type": "java.lang.String",
-      "description": "Description for miro2cml.authorizeReceiverEndpoint."
+      "description": "URI-suffix to internal OAuth receiver Endpoint."
+    },
+    {
+      "name": "miro.api.boardCountLimit",
+      "type": "java.lang.Integer",
+      "description": "Maximum amount of Boards, which shall be fetched from miro."
+    },
+    {
+      "name": "miro2cml.stringValidator.maxTextSize",
+      "type": "java.lang.Integer",
+      "description": "Maximum Text size for Widget Texts."
     }
   ]
 }

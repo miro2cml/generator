@@ -5,9 +5,16 @@ import org.contextmapper.dsl.contextMappingDSL.Feature;
 import org.eclipse.emf.ecore.EObject;
 
 import java.util.Objects;
+import static org.springframework.util.StringUtils.capitalize;
+
 
 public class UserStory implements ICmlArtifact {
-    private String name, role, verb, entity, benefit, article;
+    private String name;
+    private String role;
+    private String verb;
+    private String entity;
+    private String benefit;
+    private String article;
 
     public UserStory(String role, String verb, String entity, String benefit, String article) {
         this.role = role;
@@ -16,6 +23,7 @@ public class UserStory implements ICmlArtifact {
         this.benefit = benefit;
         this.name = verb + entity;
         this.article = article;
+        this.name = verb+capitalize(entity);
     }
 
     @Override

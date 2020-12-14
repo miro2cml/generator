@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
-public class TutorialsController {
+public class TutorialsViewController {
     @GetMapping(path = "/Tutorial")
     public String getTutorial(Model model) {
         model.addAttribute("module", "tutorials");

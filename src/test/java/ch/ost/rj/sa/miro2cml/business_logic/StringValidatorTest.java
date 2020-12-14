@@ -12,28 +12,35 @@ class StringValidatorTest {
     void removeDoubleSpace_1() {
         final String inputOne = "String";
         final String expectedOne = "String";
-        final String resultOne = StringValidator.removeDoubleSpace(inputOne);
+        final String resultOne = StringValidator.reduceMultipleSpacesToOne(inputOne);
         assertEquals(expectedOne, resultOne);
     }
     @Test
     void removeDoubleSpace_2() {
         final String inputOne = "Strin  g";
         final String expectedOne = "Strin g";
-        final String resultOne = StringValidator.removeDoubleSpace(inputOne);
+        final String resultOne = StringValidator.reduceMultipleSpacesToOne(inputOne);
         assertEquals(expectedOne, resultOne);
     }
     @Test
     void removeDoubleSpace_3() {
         final String inputOne = "<p>  String  bla  bla";
         final String expectedOne = "<p> String bla bla";
-        final String resultOne = StringValidator.removeDoubleSpace(inputOne);
+        final String resultOne = StringValidator.reduceMultipleSpacesToOne(inputOne);
         assertEquals(expectedOne, resultOne);
     }
     @Test
     void removeDoubleSpace_4() {
         final String inputOne = "<p>As an  UseCase Designer I want to specify a UseCase in Miro and then transfer it to cml so that  I can collaborativly work on my UseCases and use the functionality of the context mapper(correct, abstände doppelt).</p>";
         final String expectedOne = "<p>As an UseCase Designer I want to specify a UseCase in Miro and then transfer it to cml so that I can collaborativly work on my UseCases and use the functionality of the context mapper(correct, abstände doppelt).</p>";
-        final String resultOne = StringValidator.removeDoubleSpace(inputOne);
+        final String resultOne = StringValidator.reduceMultipleSpacesToOne(inputOne);
+        assertEquals(expectedOne, resultOne);
+    }
+    @Test
+    void removeMultipleSpace() {
+        final String inputOne = "<p>As an        UseCase Designer I want to specify a UseCase in Miro and then transfer it to cml so that  I          can collaborativly work on my UseCases and use the functionality of the    context mapper(correct, abstände doppelt).</p>";
+        final String expectedOne = "<p>As an UseCase Designer I want to specify a UseCase in Miro and then transfer it to cml so that I can collaborativly work on my UseCases and use the functionality of the context mapper(correct, abstände doppelt).</p>";
+        final String resultOne = StringValidator.reduceMultipleSpacesToOne(inputOne);
         assertEquals(expectedOne, resultOne);
     }
 
@@ -93,7 +100,7 @@ class StringValidatorTest {
     void replaceHtmlCodeWithString_1() {
         final String inputOne = "&gt;String&lt;";
         final String expectedOne = ">String<";
-        final String resultOne = StringValidator.replaceHtmlCodeWithString(inputOne);
+        final String resultOne = StringValidator.replaceSpecialCharCodesWithTheirSingleCharEquivalent(inputOne);
         assertEquals(expectedOne, resultOne);
     }
 
@@ -109,7 +116,7 @@ class StringValidatorTest {
     void replaceSpaceWithLine() {
         final String inputOne = "St rin g";
         final String expectedOne = "St_rin_g";
-        final String resultOne = StringValidator.replaceSpaceWithLine(inputOne);
+        final String resultOne = StringValidator.replaceSpaceWithUnderscore(inputOne);
         assertEquals(expectedOne, resultOne);
     }
 
@@ -164,18 +171,18 @@ class StringValidatorTest {
         list.add("FirstValue");
 
         final String expectedOne = "FirstValue1";
-        final String resultOne = StringValidator.uniqueValue(list, "FirstValue");
+        final String resultOne = StringValidator.uniquifyValue(list, "FirstValue");
         assertEquals(expectedOne, resultOne);
         assertEquals(list.get(1), resultOne);
 
         final String expectedTwo = "FirstValue11";
-        final String resultTwo = StringValidator.uniqueValue(list, "FirstValue");
-        assertEquals(list.get(2), "FirstValue11");
+        final String resultTwo = StringValidator.uniquifyValue(list, "FirstValue");
+        assertEquals("FirstValue11",list.get(2));
         assertEquals(expectedTwo, resultTwo);
 
 
         final String expectedThree = "SecondValue";
-        final String resultThree = StringValidator.uniqueValue(list, "SecondValue");
+        final String resultThree = StringValidator.uniquifyValue(list, "SecondValue");
         assertEquals(expectedThree, resultThree);
         assertEquals(list.get(3), resultThree);
     }

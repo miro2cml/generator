@@ -4,84 +4,55 @@ import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.AutomaticBoard
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.BoundedContextCanvasBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.EventStormingBoardMapperService;
 import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.UserStoryMapperService;
-import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
-import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
-import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
-import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
+import ch.ost.rj.sa.miro2cml.business_logic.model.*;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.CmlSerializerException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.data_access.MiroApiServiceAdapter;
 import ch.ost.rj.sa.miro2cml.data_access.model.WidgetCollection;
-import ch.ost.rj.sa.miro2cml.model.boards.BoardType;
 import org.contextmapper.dsl.contextMappingDSL.ContextMappingModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
+@Component
 public class MappingController {
     private static final Logger logger = LoggerFactory.getLogger(MappingController.class);
-    private final MappingLog mappingLog;
-    private final BoardType boardType;
-    private final String boardId;
-    private final String accessToken;
-    private final MappingMessages mappingMessages = new MappingMessages();
-    private final Environment environment;
-    private ByteArrayResource resource = null;
-    private String cmlPreview = null;
-    private final MiroApiServiceAdapter miroApiServiceAdapter;
 
-    public MappingController(BoardType boardType, String boardId, String accessToken, Environment environment, MiroApiServiceAdapter miroApiServiceAdapter) {
-        this.boardType = boardType;
-        this.boardId = boardId;
-        this.accessToken = accessToken;
-        this.environment = environment;
-        this.miroApiServiceAdapter = miroApiServiceAdapter;
-        this.mappingLog = new MappingLog();
-        addMetaDataToLog();
-    }
+    @Autowired
+    MiroApiServiceAdapter miroApiServiceAdapter;
 
-    @Override
-    public String toString() {
-        return "MappingController{" +
-                "boardType=" + boardType +
-                ", boardId='" + boardId + '\'' +
-                ", accessToken='" + accessToken + '\'' +
-                '}';
-    }
+    @Autowired
+    Environment environment;
 
-    public ByteArrayResource getServableOutput() {
-        return resource;
-    }
+    @Autowired
+    BasicInputCorrector basicInputCorrector;
 
-    public List<String> getMappingMessages() {
-        return mappingMessages.getMessages();
-    }
 
-    public boolean isMappingFullSuccess() {
-        return mappingMessages.isMappingState();
-    }
+    public MappingResult startMappingProcess(BoardType boardType, String boardId, String accessToken) {
 
-    public ByteArrayResource getServableMappingLog() {
-        return new ByteArrayResource(mappingLog.toByteArray());
-    }
+        MappingResult output = new MappingResult();
+        MappingLog mappingLog = new MappingLog();
+        MappingMessages mappingMessages = new MappingMessages();
+        output.setMappingLog(mappingLog);
+        output.setMappingMessages(mappingMessages);
 
-    public String getLogPreview() {
-        return mappingLog.toString();
-    }
-
-    public String getCmlPreview() {
-        return cmlPreview;
-    }
-
-    public boolean startMappingProcess() {
         logger.debug("Get BoardData from data source");
         mappingLog.addInfoLogEntry("Get BoardData from data source (for more information, see Data Access Log Section down below.)");
+        addMetaDataToLog(mappingLog,boardId);
+
         WidgetCollection widgetCollection = miroApiServiceAdapter.getBoardWidgets(accessToken, boardId);
         InputBoard inputBoard = new InputBoard(boardId, widgetCollection.getWidgets());
         mappingLog.setDataAccessLog(widgetCollection.getDataAccessLog());
+        if(widgetCollection.getDataAccessLog().isMaxWidgetsCountExceeded()){
+            mappingMessages.add("We received 1000 Widgets from Miro. This is the maximum we can receive per Board. Thus its possible, that we didn't receive all of your widgets. If you really need more than 1000 Widgets, please split them up and distribute them  on multiple boards.");
+        }
         if (widgetCollection.isSuccess()) {
             logger.debug("BoardData received");
 
@@ -89,8 +60,10 @@ public class MappingController {
             mappingLog.addInfoLogEntry("Commence Board mapping");
             try {
                 MappedBoard mappedBoard;
-                InputBoard validatedBoard = InputValidation.validate(inputBoard);
-                mappingLog.addInfoLogEntry("Input is validated. Maximum size of text has been set to 1200 characters.");
+                mappingLog.addInfoLogEntry("Start with basic input correction measures.");
+                InputBoard validatedBoard = basicInputCorrector.prepareInput(inputBoard,mappingLog);
+                mappingLog.addInfoLogEntry("Basic input correction measures have been performed.");
+
                 mappingLog.addSectionSeparator();
                 switch (boardType) {
                     case UserStory:
@@ -110,82 +83,85 @@ public class MappingController {
                 mappingLog.addSectionSeparator();
                 mappingLog.addInfoLogEntry("BoardMapping finished");
 
-                addMetaDataToCml(mappedBoard.getCmlModel().getResource().getContextMappingModel());
+                addMetaDataToCml(mappedBoard.getCmlModel().getResource().getContextMappingModel(),boardId);
 
                 mappingLog.addInfoLogEntry("commence with cml serialization");
-                serializeCml(mappedBoard);
+                serializeCml(mappedBoard,output);
                 mappingLog.addInfoLogEntry("finished cml serialization");
-                if (mappingLog.getErrorCounter()!=0){
+                if (mappingLog.getErrorCounter() != 0) {
                     mappingMessages.add(mappingLog.getErrorCounter() + " Error(s) occurred during mapping. Check the Logfile for further information.");
                 }
-                if (mappingLog.getWarningCounter()!=0){
+                if (mappingLog.getWarningCounter() != 0) {
                     mappingMessages.add(mappingLog.getWarningCounter() + " Warning(s) occurred during mapping. Check the Logfile for further information.");
                 }
-                return true;
+                output.setSuccess(true);
+                output.setPerfectSuccess(output.getMappingMessages().isPerfectMapping());
+                return output;
             } catch (WrongBoardException wrongBoardException) {
                 mappingMessages.add(wrongBoardException.getMessage());
                 mappingMessages.add("Input Board doesn't match expected Board Format. Take a look at the section Supported Templates for more information.");
                 mappingLog.addSectionSeparator();
                 mappingLog.addErrorLogEntry("Input Board doesn't match expected Board Format. Take a look at the section Supported Templates for more information.");
                 mappingLog.addErrorLogEntry("Error Message: " + wrongBoardException.getMessage());
-                return false;
+                return output;
             } catch (InvalidBoardFormatException invalidBoardFormatException) {
                 mappingMessages.add("A critical ERROR occurred during parsing of the InputBoard. (Invalid Board Format)");
                 mappingMessages.add("Please take a look at the logfile for further information");
                 mappingLog.addSectionSeparator();
                 mappingLog.addErrorLogEntry("A critical ERROR occurred during parsing of the InputBoard. (Invalid Board Format)");
                 mappingLog.addErrorLogEntry("Error Message: " + invalidBoardFormatException.getMessage());
-                return false;
+                return output;
             } catch (CmlSerializerException cmlSerializerException) {
                 mappingMessages.add("Critical ERROR during cml serialization");
                 mappingMessages.add("Please take a look at the logfile for further information");
                 mappingLog.addSectionSeparator();
                 mappingLog.addErrorLogEntry("Critical ERROR during cml serialization");
                 mappingLog.addErrorLogEntry("Error Message: " + cmlSerializerException.getMessage());
-                return false;
+                return output;
             } catch (Exception e) {
                 mappingMessages.add("A critical ERROR occurred during Mapping");
                 mappingMessages.add("Please take a look at the logfile for further information");
                 mappingLog.addSectionSeparator();
                 mappingLog.addErrorLogEntry("A critical ERROR occurred during Mapping");
                 mappingLog.addErrorLogEntry("Error Message: " + e.getMessage());
-                return false;
+                return output;
             }
         } else {
             mappingMessages.add("Critical ERROR during MiroApiCall");
             mappingMessages.add("Please take a look at the logfile for further information");
             mappingLog.addSectionSeparator();
         }
-        return false;
+        return output;
     }
 
-    private void serializeCml(MappedBoard mappedBoard) throws CmlSerializerException {
+    private void serializeCml(MappedBoard mappedBoard, MappingResult result) throws CmlSerializerException {
         try {
-            resource = new ByteArrayResource(mappedBoard.getCmlModel().toByteArray());
-            cmlPreview = new String(resource.getByteArray());
+            ByteArrayResource resource = new ByteArrayResource(mappedBoard.getCmlModel().toByteArray());
+            result.setCmlResource(resource);
+            result.setCmlPreview(new String(resource.getByteArray()));
         } catch (Exception e) {
             throw new CmlSerializerException(e.getMessage());
         }
     }
 
-    private void addMetaDataToCml(ContextMappingModel cml) {
+    private void addMetaDataToCml(ContextMappingModel cml, String boardId) {
         String oldTopComment = cml.getTopComment();
         oldTopComment = oldTopComment == null ? "" : oldTopComment;
         oldTopComment = oldTopComment.replace("/*", "");
         oldTopComment = oldTopComment.replace("*/", "");
         StringBuilder topCommentWithMetaData = new StringBuilder()
                 .append("/*").append(System.lineSeparator())
-                .append(provideMetaDataString())
+                .append(provideMetaDataString(boardId))
                 .append(oldTopComment).append(System.lineSeparator())
                 .append("*/");
         cml.setTopComment(topCommentWithMetaData.toString());
     }
 
-    private void addMetaDataToLog() {
-        mappingLog.setMetaData(provideMetaDataString());
+    private void addMetaDataToLog(MappingLog mappingLog,String boardId) {
+        mappingLog.setMetaData(provideMetaDataString(boardId));
     }
 
-    private String provideMetaDataString() {
+    private String provideMetaDataString(String boardId) {
         String boardLink = "https://miro.com/app/board/" + boardId;
         String timestamp = new Timestamp(new Date().getTime()).toString();
         String miro2cmlVersion = environment.getProperty("miro2cml.version");

@@ -4,7 +4,7 @@ function clearFilter() {
 }
 
 function filterBoards() {
-    let filterCriteria =document.getElementById('keyword').value.toString().toLocaleLowerCase();
+    let filterCriteria = document.getElementById('keyword').value.toString().toLocaleLowerCase();
     let filterableElements;
     let count = 0;
     filterableElements = document.getElementsByClassName("filterable");
@@ -20,8 +20,8 @@ function filterBoards() {
             hideElement(elementAtIndex);
         }
     }
-    let resultWrapper =  document.getElementById('resultWrapper')
-    if (count>10){
+    let resultWrapper = document.getElementById('resultWrapper')
+    if (count > 10) {
         addCssClass(resultWrapper, "vertical-overflow-container");
     } else {
         removeCssClass(resultWrapper, "vertical-overflow-container")
@@ -61,20 +61,12 @@ function removeCssClass(element, classes) {
     element.className = arr1.join(" ");
 }
 
-$('#submit-form').on('click', function () {
-    var form = $('#getBoardForm');
-    $.ajax({
-        url: form.attr('action'),
-        data: form.serialize(),
-        type: form.attr("method"),
-        success: function (result) {
-            // Do something with the response.
-            // Might want to check for errors here.
-        }, error: function (error) {
-            // Here you can handle exceptions thrown by the server or your controller.
-        }
+$(document).ready(function () {
+    $('#submitForm').on('click', function () {
+        $("#loader").show();
     })
-})
+});
+
 
 document.addEventListener('DOMContentLoaded', (event) => {
     filterBoards();

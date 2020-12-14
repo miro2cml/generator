@@ -1,18 +1,20 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
-import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
-import ch.ost.rj.sa.miro2cml.model.widgets.Text;
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.IRelevantText;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Shape;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Text;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BoundedContextBoard {
-    //TODO: move static Variables
-    public static final String DESCRIPTION = "Description";
+    //TODO: make configurable through application.properties
+    public static final String DESCRIPTION_IDENTIFIER = "Description";
     public static final String INBOUND_COMMUNICATION = "Inbound Communication";
     private static final String QUERY_COLOR = "#f0f7a9";
     private static final String COMMAND_COLOR = "#cbdcee";
@@ -31,13 +33,19 @@ public class BoundedContextBoard {
     private final int middle;
     private final int top;
     private final int bottom;
-    private String name, description, domain, businessModel, evolution, roleTypes, aggregateName;
-    private ArrayList<String> queries;
-    private ArrayList<String> commands;
-    private ArrayList<String> events;
-    private ArrayList<String> outBoundCommunication;
-    private ArrayList<String> businessDescisions;
-    private ArrayList<String> ubiquitousLanguage;
+    private String name;
+    private String description;
+    private String domain;
+    private String businessModel;
+    private String evolution;
+    private String roleTypes;
+    private String aggregateName;
+    private List<String> queries;
+    private List<String> commands;
+    private List<String> events;
+    private List<String> outBoundCommunication;
+    private List<String> businessDescisions;
+    private List<String> ubiquitousLanguage;
     private MappingMessages messages;
     private MappingLog mappingLog;
 
@@ -132,51 +140,51 @@ public class BoundedContextBoard {
         this.aggregateName = aggregateName;
     }
 
-    public ArrayList<String> getQueries() {
+    public List<String> getQueries() {
         return queries;
     }
 
-    public void setQueries(ArrayList<String> queries) {
+    public void setQueries(List<String> queries) {
         this.queries = queries;
     }
 
-    public ArrayList<String> getCommands() {
+    public List<String> getCommands() {
         return commands;
     }
 
-    public void setCommands(ArrayList<String> commands) {
+    public void setCommands(List<String> commands) {
         this.commands = commands;
     }
 
-    public ArrayList<String> getEvents() {
+    public List<String> getEvents() {
         return events;
     }
 
-    public void setEvents(ArrayList<String> events) {
+    public void setEvents(List<String> events) {
         this.events = events;
     }
 
-    public ArrayList<String> getOutBoundCommunication() {
+    public List<String> getOutBoundCommunication() {
         return outBoundCommunication;
     }
 
-    public void setOutBoundCommunication(ArrayList<String> outBoundCommunication) {
+    public void setOutBoundCommunication(List<String> outBoundCommunication) {
         this.outBoundCommunication = outBoundCommunication;
     }
 
-    public ArrayList<String> getBusinessDescisions() {
+    public List<String> getBusinessDescisions() {
         return businessDescisions;
     }
 
-    public void setBusinessDescisions(ArrayList<String> businessDescisions) {
+    public void setBusinessDescisions(List<String> businessDescisions) {
         this.businessDescisions = businessDescisions;
     }
 
-    public ArrayList<String> getUbiquitousLanguage() {
+    public List<String> getUbiquitousLanguage() {
         return ubiquitousLanguage;
     }
 
-    public void setUbiquitousLanguage(ArrayList<String> ubiquitousLanguage) {
+    public void setUbiquitousLanguage(List<String> ubiquitousLanguage) {
         this.ubiquitousLanguage = ubiquitousLanguage;
     }
 
@@ -250,8 +258,8 @@ public class BoundedContextBoard {
         if(text==null){
             return false;
         }else{
-            return !((text.equals(EVENT_EXAMPLE) || text.equals(COMMAND_EXAMPLE)
-                    || text.equals(QUERY_EXAMPLE)));
+            return !(text.equals(EVENT_EXAMPLE) || text.equals(COMMAND_EXAMPLE)
+                    || text.equals(QUERY_EXAMPLE));
         }
     }
 
@@ -268,7 +276,7 @@ public class BoundedContextBoard {
     }
     private int getTop() {
         for(WidgetObject widget: inputBoard.getWidgetObjects()){
-            if((isaBoolean(DESCRIPTION, widget))){
+            if((isaBoolean(DESCRIPTION_IDENTIFIER, widget))){
                 mappingLog.addSuccessLogEntry("Field Description found");
                 return ((Text) widget).getY();
             }
@@ -291,9 +299,10 @@ public class BoundedContextBoard {
 
     private String searchForString(String regex){
         for(WidgetObject widget: inputBoard.getWidgetObjects()){
-            if(isaBoolean(regex, widget)){
+            if(isaBoolean(regex, widget) && widget instanceof IRelevantText){
                 mappingLog.addSuccessLogEntry(regex + " found");
-                return widget.getMappingRelevantText();
+                IRelevantText widgetWithText= (IRelevantText) widget;
+                return widgetWithText.getMappingRelevantText();
             }
         }
         mappingLog.addErrorLogEntry(regex + " not found");

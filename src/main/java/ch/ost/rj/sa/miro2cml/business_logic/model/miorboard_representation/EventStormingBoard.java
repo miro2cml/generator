@@ -1,14 +1,14 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
-import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
 import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
-import ch.ost.rj.sa.miro2cml.model.widgets.Line;
-import ch.ost.rj.sa.miro2cml.model.widgets.Sticker;
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Line;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Sticker;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -124,17 +124,18 @@ public class EventStormingBoard {
     private List<String> getTrigger(String domainEvent) {
         ArrayList<String> output = new ArrayList<>();
         if (!domainEvent.equals("")) {
-            for (ArrayList<String> text : triggers) {
-                if (text.get(0).contains(domainEvent)) {
-                    for (String s : text) {
+            for (ArrayList<String> trigger : triggers) {
+                if (trigger.get(0).contains(domainEvent)) {
+                    for (String s : trigger) {
                         output.add(s);
                         mappingLog.addSuccessLogEntry("Trigger " + s + " found for " + domainEvent);
                     }
                 }
             }
             if (output.isEmpty()) {
-                mappingLog.addErrorLogEntry("For " + domainEvent + " no triggers found");
-                messages.add("For " + StringValidator.validatorForStrings(domainEvent) + " no triggers found. Check if the lines are correctly connected.");
+                String logString = "No triggers found for " + StringValidator.validatorForStrings(domainEvent) + ". Check if the lines are correctly connected.";
+                mappingLog.addErrorLogEntry(logString);
+                messages.add(logString);
             }
         }
         return output;
@@ -224,8 +225,9 @@ public class EventStormingBoard {
             }
         }
         if (output.isEmpty()) {
-            mappingLog.addErrorLogEntry("No Issues found");
-            messages.add("No Issues found. Check if you use any Issue Stickers.");
+            mappingLog.addErrorLogEntry("No Issues found. If intended to have Issues, do your Issue Stickers use the same background color as you have previously defined? Please check the mapping rules (under Supported Templates on the webpage or in the User Guide) and the Tutorials for more Information");
+
+            messages.add("No Issues found. If intended to have Issues, do your Issue Stickers use the same background color as you have previously defined? Please check the mapping rules (under Supported Templates on the webpage or in the User Guide) and the Tutorials for more Information");
         }
         return output;
     }
@@ -233,7 +235,7 @@ public class EventStormingBoard {
     private ArrayList<Sticker> getStickerWithRelevantColor(String color, String stickerType) {
         ArrayList<Sticker> relevantStickers = new ArrayList<>();
         for (WidgetObject widget : inputBoard.getWidgetObjects()) {
-            if (widget instanceof Sticker && (((Sticker) widget).getBackgroundColor().equals(color)) && !widget.getMappingRelevantText().equals("")) {
+            if (widget instanceof Sticker && (((Sticker) widget).getBackgroundColor().equals(color)) && !((Sticker) widget).getMappingRelevantText().equals("")) {
                 relevantStickers.add((Sticker) widget);
                 mappingLog.addSuccessLogEntry("Identified " + ((Sticker) widget).getText() + " as a(n)" + stickerType);
             }
@@ -284,7 +286,7 @@ public class EventStormingBoard {
         }
     }
 
-    public ArrayList<EventStormingGroup> getConnections() {
+    public List<EventStormingGroup> getConnections() {
         return connections;
     }
 

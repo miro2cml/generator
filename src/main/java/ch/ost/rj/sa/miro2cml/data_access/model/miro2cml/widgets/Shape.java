@@ -1,16 +1,16 @@
-package ch.ost.rj.sa.miro2cml.model.widgets;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets;
 
 
-import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
-public class Text extends WidgetObject {
+public class Shape extends WidgetObject implements IRelevantText {
     private int x;
     private int y;
     private double width;
-    private double scale;
+    private double height;
     private double rotation;
 
     private String backgroundColor;
@@ -19,19 +19,21 @@ public class Text extends WidgetObject {
     private double borderOpacity;
     private String borderStyle;
     private double borderWidth;
+    private String shapeType;
     private String textColor;
-    private String text;
 
     private String fontFamily;
     private int fontSize;
     private String textAlign;
+    private String textAlignVertical;
+    private String text;
 
-    public Text(BigInteger id, int x, int y, double width, double scale, double rotation, String backgroundColor, double backgroundOpacity, String borderColor, double borderOpacity, String borderStyle, double borderWidth, String textColor, String text, String fontFamily, int fontSize, String textAlign) {
+    public Shape(BigInteger id, int x, int y, double width, double height, double rotation, String backgroundColor, double backgroundOpacity, String borderColor, double borderOpacity, String borderStyle, double borderWidth, String shapeType, String textColor, String fontFamily, int fontSize, String textAlign, String textAlignVertical, String text) {
         super(id);
         this.x = x;
         this.y = y;
         this.width = width;
-        this.scale = scale;
+        this.height = height;
         this.rotation = rotation;
         this.backgroundColor = backgroundColor;
         this.backgroundOpacity = backgroundOpacity;
@@ -39,19 +41,21 @@ public class Text extends WidgetObject {
         this.borderOpacity = borderOpacity;
         this.borderStyle = borderStyle;
         this.borderWidth = borderWidth;
+        this.shapeType = shapeType;
         this.textColor = textColor;
-        this.text = text;
         this.fontFamily = fontFamily;
         this.fontSize = fontSize;
         this.textAlign = textAlign;
+        this.textAlignVertical = textAlignVertical;
+        this.text = text;
     }
 
-    public Text(MiroWidget miroWidget) {
+    public Shape(MiroWidget miroWidget) {
         super(miroWidget.getId());
         this.x = miroWidget.getX();
         this.y = miroWidget.getY();
         this.width = miroWidget.getWidth();
-        this.scale = miroWidget.getScale();
+        this.height = miroWidget.getHeight();
         this.rotation = miroWidget.getRotation();
         this.backgroundColor = miroWidget.getStyle().getBackgroundColor();
         this.backgroundOpacity = miroWidget.getStyle().getBackgroundOpacity();
@@ -59,57 +63,31 @@ public class Text extends WidgetObject {
         this.borderOpacity = miroWidget.getStyle().getBorderOpacity();
         this.borderStyle = miroWidget.getStyle().getBorderStyle();
         this.borderWidth = miroWidget.getStyle().getBorderWidth();
+        this.shapeType = miroWidget.getStyle().getShapeType();
         this.textColor = miroWidget.getStyle().getTextColor();
         this.fontFamily = miroWidget.getStyle().getFontFamily();
         this.fontSize = miroWidget.getStyle().getFontSize();
         this.textAlign = miroWidget.getStyle().getTextAlign();
+        this.textAlignVertical = miroWidget.getStyle().getTextAlignVertical();
         this.text = miroWidget.getText();
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
     public String toString() {
-        return super.toString() + "Text{" +
-                "x=" + x +
-                ", y=" + y +
-                ", width=" + width +
-                ", scale=" + scale +
-                ", rotation=" + rotation +
+        return "Shape{" +
+                "id=" + super.getId()+
                 ", backgroundColor='" + backgroundColor + '\'' +
-                ", backgroundOpacity=" + backgroundOpacity +
-                ", borderColor='" + borderColor + '\'' +
-                ", borderOpacity=" + borderOpacity +
-                ", borderStyle='" + borderStyle + '\'' +
-                ", borderWidth=" + borderWidth +
-                ", textColor='" + textColor + '\'' +
-                ", fontFamily='" + fontFamily + '\'' +
-                ", fontSize=" + fontSize +
-                ", textAlign='" + textAlign + '\'' +
+                ", shapeType='" + shapeType + '\'' +
                 ", text='" + text + '\'' +
                 '}';
-    }
-
-    public String getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public String getBorderColor() {
-        return borderColor;
-    }
-
-    public void setBorderColor(String borderColor) {
-        this.borderColor = borderColor;
-    }
-
-    public String getTextColor() {
-        return textColor;
-    }
-
-    public void setTextColor(String textColor) {
-        this.textColor = textColor;
     }
 
     public int getX() {
@@ -136,12 +114,12 @@ public class Text extends WidgetObject {
         this.width = width;
     }
 
-    public double getScale() {
-        return scale;
+    public double getHeight() {
+        return height;
     }
 
-    public void setScale(double scale) {
-        this.scale = scale;
+    public void setHeight(double height) {
+        this.height = height;
     }
 
     public double getRotation() {
@@ -152,13 +130,6 @@ public class Text extends WidgetObject {
         this.rotation = rotation;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public double getBackgroundOpacity() {
         return backgroundOpacity;
@@ -167,7 +138,6 @@ public class Text extends WidgetObject {
     public void setBackgroundOpacity(double backgroundOpacity) {
         this.backgroundOpacity = backgroundOpacity;
     }
-
 
     public double getBorderOpacity() {
         return borderOpacity;
@@ -193,6 +163,37 @@ public class Text extends WidgetObject {
         this.borderWidth = borderWidth;
     }
 
+    public String getShapeType() {
+        return shapeType;
+    }
+
+    public void setShapeType(String shapeType) {
+        this.shapeType = shapeType;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public String getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(String borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    public String getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
+    }
 
     public String getFontFamily() {
         return fontFamily;
@@ -218,13 +219,52 @@ public class Text extends WidgetObject {
         this.textAlign = textAlign;
     }
 
+    public String getTextAlignVertical() {
+        return textAlignVertical;
+    }
+
+    public void setTextAlignVertical(String textAlignVertical) {
+        this.textAlignVertical = textAlignVertical;
+    }
+
     @Override
     public String getMappingRelevantText() {
-        return text;
+        return getText();
     }
 
     @Override
     public void setMappingRelevantText(String text) {
-        this.text = text;
+        setText(text);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Shape)) return false;
+        if (!super.equals(o)) return false;
+        Shape shape = (Shape) o;
+        return x == shape.x &&
+                y == shape.y &&
+                Double.compare(shape.width, width) == 0 &&
+                Double.compare(shape.height, height) == 0 &&
+                Double.compare(shape.rotation, rotation) == 0 &&
+                Double.compare(shape.backgroundOpacity, backgroundOpacity) == 0 &&
+                Double.compare(shape.borderOpacity, borderOpacity) == 0 &&
+                Double.compare(shape.borderWidth, borderWidth) == 0 &&
+                fontSize == shape.fontSize &&
+                Objects.equals(backgroundColor, shape.backgroundColor) &&
+                Objects.equals(borderColor, shape.borderColor) &&
+                Objects.equals(borderStyle, shape.borderStyle) &&
+                Objects.equals(shapeType, shape.shapeType) &&
+                Objects.equals(textColor, shape.textColor) &&
+                Objects.equals(fontFamily, shape.fontFamily) &&
+                Objects.equals(textAlign, shape.textAlign) &&
+                Objects.equals(textAlignVertical, shape.textAlignVertical) &&
+                Objects.equals(text, shape.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), x, y, width, height, rotation, backgroundColor, backgroundOpacity, borderColor, borderOpacity, borderStyle, borderWidth, shapeType, textColor, fontFamily, fontSize, textAlign, textAlignVertical, text);
     }
 }

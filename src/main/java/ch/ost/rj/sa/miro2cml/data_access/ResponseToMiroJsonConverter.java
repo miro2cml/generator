@@ -10,7 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ResponseToMiroJsonConverter {
-    static WidgetsCollection convertJsonResponseStreamIntoWidgetCollection(InputStream response, DataAccessLog dataAccessLog) throws IOException {
+    private ResponseToMiroJsonConverter(){}
+    static WidgetsCollection convertJsonResponseStreamIntoWidgetCollection(InputStream response) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper.readValue(response, WidgetsCollection.class);
