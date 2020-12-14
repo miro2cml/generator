@@ -1,28 +1,36 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.UserStoryElementExtractionError;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.UserStory;
-import ch.ost.rj.sa.miro2cml.model.widgets.Card;
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Card;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class UserStoryBoard {
 
-    public static final String BLUECARD = "#2d9bf0";
-    public static final String YELLOWCARD = "#fbc800";
-    private static final List<List<String>> regex = UserStoryRegex.createUserStoriesRegex();
-    final MappingMessages messages;
-    final MappingLog log;
+    private final List<String> ignoredCardColors;
+    private final List<List<String>> regexes;
+    private final MappingMessages messages;
+    private final MappingLog log;
     private final InputBoard inputBoard;
-    private final ArrayList<UserStory> userStories;
+    private final List<UserStory> userStories;
+    private List<String> correctRegexCollection;
+
 
     private UserStoryBoard(InputBoard inputBoard, MappingLog log, MappingMessages messages) throws WrongBoardException {
+        UserStoryRegexProvider regexProvider = new UserStoryRegexProvider();
+        this.regexes = regexProvider.getListOfUserStoriesRegexStringLists();
+        this.ignoredCardColors = regexProvider.getIgnoredCardColors();
         this.inputBoard = inputBoard;
         this.log = log;
         this.messages = messages;
@@ -33,25 +41,69 @@ public class UserStoryBoard {
         return new UserStoryBoard(inputBoard, log, messages);
     }
 
-    private static String getPart(String start, String end, String input, int index) {
-        int startIndex = input.indexOf(start, index);
-        int endIndex = input.indexOf(end, index);
-        return input.substring(startIndex + start.length(), endIndex);
-    }
-
     private boolean isValidUserStory(Card card) {
-        return !(isBlueOrYellow(card)) && (!isCardTitleNull(card)) && findUserStoryFromCard(card);
+        return !(isIgnoredColor(card)) && (!isCardTitleNull(card)) && containsUserStory(card);
     }
 
-    private boolean findUserStoryFromCard(Card card) {
-        String input = card.getTitle();
-        for (List<String> strings : regex) {
-            if (input.matches(strings.get(0))) {
+    private boolean containsUserStory(Card card) {
+        String cardText = card.getTitle();
+
+        for (List<String> regexStrings : regexes) {
+            if (cardText.matches(regexStrings.get(0))) {
+                correctRegexCollection = regexStrings;
                 return true;
             }
         }
-        log.addWarningLogEntry("Card " + card.getTitle() + " didn't match any supported UserStoryFormats");
+        determineNotMatchingReason(cardText);
         return false;
+    }
+    private void determineNotMatchingReason(String input){
+
+        log.addErrorLogEntry("Card: " + input + ", didn't match any supported UserStoryFormats. Take a look at the format rules (on the webpage or in the User Guide) and the Tutorials for Event Storming on the webpage for specific Information, which criteria a DomainEvent has to meet to be recognized as part of an EventGroup.");
+
+        log.addInfoLogEntry("The following log entries should help you to find the exact reason, why your Card didn't match the format rules.");
+        for (int j = 0; j < regexes.size(); j++) {
+            List<String> regexStrings = regexes.get(j);
+            String completeRegexString = regexStrings.get(0);
+            int currentInputPosition = 0;
+            log.addInfoLogEntry("Test input against regex-variant "+(j+1) +" of "+regexes.size()+", current variant: ActorArticle:"+regexStrings.get(1)+" & EntityArticle" + regexStrings.get(5) + ")"  );
+
+            for (int i = 1; i < regexStrings.size(); i++) {
+                String regexPart = regexStrings.get(i);
+                Pattern p = Pattern.compile(regexPart);
+                Matcher m = p.matcher(input.substring(currentInputPosition));
+                if (m.find()) {
+                    int startPositionOfMatchingString = m.start();
+                    if (startPositionOfMatchingString != 0) {
+                        log.addInfoLogEntry("Card: " + input + ", didn't match regexPart: |" + regexPart + "| on expected Index, testing against the following complete regex: " + completeRegexString);
+                        log.addInfoLogEntry("Should have matched this part on " + currentInputPosition + " but matched it on " + (currentInputPosition + startPositionOfMatchingString));
+                        log.addInfoLogEntry("Searched in Substring: " + input.substring(currentInputPosition));
+                        log.addInfoLogEntry("Already parsed Substring: " + input.substring(0, currentInputPosition));
+                        break;
+                    } else {
+                        int endPosition = m.end();
+                        currentInputPosition += endPosition;
+                    }
+                } else {
+                    log.addInfoLogEntry("Card: " + input + " didn't match regex: " + completeRegexString + " at regexPart: |" + regexPart + "|");
+                    log.addInfoLogEntry("Searched in Substring: " + input.substring(currentInputPosition));
+                    log.addInfoLogEntry("Already parsed Substring: " + input.substring(0, currentInputPosition));
+                    break;
+                }
+            }
+        }
+    }
+
+    private void prepareCardForMapping(Card card){
+        String cardTitle = card.getTitle();
+
+        cardTitle = StringValidator.reduceMultipleSpacesToOne(cardTitle);
+        cardTitle = StringValidator.removeSimpleHtmlTags(cardTitle);
+        cardTitle = StringValidator.extractHtmlLink(cardTitle);
+        cardTitle = StringValidator.removeAllHtmlTags(cardTitle);
+        cardTitle = StringValidator.replaceSpecialCharCodesWithTheirSingleCharEquivalent(cardTitle);
+
+        card.setTitle(cardTitle);
     }
 
     private boolean isCardTitleNull(Card card) {
@@ -62,68 +114,114 @@ public class UserStoryBoard {
         return false;
     }
 
-    private ArrayList<UserStory> extractUserStories() throws WrongBoardException {
+    private List<UserStory> extractUserStories() throws WrongBoardException {
         ArrayList<UserStory> output = new ArrayList<>();
         List<WidgetObject> input = inputBoard.getWidgetObjects();
         int cardCounter = 0;
         for (WidgetObject widget : input) {
             if (widget instanceof Card) {
                 Card card = (Card) widget;
+                prepareCardForMapping(card);
                 cardCounter++;
                 if (isValidUserStory(card)) {
-                    UserStory userStory = extractUserStory(card);
-                    if (userStory != null) {
+                    try {
+                        UserStory userStory = extractUserStory(card);
+                        String cardText = card.getTitle();
+
                         output.add(userStory);
-                        log.addSuccessLogEntry("Card: " + card.getTitle() + " has been mapped to: " + userStory.getName());
-                    } else {
-                        log.addErrorLogEntry("mapping of " + card.getTitle() + " resulted in invalid UserStory");
+                        log.addSuccessLogEntry("Card: " + cardText + ", has been mapped to: " + userStory.getName());
+                    } catch (UserStoryElementExtractionError e) {
+                        log.addErrorLogEntry("Discarded Card: " + card + " Reason: " + e.getMessage());
                     }
                 }
             }
         }
         if (output.size() == cardCounter) {
-            messages.add("No Errors/Warnings occurred during Mapping");
+            messages.add("All Cards have been Mapped to a UserStory");
         } else {
             messages.add("Errors/warnings occurred");
             messages.add("We received " + input.size() + " widgets from Miro");
             messages.add(cardCounter + " of them were Cards");
             messages.add(output.size() + " of these cards have been successfully converted to UserStories");
             messages.add("Consult the logfile for more information");
-            messages.setMappingState(false);
+            messages.setPerfectMapping(false);
         }
-        if(cardCounter==0){
+        if (cardCounter == 0) {
             throw new WrongBoardException("Input Board doesn't match with expected Board Type: User Story. No Cards found.");
         }
-        if(output.isEmpty()){
+        if (output.isEmpty()) {
             throw new WrongBoardException("Input Board doesn't match with expected Board Type: User Story. No UserStories found.");
         }
-        return output;
+
+        return uniquifyUserStoryNames(output);
     }
 
-    private UserStory extractUserStory(Card card) {
-        String text = card.getTitle();
-        for (List<String> strings : regex) {
-            if (text.matches(strings.get(0))) {
-                String role = getPart(strings.get(1), strings.get(2), text, 0);
-                String verb = getPart(strings.get(2), strings.get(3), text, strings.get(1).length() + role.length());
-                String entity = getPart(strings.get(3), strings.get(4), text, strings.get(1).length() + strings.get(2).length() + verb.length() + role.length());
-                String benefit = getPart(strings.get(4), strings.get(5), text, strings.get(1).length() + strings.get(2).length() + strings.get(3).length() + verb.length() + role.length() + entity.length());
-                String article = StringValidator.removeSpace(strings.get(3));
-                return new UserStory(role, verb, entity, benefit, article);
-            }
+    private static String getUserStoryElement(String input, String regex, int offset) throws UserStoryElementExtractionError {
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(input);
+        if (m.find(offset)) {
+            return input.substring(m.start(), m.end());
+        } else {
+            throw new UserStoryElementExtractionError("Could not extract UserStory Element corresponding to: |" + regex + "| in: " + input);
         }
-        return null;
     }
 
-    private boolean isBlueOrYellow(Card card) {
-        if (card.getBackgroundColor().equals(BLUECARD) || card.getBackgroundColor().equals(YELLOWCARD)) {
+    private UserStory extractUserStory(Card card) throws UserStoryElementExtractionError {
+        String input = card.getTitle();
+
+        List<String> regexParts = correctRegexCollection;
+        int offset = 0;
+
+        offset += correctRegexCollection.get(1).length()-1;
+
+        String role = getUserStoryElement(input, correctRegexCollection.get(2), offset);
+
+        offset += role.length();
+        offset += correctRegexCollection.get(3).length();
+        String verb = getUserStoryElement(input, correctRegexCollection.get(4), offset);
+        offset += verb.length();
+        offset += regexParts.get(5).length();
+
+        String entity = getUserStoryElement(input, correctRegexCollection.get(6), offset);
+        offset += entity.length();
+        offset += regexParts.get(7).length();
+
+        String benefit = getUserStoryElement(input, regexParts.get(8), offset);
+        String article = StringValidator.removeSpaces(regexParts.get(5));
+        return new UserStory(role, verb, entity, benefit, article);
+    }
+
+
+    private boolean isIgnoredColor(Card card) {
+        if (ignoredCardColors.stream().anyMatch(e-> e.equals(card.getBackgroundColor()))) {
             log.addWarningLogEntry("Card: " + card.getTitle() + "has been discarded. Reason: Color mapping rule");
             return true;
         }
         return false;
     }
 
-    public ArrayList<UserStory> getUserStories() {
+    public List<UserStory> getUserStories() {
         return userStories;
+    }
+
+    private List<UserStory> uniquifyUserStoryNames(List<UserStory> userStories){
+        ArrayList<UserStory> output = new ArrayList<>();
+
+        for (UserStory userStory : userStories){
+            if(output.stream().anyMatch(story->story.getName().equals(userStory.getName()))){
+                setUniqueUserStoryName(output,userStory);
+                output.add(userStory);
+            }else{
+                output.add(userStory);
+            }
+        }
+        return output;
+    }
+    private void setUniqueUserStoryName(List<UserStory> stories, UserStory inputStory){
+        int counter = 0;
+        String originalUserStoryName = inputStory.getName();
+        while (stories.stream().anyMatch(story->story.getName().equals(inputStory.getName()))){
+            inputStory.setName(originalUserStoryName+ ++counter);
+        }
     }
 }

@@ -1,15 +1,24 @@
 package ch.ost.rj.sa.miro2cml.business_logic;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
-import ch.ost.rj.sa.miro2cml.model.widgets.*;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.*;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class InputValidationTest {
+@SpringBootTest
+class BasicInputCorrectorTest {
+
+    @Autowired
+    BasicInputCorrector basicInputCorrector;
 
     @Test
     void validate_Card() {
@@ -21,7 +30,9 @@ class InputValidationTest {
         String expectedTitle = "input text";
         String expectedDescription = "input  text";
         //run
-        inputBoard = InputValidation.validate(inputBoard);
+        MappingLog log = new MappingLog();
+
+        inputBoard = basicInputCorrector.prepareInput(inputBoard,log);
         //check
         assertEquals(expectedTitle, ((Card)inputBoard.getWidgetObjects().get(0)).getTitle());
         assertEquals(expectedDescription, ((Card)inputBoard.getWidgetObjects().get(0)).getDescription());
@@ -34,8 +45,9 @@ class InputValidationTest {
         widgetObjectList.add(text);
         InputBoard inputBoard = new InputBoard("123", widgetObjectList);
         String expectedTitle = "input text";
+        MappingLog log = new MappingLog();
         //run
-        inputBoard = InputValidation.validate(inputBoard);
+        inputBoard = basicInputCorrector.prepareInput(inputBoard,log);
         //check
         assertEquals(expectedTitle, ((Text)inputBoard.getWidgetObjects().get(0)).getText());
     }
@@ -50,11 +62,12 @@ class InputValidationTest {
         InputBoard inputBoard = new InputBoard("123", widgetObjectList);
         String expectedTitle = "inp t text";
         String expectedTitleTwo = "<p>As an UseCase Designer I want to specify a UseCase in Miro and then transfer it to cml so that I can collaborativly work on my UseCases and use the functionality of the context mapper(correct, abstände doppelt).</p>";
+        MappingLog log = new MappingLog();
         //run
-        inputBoard = InputValidation.validate(inputBoard);
+        inputBoard = basicInputCorrector.prepareInput(inputBoard,log);
         //check
         assertEquals(expectedTitle, ((Shape)inputBoard.getWidgetObjects().get(0)).getText());
-        assertEquals(expectedTitleTwo, (inputBoard.getWidgetObjects().get(1).getMappingRelevantText()));
+        assertEquals(expectedTitleTwo, ((IRelevantText)inputBoard.getWidgetObjects().get(1)).getMappingRelevantText());
     }
     @Test
     void validate() {
@@ -68,8 +81,9 @@ class InputValidationTest {
         widgetObjectList.add(shape);
         InputBoard inputBoard = new InputBoard("123", widgetObjectList);
         String expectedValue= "input text ";
+        MappingLog log = new MappingLog();
         //run
-        inputBoard = InputValidation.validate(inputBoard);
+        inputBoard = basicInputCorrector.prepareInput(inputBoard,log);
         //check
         assertEquals(expectedValue, ((Text)inputBoard.getWidgetObjects().get(0)).getText());
         assertEquals(expectedValue, ((Card)inputBoard.getWidgetObjects().get(1)).getTitle());
@@ -103,8 +117,10 @@ class InputValidationTest {
         widgetObjectList.add(line);
         InputBoard inputBoard = new InputBoard("123", widgetObjectList);
         String expectedValue= "input text ";
+        MappingLog log = new MappingLog();
+
         //run
-        inputBoard = InputValidation.validate(inputBoard);
+        inputBoard = basicInputCorrector.prepareInput(inputBoard,log);
         //check
         assertEquals(1200, ((Text)inputBoard.getWidgetObjects().get(0)).getText().length());
         assertEquals(expectedValue, ((Card)inputBoard.getWidgetObjects().get(1)).getTitle());

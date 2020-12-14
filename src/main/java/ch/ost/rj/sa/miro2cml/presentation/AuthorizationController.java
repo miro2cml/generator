@@ -105,11 +105,12 @@ public class AuthorizationController {
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             mappedResponse = objectMapper.readValue(response.body(), MiroAuthResponse.class);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("JsonProcessingException: ", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException: ", e);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("InterruptedException: ", e);
+            Thread.currentThread().interrupt();
         }
         return mappedResponse;
     }

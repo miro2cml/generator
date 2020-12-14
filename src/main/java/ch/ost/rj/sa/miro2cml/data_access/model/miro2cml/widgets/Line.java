@@ -1,8 +1,9 @@
-package ch.ost.rj.sa.miro2cml.model.widgets;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets;
 
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 import static java.lang.String.valueOf;
 
@@ -44,15 +45,10 @@ public class Line extends WidgetObject {
 
     @Override
     public String toString() {
-        return super.toString() + "Line{" +
+        return "Line{" +
+                "id=" + super.getId()+
                 "startWidgetId=" + startWidgetId +
                 ", endWidgetId=" + endWidgetId +
-                ", borderColor='" + borderColor + '\'' +
-                ", borderStyle='" + borderStyle + '\'' +
-                ", borderWidth=" + borderWidth +
-                ", lineEndType='" + lineEndType + '\'' +
-                ", lineStartType='" + lineStartType + '\'' +
-                ", lineType='" + lineType + '\'' +
                 '}';
     }
 
@@ -133,4 +129,24 @@ public class Line extends WidgetObject {
         return new BigInteger(String.valueOf(0));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Line)) return false;
+        if (!super.equals(o)) return false;
+        Line line = (Line) o;
+        return Double.compare(line.borderWidth, borderWidth) == 0 &&
+                Objects.equals(startWidgetId, line.startWidgetId) &&
+                Objects.equals(endWidgetId, line.endWidgetId) &&
+                Objects.equals(borderColor, line.borderColor) &&
+                Objects.equals(borderStyle, line.borderStyle) &&
+                Objects.equals(lineEndType, line.lineEndType) &&
+                Objects.equals(lineStartType, line.lineStartType) &&
+                Objects.equals(lineType, line.lineType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), startWidgetId, endWidgetId, borderColor, borderStyle, borderWidth, lineEndType, lineStartType, lineType);
+    }
 }

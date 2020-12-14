@@ -1,6 +1,6 @@
 package ch.ost.rj.sa.miro2cml.data_access.model;
 
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 
 import java.util.List;
 

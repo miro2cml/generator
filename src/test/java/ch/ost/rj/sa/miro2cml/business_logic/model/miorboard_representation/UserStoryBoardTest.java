@@ -1,12 +1,12 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
-import ch.ost.rj.sa.miro2cml.model.widgets.Card;
-import ch.ost.rj.sa.miro2cml.model.widgets.Text;
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Card;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Text;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserStoryBoardTest {
-    private static List<List<String>> regex = UserStoryRegex.createUserStoriesRegex();
+
+    private static List<List<String>> regex = new UserStoryRegexProvider().getListOfUserStoriesRegexStringLists();
 
     @Test
     void createUserStoryBoard_1() throws WrongBoardException {

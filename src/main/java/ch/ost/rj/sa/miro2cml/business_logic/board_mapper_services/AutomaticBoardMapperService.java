@@ -1,13 +1,13 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
-import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappedBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
-import ch.ost.rj.sa.miro2cml.model.boards.BoardType;
+import ch.ost.rj.sa.miro2cml.business_logic.model.BoardType;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class AutomaticBoardMapperService implements IBoardMapperService {
                 localLog.addInfoLogEntry(specificBoardType.toString());
                 mappingSwitch(specificBoardType, localInputBoard,localLog,localMessages);
                 successfulMappings.add(specificBoardType);
-                mappingLog.addInfoLogEntry("Board might be a " + specificBoardType + ". Add BoardType + " + specificBoardType + " to list of BoardType candidates.");
+                mappingLog.addInfoLogEntry("Board might be a " + specificBoardType + ". Add BoardType " + specificBoardType + " to list of BoardType candidates.");
             } catch (WrongBoardException ignored) {
                 mappingLog.addInfoLogEntry("Board is not of type: " + specificBoardType);
             } catch (InvalidBoardFormatException ignored){

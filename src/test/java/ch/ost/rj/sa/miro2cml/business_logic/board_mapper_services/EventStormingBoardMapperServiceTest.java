@@ -1,7 +1,7 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
-import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
@@ -9,9 +9,9 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.AggregatesC
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.EventStorming;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.FlowStep;
-import ch.ost.rj.sa.miro2cml.model.widgets.Line;
-import ch.ost.rj.sa.miro2cml.model.widgets.Sticker;
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Line;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Sticker;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

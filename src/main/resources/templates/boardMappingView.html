@@ -19,6 +19,9 @@
             <div th:replace="fragments/no-output::no-output"></div>
         </div>
     </div>
+    <div id='loader' style='display: none;'>
+        <img alt="loading indicator" class="loader-img" th:src="@{/images/loading.gif}">
+    </div>
 
 </main>
 <div th:insert="fragments/footer ::footer"></div>

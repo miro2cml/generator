@@ -1,14 +1,14 @@
 package ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter;
 
-import ch.ost.rj.sa.miro2cml.business_logic.InvalidBoardFormatException;
-import ch.ost.rj.sa.miro2cml.business_logic.WrongBoardException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
+import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingBoard;
-import ch.ost.rj.sa.miro2cml.model.widgets.Line;
-import ch.ost.rj.sa.miro2cml.model.widgets.Sticker;
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Line;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Sticker;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -39,9 +39,9 @@ class EventStormingConverterTest {
         InputBoard input = new InputBoard("123", widgetObjectArrayList);
 
         EventStormingBoard board = EventStormingBoard.createEventStormingBoard(input, mappingLog, messages);
-        var convertedBoard = EventStormingConverter.convertEventStormingBoardtoCML(board);
+        var convertedBoard = EventStormingConverter.convertEventStormingBoardToCML(board);
 
-        String expectedOuput = "EventStorming{aggregates=[AggregatesCML{name='house', flow=[FlowStep{position=-2814.0, command='buyed_house', event='buying_a_house', role='', triggers=[moved_in]}, FlowStep{position=-988.0, command='moved_in', event='moving_in', role='', triggers=[]}]}], issues='/* []*/'}";
-        assertEquals(expectedOuput, convertedBoard.toString());
+        String expectedOutput = "EventStorming{aggregates=[AggregatesCML{name='house', flow=[FlowStep{position=-2814.0, command='buyed_house', event='buying_a_house', role='', triggers=[moved_in]}, FlowStep{position=-988.0, command='moved_in', event='moving_in', role='', triggers=[]}]}], issues='/* []*/'}";
+        assertEquals(expectedOutput, convertedBoard.toString());
     }
 }

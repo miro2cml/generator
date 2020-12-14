@@ -4,8 +4,9 @@ import ch.ost.rj.sa.miro2cml.data_access.model.DataAccessLog;
 import ch.ost.rj.sa.miro2cml.data_access.model.WidgetCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.boards.BoardCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.WidgetsCollection;
-import ch.ost.rj.sa.miro2cml.model.boards.BoardPresentation;
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.BoardPresentationData;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,17 @@ import static ch.ost.rj.sa.miro2cml.data_access.ResponseToMiroJsonConverter.*;
 @Service
 public class MiroApiServiceAdapter {
 
-    @Value("${miro.api.baseUrl}")
-    private String apiBaseUrl;
+
+    private final String apiBaseUrl;
+    private final Integer boardCountLimit;
+
+    public MiroApiServiceAdapter(@Value("${miro.api.baseUrl}") String apiBaseUrl, @Value("${miro.api.boardCountLimit}") Integer boardCountLimit
+    ) {
+        this.boardCountLimit = boardCountLimit;
+        this.apiBaseUrl = apiBaseUrl;
+    }
+
+
 
     public WidgetCollection getBoardWidgets(String accessToken, String boardID) {
         DataAccessLog dataAccessLog = new DataAccessLog();
@@ -40,16 +50,22 @@ public class MiroApiServiceAdapter {
             dataAccessLog.addInfoLogEntry("Received BoardWidgets from Miro (as JSON)");
             dataAccessLog.addSectionSeparator();
             dataAccessLog.addInfoLogEntry("Start reading miroResponse (JSON-Parsing)");
-            WidgetsCollection widgetList = convertJsonResponseStreamIntoWidgetCollection(responseStream, dataAccessLog);
+            WidgetsCollection widgetList = convertJsonResponseStreamIntoWidgetCollection(responseStream);
             dataAccessLog.addInfoLogEntry("JSON reading finished");
             dataAccessLog.addSectionSeparator();
 
-            dataAccessLog.addInfoLogEntry("Start restructuring data (convert it into useful typed instances)");
+            dataAccessLog.addInfoLogEntry("Start restructuring data (convert data into usefully typed objects)");
             List<WidgetObject> widgetObjectList = createGenericWidgetObjectsFromJsonStructuredObjects(widgetList, dataAccessLog);
             dataAccessLog.addInfoLogEntry("Finished data restructuring");
             dataAccessLog.addSectionSeparator();
 
             dataAccessLog.addInfoLogEntry("Finished Data retrieval for MiroBoard: " + boardID);
+
+            if (widgetObjectList.size()>=1000){
+                dataAccessLog.setMaxWidgetsCountExceeded(true);
+                dataAccessLog.addWarningLogEntry("We received 1000 Widgets from Miro. This is the maximum we can receive per Board. Thus its possible, that we didn't receive all of your widgets. If you really need more than 1000 Widgets, please split them up and distribute them  on multiple boards.");
+            }
+
             return new WidgetCollection(widgetObjectList,dataAccessLog, true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,9 +74,12 @@ public class MiroApiServiceAdapter {
         }
     }
 
-    public List<BoardPresentation> getMiroBoards(String accessToken, String teamId) {
-        final int limit = 300;
-        String query = "access_token=" + accessToken + "&" + "limit=" + limit;
+    public ImmutableTriple<Boolean,Boolean,List<BoardPresentationData>> getMiroBoards(String accessToken, String teamId) {
+        boolean success = true;
+        boolean limitExceeded = false;
+        List<BoardPresentationData> boardPresentationDataList = new ArrayList<>();
+
+        String query = "access_token=" + accessToken + "&" + "limit=" + boardCountLimit;
         String url = apiBaseUrl+"/teams/" + teamId + "/boards/";
         Charset charset = java.nio.charset.StandardCharsets.UTF_8;
         try {
@@ -69,12 +88,14 @@ public class MiroApiServiceAdapter {
             InputStream responseStream = connection.getInputStream();
 
             BoardCollection boardCollection = convertJsonResponseStreamIntoMiroBoardCollection(responseStream);
-            List<BoardPresentation> boardPresentationList = createMiroBoardListFromJsonBoardCollection(boardCollection);
-            boardPresentationList.sort(((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName())));
-            return boardPresentationList;
+            boardPresentationDataList = createMiroBoardListFromJsonBoardCollection(boardCollection);
+            boardPresentationDataList.sort(((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName())));
+            limitExceeded = (boardPresentationDataList.size()>boardCountLimit);
+
+
         } catch (IOException e) {
-            e.printStackTrace();
+            success = false;
         }
-        return new ArrayList<>(); //TODO: handle this case ( global error management with useful error messages in frontend...
+        return new ImmutableTriple<>(success,limitExceeded,boardPresentationDataList);
     }
 }

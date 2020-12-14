@@ -4,8 +4,8 @@ import javax.servlet.http.HttpSession;
 
 public class SessionHandlerService {
     private SessionHandlerService(){}
-    private static String accessTokenAttributeName = "miroAccessToken";
-    private static String miroTeamIdAttributeName = "miroTeamId";
+    private static final String accessTokenAttributeName = "miroAccessToken";
+    private static final String miroTeamIdAttributeName = "miroTeamId";
     public static String getMiroAccessToken(HttpSession session) {
         return session.getAttribute(accessTokenAttributeName).toString();
     }

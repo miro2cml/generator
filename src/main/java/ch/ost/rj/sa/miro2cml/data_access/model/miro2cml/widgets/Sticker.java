@@ -1,11 +1,11 @@
-package ch.ost.rj.sa.miro2cml.model.widgets;
+package ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets;
 
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 
 import java.math.BigInteger;
 import java.util.Objects;
 
-public class Sticker extends WidgetObject {
+public class Sticker extends WidgetObject implements IRelevantText {
     private int x;
     private int y;
     private double scale;
@@ -53,7 +53,7 @@ public class Sticker extends WidgetObject {
     @Override
     public String toString() {
         return "Sticker{" +
-                " widgetID: " +super.getId() + " color: " + backgroundColor +" text: " + text + '}';
+                "id: " + super.getId()+ " color: " + backgroundColor +" text: " + text + '}';
     }
 
     public String getText() {
@@ -147,12 +147,12 @@ public class Sticker extends WidgetObject {
 
     @Override
     public String getMappingRelevantText() {
-        return text;
+        return getText();
     }
 
     @Override
     public void setMappingRelevantText(String text) {
-        this.text = text;
+        setText(text);
     }
 
     @Override

@@ -8,14 +8,16 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.Event
 import java.util.*;
 
 public class EventStormingConverter {
-    public static EventStorming convertEventStormingBoardtoCML(EventStormingBoard board){
-        ArrayList<EventStormingGroup> inputs = board.getConnections();
-        ArrayList<String> aggregateList = getAggregateList(inputs);
-        ArrayList<AggregatesCML> aggregatesCMLList = getAggregateCMLList(inputs, aggregateList);
+    private EventStormingConverter(){}
+
+    public static EventStorming convertEventStormingBoardToCML(EventStormingBoard board){
+        List<EventStormingGroup> inputs = board.getConnections();
+        List<String> aggregateList = getAggregateList(inputs);
+        List<AggregatesCML> aggregatesCMLList = getAggregateCMLList(inputs, aggregateList);
         return new EventStorming(aggregatesCMLList, "/* " + board.getIssues().toString() + "*/");
     }
 
-    private static ArrayList<AggregatesCML> getAggregateCMLList(ArrayList<EventStormingGroup> inputs, ArrayList<String> aggregateList) {
+    private static List<AggregatesCML> getAggregateCMLList(List<EventStormingGroup> inputs, List<String> aggregateList) {
         ArrayList<AggregatesCML> aggregatesCMLList = new ArrayList<>();
         for (String aggregate: aggregateList) {
             String name = StringValidator.convertForVariableName(aggregate);
@@ -31,7 +33,7 @@ public class EventStormingConverter {
         return aggregatesCMLList;
     }
 
-    private static ArrayList<String> getAggregateList(ArrayList<EventStormingGroup> inputs) {
+    private static List<String> getAggregateList(List<EventStormingGroup> inputs) {
         ArrayList<String> output = new ArrayList<>();
         for(EventStormingGroup input : inputs) {
             List<String> aggregates = input.getAgggregates();
@@ -46,7 +48,7 @@ public class EventStormingConverter {
     }
 
 
-    private static ArrayList<String> generateTriggers(ArrayList<String> trigger) {
+    private static List<String> generateTriggers(List<String> trigger) {
         if (!trigger.isEmpty()) {
             trigger.remove(0);
             trigger.replaceAll(StringValidator::convertForVariableName);

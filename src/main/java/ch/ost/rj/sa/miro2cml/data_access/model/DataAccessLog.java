@@ -7,6 +7,15 @@ public class DataAccessLog {
     private final ArrayList<String> logEntries = new ArrayList<>();
     private int warningCounter;
     private int errorCounter;
+    private boolean maxWidgetsCountExceeded;
+
+    public boolean isMaxWidgetsCountExceeded() {
+        return maxWidgetsCountExceeded;
+    }
+
+    public void setMaxWidgetsCountExceeded(boolean maxWidgetsCountExceeded) {
+        this.maxWidgetsCountExceeded = maxWidgetsCountExceeded;
+    }
 
     public List<String> getLogEntries() {
         return logEntries;
@@ -21,7 +30,7 @@ public class DataAccessLog {
     }
 
     public void addWarningLogEntry(String entry) {
-        logEntries.add("WARNING: " + entry);
+        logEntries.add("---WARNING: " + entry);
         warningCounter++;
     }
 
@@ -30,7 +39,7 @@ public class DataAccessLog {
     }
 
     public void addErrorLogEntry(String entry) {
-        logEntries.add("ERROR: " + entry);
+        logEntries.add("---ERROR: " + entry);
         errorCounter++;
     }
 
@@ -48,7 +57,8 @@ public class DataAccessLog {
         builder.append("---------------------------------------------------------------------------------------------------------------------------------------------------------").append(System.lineSeparator());
         return builder.toString();
     }
-    public void addSectionSeparator(){
+
+    public void addSectionSeparator() {
         logEntries.add("---------------------------------------------------------------------");
     }
 }

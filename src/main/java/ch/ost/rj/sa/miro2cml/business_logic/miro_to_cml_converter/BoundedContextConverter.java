@@ -6,10 +6,12 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
 import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.BoundedContextBoard;
 
-import javax.print.DocFlavor;
+import java.util.List;
 import java.util.ArrayList;
 
 public class BoundedContextConverter {
+    private BoundedContextConverter(){}
+
     public static BoundedContext convertExtractedBoardToCMLBoundedContext(BoundedContextBoard extractedBoard, MappingLog mappingLog, MappingMessages messages){
         return new BoundedContext(generateComment(extractedBoard), generateName(extractedBoard.getName(), mappingLog, messages),
                 generateDescription(extractedBoard.getDescription(), mappingLog, messages),
@@ -21,20 +23,20 @@ public class BoundedContextConverter {
                 mappingLog, messages);
     }
 
-    private static ArrayList<String> generateCommands(ArrayList<String> commands) {
+    private static List<String> generateCommands(List<String> commands) {
         return convertArrays(commands);
     }
 
-    private static ArrayList<String> generateQueries(ArrayList<String> queries) {
+    private static List<String> generateQueries(List<String> queries) {
         return convertArrays(queries);
     }
 
-    private static ArrayList<String> generateDomainEvents(ArrayList<String> events) {
+    private static List<String> generateDomainEvents(List<String> events) {
         return convertArrays(events);
     }
 
-    private static ArrayList<String> convertArrays(ArrayList<String> input) {
-        ArrayList<String> output = new ArrayList<>();
+    private static List<String> convertArrays(List<String> input) {
+        List<String> output = new ArrayList<>();
         for(String s: input){
             if(!s.equals("")){
                 output.add(StringValidator.convertForVariableName(s));
@@ -91,23 +93,24 @@ public class BoundedContextConverter {
         return (result.isEmpty())?result: "/** \n" + result + "*/";
     }
 
-    private static String validateArrays(ArrayList<String> input) {
-        String output="";
+    private static String validateArrays(List<String> input) {
+        StringBuilder output= new StringBuilder();
+        String outputString = "";
         if(!input.isEmpty()){
             for(String s: input){
                 if(s != null && !s.equals("")){
-                    output = output + s + ", ";
+                    output.append(s).append(", ");
                 }
             }
             if(output.length()>2){
-                output = output.substring(0, output.length()-2);
+                outputString = output.substring(0, output.length()-2);
             }
         }
-        return StringValidator.validatorForStrings(output);
+        return StringValidator.validatorForStrings(outputString);
     }
 
     private static String validateStringsForComment(String input) {
-        input = StringValidator.replaceLineWithComma(input);
+        input = StringValidator.replaceDashWithComma(input);
         input= input.replaceFirst(",", ":");
         return StringValidator.validatorForStrings(input);
     }

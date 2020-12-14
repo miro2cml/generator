@@ -5,9 +5,9 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
 import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.BoundedContextBoard;
-import ch.ost.rj.sa.miro2cml.model.widgets.Shape;
-import ch.ost.rj.sa.miro2cml.model.widgets.Text;
-import ch.ost.rj.sa.miro2cml.model.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Shape;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Text;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -47,7 +47,7 @@ class BoundedContextConverterTest {
         //run
         BoundedContext boundedContext = BoundedContextConverter.convertExtractedBoardToCMLBoundedContext(boundedContextBoard, mappingLog, messages);
         //check
-        String expectedBoundedContext = "BoundedContext{comment='/** \n* Domain: core, supporting, generic, other?\n* Business Model: revenue, engagement, compliance, cost reduction\n* Evolution: genesis, custom built, product, commodity\n* Outbound Communications: Second Command, Second Event, Second Query\n*/', name='Test', domainVisionStatement='This is the Domain Vision Statement', implementationStrategy='null', aggregateName='Test_Aggregate', responsibilites=[- draft context, - execution context, - analysis context, - gateway context, - other], domainEvents=[], commands=[], queries=[], knowledgeLevel=CONCRETE, refindedboundedContext=null, boundedContextType=FEATURE}";
+        String expectedBoundedContext = "BoundedContext{comment='/** \n* Domain: core, supporting, generic, other?\n* Business Model: revenue, engagement, compliance, cost reduction\n* Evolution: genesis, custom built, product, commodity\n* Outbound Communications: Second Command, Second Event, Second Query\n*/', name='Test', domainVisionStatement='This is the Domain Vision Statement', aggregateName='Test_Aggregate', responsibilities=[- draft context, - execution context, - analysis context, - gateway context, - other], domainEvents=[], commands=[], queries=[], knowledgeLevel=CONCRETE, boundedContextType=FEATURE}";
         assertEquals(expectedBoundedContext, boundedContext.toString());
     }
 

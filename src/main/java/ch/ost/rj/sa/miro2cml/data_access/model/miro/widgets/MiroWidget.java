@@ -26,35 +26,40 @@ public class MiroWidget {
     private String createdAt;
     private String date;
     private Assignee assignee;
-    private String card; //isn't listed in Miro Documentation, but appears in CardWidgetObjects as field.
+    private String card; //isn't listed in Miro Documentation, but appears in CardWidgetObjects as field. Seems to be always null.
 
     @Override
     public String toString() {
-        return "MiroWidget{" +
-                "type='" + type + '\'' +
-                ", id=" + id +
-                ", scale=" + scale +
-                ", y=" + y +
-                ", x=" + x +
-                ", width=" + width +
-                ", height=" + height +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", startWidget=" + startWidget +
-                ", endWidget=" + endWidget +
-                ", url='" + url + '\'' +
-                ", rotation=" + rotation +
-                ", text='" + text + '\'' +
-                ", style=" + style +
-                ", createdBy=" + createdBy +
-                ", modifiedAt='" + modifiedAt + '\'' +
-                ", modifiedBy=" + modifiedBy +
-                ", createdAt='" + createdAt + '\'' +
-                ", date='" + date + '\'' +
-                ", assignee=" + assignee +
-                ", card='" + card + '\'' +
+        return "MiroWidget {" +System.lineSeparator()+
+                "type='" + type + '\'' +  System.lineSeparator()+
+                ", id=" + id +System.lineSeparator()+
+                ", scale=" + scale +System.lineSeparator()+
+                ", y=" + y +System.lineSeparator()+
+                ", x=" + x +System.lineSeparator()+
+                ", width=" + width +System.lineSeparator()+
+                ", height=" + height +System.lineSeparator()+
+                ", title='" + title + '\'' +System.lineSeparator()+
+                ", description='" + description + '\'' +System.lineSeparator()+
+                ", startWidget=" + startWidget +System.lineSeparator()+
+                ", endWidget=" + endWidget +System.lineSeparator()+
+                ", url='" + url + '\'' +System.lineSeparator()+
+                ", rotation=" + rotation +System.lineSeparator()+
+                ", text='" + text + '\'' +System.lineSeparator()+
+                ", style=" + style +System.lineSeparator()+
+                ", createdBy=" + createdBy +System.lineSeparator()+
+                ", modifiedAt='" + modifiedAt + '\'' +System.lineSeparator()+
+                ", modifiedBy=" + modifiedBy +System.lineSeparator()+
+                ", createdAt='" + createdAt + '\'' +System.lineSeparator()+
+                ", date='" + date + '\'' +System.lineSeparator()+
+                ", assignee=" + assignee +System.lineSeparator()+
+                ", card='" + card + '\'' +System.lineSeparator()+
                 '}';
     }
+
+    public String toShortString(){
+        return "MiroWidget, type: " + type + ", id: " + id + ", title: " + title  + ", text='" + text;
+    }
+
 
     public String getCard() {
         return card;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MappingMessages {
-    private boolean mappingState = true;
+    private boolean perfectMapping = true;
     private final ArrayList<String> messages= new ArrayList<>();
 
 
@@ -16,12 +16,12 @@ public class MappingMessages {
         this.messages.add(message);
     }
 
-    public boolean isMappingState() {
-        return mappingState;
+    public boolean isPerfectMapping() {
+        return perfectMapping;
     }
 
-    public void setMappingState(boolean mappingState) {
-        this.mappingState = mappingState;
+    public void setPerfectMapping(boolean perfectMapping) {
+        this.perfectMapping = perfectMapping;
     }
 
     public void clear(){this.messages.clear();}
@@ -29,7 +29,7 @@ public class MappingMessages {
     @Override
     public String toString() {
         return "MappingMessages{" +
-                "mappingState=" + mappingState +
+                "mappingState=" + perfectMapping +
                 ", messages=" + messages +
                 '}';
     }

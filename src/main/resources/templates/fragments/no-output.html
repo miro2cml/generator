@@ -10,15 +10,18 @@
             <div class="row no-gutters my-0 mx-0">
                 <div class="form-group align-items-center col-12 alert alert-danger px-1 " role="alert">
                     <h4 class="alert-heading">Something went wrong</h4>
-                    <span>BoardId:</span><span th:text="${form.getBoardId()}"></span><br>
-                    <span>BoardType:</span><span th:text="${form.getBoardType()}"></span><br>
+                    <span>Board Name</span><span th:text="${convertedBoard.getName()}"></span><br>
+                    <span>Board Id:</span><span th:text="${form.getBoardId()}"></span><br>
+                    <span>Board Type:</span><span th:text="${form.getBoardType()}"></span><br>
                     <th:block th:each="message : ${mappingMessages}">
                         <span style="font-weight: bold" th:text="${message}"></span><br>
                     </th:block>
                 </div>
                 <div class="col-10 pr-0"></div>
-                <Button class="btn btn-raised btn-primary align-self-end col-2"><a
-                        target="_blank" th:href="${convertedBoard.getBoardLink()}">Open Board in Miro</a></Button>
+                <a class="col-2 row mx-0" target="_blank" th:href="${convertedBoard.getBoardLink()}">
+                    <Button type="button" class="btn btn-raised btn-primary align-self-end col-12">Open Board in Miro</Button>
+                </a>
+
                 <div class="col-12 pr-0">
                     <span>Log-Preview:</span>
                     <textarea class="responsiveBox pr-0" cols="50" readonly th:rows="${logPreviewLinesCount}"
@@ -28,8 +31,9 @@
                 <input class="form-control col-5 text-right" id="logfile" readonly
                        th:placeholder="@{|M2C-${convertedBoard.getName()}-${form.getBoardId()}.log|}" type="text">
                 <div class="col-3"></div>
-                <Button class="btn btn-raised btn-primary col-2"><a
-                    target="_blank" th:href="${logDownloadLink}"</a></Button>
+                <a class="col-2 row mx-0" target="_blank" th:href="${logDownloadLink}">
+                    <Button type="button" class="btn btn-raised btn-primary col-12"> Download Logfile</Button>
+                </a>
             </div>
         </div>
     </div>

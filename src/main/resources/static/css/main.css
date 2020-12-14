@@ -100,3 +100,11 @@ h5,h6 {
 .img-mapping{
     width: 40%;
 }
+
+.loader-img{
+    position: absolute;
+    width: 25%;
+    height: auto;
+    top: 20%;
+    left: 37.5%;
+}
