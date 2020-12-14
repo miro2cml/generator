@@ -15,18 +15,58 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><h5>Step One: Create the MiroBoard</h5>
-                    <p>First, select the template User Story Map Framework in Miro as shown in the picture bellow.</p>
+                    <p>First, select the template User Story Map Framework. The template can be found in the section "Chose a Template"
+                        in Miro. The preview of the template is. The preview of the template is shown in the figure.</p>
                     <img alt="Template: User Story Map Framework" th:src="@{/images/WebUserStoryMap.PNG}" class="img-tutorial">
-                    <p>Then you fill in the User Stories. The miro2cml converter only uses the title of the Cards,
+                    <p>Then you can fill in the User Stories. The miro2cml converter only uses the title of the Cards,
                         you can use the rest of the Cards like you want. In the picture below, an empty and a filled out Card are shown.</p>
                     <img alt="Empty Card" th:src="@{/images/WebCards.PNG}" class="img-tutorial">
-                    <p>Make sure that you use one of these formats for the User Stories:</p>
+                    <p>Make sure that you use one of these formats and characters for the User Stories:</p>
                     <ul class="list-group">
                         <li class="list-group-item"> As a < actor > I want to < verb > a < entity > so that < benefit >.</li>
                         <li class="list-group-item"> As an < actor > I want to < verb > an < entity > so that < benefit >.</li>
                         <li class="list-group-item"> As a < actor > I want to < verb > an < entity > so that < benefit >.</li>
                         <li class="list-group-item"> As an < actor > I want to < verb > a < entity > so that < benefit >.</li>
-                    </ul><br>
+                    </ul>
+                    <br>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">Objects</th>
+                            <th scope="col">Allowed Characters</th>
+                            <th scope="col">Java Regex</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>< actor ></td>
+                            <td>upper and lowercase letters,<br>
+                                numbers</td>
+                            <td>[A-Za-z0-9]+</td>
+                        </tr>
+                        <tr>
+                            <td>< verb ></td>
+                            <td>leading lowercase letter followed by<br>
+                                upper and lowercase letters,<br>
+                                numbers</td>
+                            <td>[a-z][a-zA-Z0-9]+</td>
+                        </tr>
+                        <tr>
+                            <td>< entity ></td>
+                            <td>upper and lowercase letters,<br>
+                                numbers</td>
+                            <td>[a-zA-Z0-9]+</td>
+                        </tr>
+                        <tr>
+                            <td>< benefit ></td>
+                            <td>upper and lowercase letters,<br>
+                                numbers, point, comma, colon<br>
+                                space, apostrophe</td>
+                            <td>[A-Z,. ':a-z0-9]+</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
                     <p>The yellow and blue Cards (in the picture red bordered) are not converted as User Stories. They are used as Tasks and
                         Activities in the Template and are therefore not relevant for the mapping.</p>
                     <img alt="Empty User Story Map Template" th:src="@{/images/MarkedUserStory.png}" class="img-tutorial"></li>
@@ -40,12 +80,14 @@
                             so that "I could register".
                         }
                     </code></pre>
-                    <p>The name of the User Story is composed of the verb and the entity. The rest is the same as your input</p></li>
+                    <p>The name of the User Story is composed of the verb and the entity. The rest is the same as your input.
+                        Take a look at the <a th:href="@{/SupportedTemplates}">mapping table</a> for further informations.</p></li>
                 <li class="list-group-item"><h5>Step Three: Use the CML output</h5>
                     <p>The CML File with your User Stories is a good start for design work with the Context Mapper
-                        Tool. Here is a <a href="https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html" target="_blank">Link</a> to a step by
+                        Tool. Follow the <a href="https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html" target="_blank">Link</a> to a step by
                         step tutorial for further design work. You can skip the first step in this Tutorial, as you already have your Requirements defined.
-                        If you're new to the Context Mapper here is a <a href="https://contextmapper.org/docs/getting-started/" target="_blank">Link</a> to the guide on how to Getting started.</p></li>
+                        If you're new to the Context Mapper here is a <a href="https://contextmapper.org/docs/getting-started/" target="_blank">Link</a>
+                        to the guide on how to Getting started.</p></li>
             </ul>
         </div>
     </div>

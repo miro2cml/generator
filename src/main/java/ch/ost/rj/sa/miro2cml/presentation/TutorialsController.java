@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class TutorialsController {
+    @GetMapping(path = "/Tutorial")
+    public String getTutorial(Model model) {
+        model.addAttribute("module", "tutorials");
+        return "Tutorial";
+    }
     @GetMapping(path = "/UserStories")
     public String getUserStories(Model model) {
         model.addAttribute("module", "tutorials");
