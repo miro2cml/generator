@@ -19,6 +19,7 @@
                 <li class="nav-item dropdown" th:classappend="${module == 'tutorials' ? 'active' : ''}">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tutorials</a>
                     <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#"  th:href="@{/Tutorial}">How to get started</a>
                         <a class="dropdown-item" href="#"  th:href="@{/UserStories}">User Stories</a>
                         <a class="dropdown-item" href="#"  th:href="@{/EventStorming}">Event Storming</a>
                         <a class="dropdown-item" href="#" th:href="@{/BoundedContext}">Bounded Context Canvas</a>

@@ -27,6 +27,7 @@ module = 'home'
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tutorials</a>
                     <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/testing/Tutorial">How to get started</a>
                         <a class="dropdown-item" href="/testing/UserStories">User Stories</a>
                         <a class="dropdown-item" href="/testing/EventStorming">Event Storming</a>
                         <a class="dropdown-item" href="/testing/BoundedContext">Bounded Context Canvas</a>
