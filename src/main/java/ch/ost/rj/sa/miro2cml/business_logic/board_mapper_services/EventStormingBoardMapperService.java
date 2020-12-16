@@ -2,7 +2,7 @@ package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
-import ch.ost.rj.sa.miro2cml.business_logic.miro_to_cml_converter.EventStormingConverter;
+import ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.miro_to_cml_converter.EventStormingConverter;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;

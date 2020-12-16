@@ -1,10 +1,10 @@
 package ch.ost.rj.sa.miro2cml.presentation;
 
+import ch.ost.rj.sa.miro2cml.business_logic.BoardRepresentationProvider;
 import ch.ost.rj.sa.miro2cml.business_logic.MappingController;
-import ch.ost.rj.sa.miro2cml.business_logic.model.MappingResult;
-import ch.ost.rj.sa.miro2cml.data_access.MiroApiServiceAdapter;
-import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.BoardPresentationData;
+import ch.ost.rj.sa.miro2cml.business_logic.model.BoardRepresentation;
 import ch.ost.rj.sa.miro2cml.business_logic.model.BoardType;
+import ch.ost.rj.sa.miro2cml.business_logic.model.MappingResult;
 import ch.ost.rj.sa.miro2cml.presentation.model.BoardForm;
 import ch.ost.rj.sa.miro2cml.presentation.utility.SessionHandlerService;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -13,10 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -27,20 +28,12 @@ import java.util.List;
 @PropertySource("classpath:application.properties")
 public class MappingViewController {
     private static final Logger logger = LoggerFactory.getLogger(MappingViewController.class);
-
-    @Autowired
-    MiroApiServiceAdapter miroApiServiceAdapter ;
-
-    @Autowired
-    private Environment environment;
-
-    @Value("${miro2cml.baseUrl}")
-    private String baseUrl;
-
-
     @Autowired
     MappingController mappingController;
-
+    @Autowired
+    private BoardRepresentationProvider boardProvider;
+    @Value("${miro2cml.baseUrl}")
+    private String baseUrl;
 
     @GetMapping("/")
     public ModelAndView geBoardSelectionView(ModelMap model, @ModelAttribute("form") BoardForm form, HttpSession session) {
@@ -48,14 +41,9 @@ public class MappingViewController {
             return new ModelAndView("redirect:/auth");
         }
 
-        ImmutableTriple<Boolean,Boolean,List<BoardPresentationData>> getBoardsResult = miroApiServiceAdapter.getMiroBoards(SessionHandlerService.getMiroAccessToken(session), SessionHandlerService.getMiroTeamId(session));
-        List<BoardPresentationData> boards = getBoardsResult.getRight();
-        Boolean success = getBoardsResult.getLeft();
-        Boolean exceeded = getBoardsResult.getMiddle();
+        ImmutableTriple<Boolean, Boolean, List<BoardRepresentation>> getBoardsResult = boardProvider.getBoards(SessionHandlerService.getMiroAccessToken(session), SessionHandlerService.getMiroTeamId(session));
 
-
-
-        setBasicSetupForModel(model, form, boards,success,exceeded, false);
+        setBasicSetupForModel(model, form, getBoardsResult.getRight(), getBoardsResult.getLeft(), getBoardsResult.getMiddle(), false);
         return new ModelAndView("boardMappingView", model);
     }
 
@@ -64,12 +52,13 @@ public class MappingViewController {
         if (!SessionHandlerService.hasMiroAccessToken(session)) {
             return new ModelAndView("redirect:/auth");
         }
-        ImmutableTriple<Boolean,Boolean,List<BoardPresentationData>> getBoardsResult = miroApiServiceAdapter.getMiroBoards(SessionHandlerService.getMiroAccessToken(session), SessionHandlerService.getMiroTeamId(session));
-        List<BoardPresentationData> boards = getBoardsResult.getRight();
+        ImmutableTriple<Boolean, Boolean, List<BoardRepresentation>> getBoardsResult = boardProvider.getBoards(SessionHandlerService.getMiroAccessToken(session), SessionHandlerService.getMiroTeamId(session));
+        List<BoardRepresentation> boards = getBoardsResult.getRight();
         Boolean success = getBoardsResult.getLeft();
         Boolean exceeded = getBoardsResult.getMiddle();
 
-        setBasicSetupForModel(model, form, boards,success,exceeded, true);
+        setBasicSetupForModel(model, form, boards, success, exceeded, true);
+
         logger.debug("boardID: " + form.getBoardId());
         logger.debug("commence with board mapping");
 
@@ -77,7 +66,7 @@ public class MappingViewController {
         boolean isMappingSuccess = result.isSuccess();
         logger.debug("finished board mapping, success?: " + isMappingSuccess);
 
-        BoardPresentationData convertedBoard = boards.stream().filter(board -> form.getBoardId().equals(board.getBoardId())).findFirst().orElse(null);
+        BoardRepresentation convertedBoard = boards.stream().filter(board -> form.getBoardId().equals(board.getBoardId())).findFirst().orElse(null);
         model.addAttribute("convertedBoard", convertedBoard);
         if (convertedBoard != null) {
             String logDownloadLink = baseUrl + "/downloadLog/" + convertedBoard.getBoardId() + "/" + form.getBoardType() + "/" + SessionHandlerService.getMiroAccessToken(session) + "/" + convertedBoard.getName();
@@ -102,13 +91,13 @@ public class MappingViewController {
         return new ModelAndView("boardMappingView", model);
     }
 
-    private void setBasicSetupForModel(ModelMap model, BoardForm form, List<BoardPresentationData> boards, Boolean getBoardsSuccess, Boolean boardLimitExceeded, boolean viewHasOutputSection) {
+    private void setBasicSetupForModel(ModelMap model, BoardForm form, List<BoardRepresentation> boards, Boolean getBoardsSuccess, Boolean boardLimitExceeded, boolean viewHasOutputSection) {
         List<BoardType> boardTypes = Arrays.asList(BoardType.EducatedGuess, BoardType.UserStory, BoardType.BoundedContextCanvas, BoardType.EventStorming);
         model.addAttribute("boardTypes", boardTypes);
         model.addAttribute("form", form);
         model.addAttribute("miroBoards", boards);
-        model.addAttribute("getBoardsSuccess",getBoardsSuccess);
-        model.addAttribute("boardLimitExceeded",boardLimitExceeded);
+        model.addAttribute("getBoardsSuccess", getBoardsSuccess);
+        model.addAttribute("boardLimitExceeded", boardLimitExceeded);
         model.addAttribute("hasOutputSection", viewHasOutputSection);
     }
 }

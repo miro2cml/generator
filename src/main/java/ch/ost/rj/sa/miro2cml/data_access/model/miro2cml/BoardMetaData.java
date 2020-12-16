@@ -2,25 +2,19 @@ package ch.ost.rj.sa.miro2cml.data_access.model.miro2cml;
 
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.boards.Data;
 
-public class BoardPresentationData {
+public class BoardMetaData {
     String boardId;
     String name;
     String description;
     String boardLink;
 
-    public BoardPresentationData(String boardId, String name, String description, String boardLink) {
-        this.boardId = boardId;
-        this.name = name;
-        this.description = description;
-        this.boardLink = boardLink;
+    public BoardMetaData (Data data){
+        boardId = data.getId();
+        name = data.getName();
+        description = data.getDescription();
+        boardLink = data.getViewLink();
     }
 
-    public BoardPresentationData(Data data) {
-        this.boardId = data.getId();
-        this.name = data.getName();
-        this.description = data.getDescription();
-        this.boardLink = data.getViewLink();
-    }
 
     public String getBoardId() {
         return boardId;

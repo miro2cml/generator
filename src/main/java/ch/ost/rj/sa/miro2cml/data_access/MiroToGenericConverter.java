@@ -4,7 +4,7 @@ import ch.ost.rj.sa.miro2cml.data_access.model.DataAccessLog;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.boards.BoardCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.MiroWidget;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.WidgetsCollection;
-import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.BoardPresentationData;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.BoardMetaData;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.*;
 
 import java.util.ArrayList;
@@ -51,10 +51,10 @@ public class MiroToGenericConverter {
         return widgetList;
     }
 
-    static List<BoardPresentationData> createMiroBoardListFromJsonBoardCollection(BoardCollection boardCollection) {
-        List<BoardPresentationData> boards = new ArrayList<>();
+    static List<BoardMetaData> createMiroBoardListFromJsonBoardCollection(BoardCollection boardCollection) {
+        List<BoardMetaData> boards = new ArrayList<>();
         for (ch.ost.rj.sa.miro2cml.data_access.model.miro.boards.Data data : boardCollection.getData()) {
-            boards.add(new BoardPresentationData(data));
+            boards.add(new BoardMetaData(data));
         }
         return boards;
     }

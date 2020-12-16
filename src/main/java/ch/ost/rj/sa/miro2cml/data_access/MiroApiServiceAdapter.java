@@ -4,7 +4,7 @@ import ch.ost.rj.sa.miro2cml.data_access.model.DataAccessLog;
 import ch.ost.rj.sa.miro2cml.data_access.model.WidgetCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.boards.BoardCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.WidgetsCollection;
-import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.BoardPresentationData;
+import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.BoardMetaData;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,10 +74,10 @@ public class MiroApiServiceAdapter {
         }
     }
 
-    public ImmutableTriple<Boolean,Boolean,List<BoardPresentationData>> getMiroBoards(String accessToken, String teamId) {
+    public ImmutableTriple<Boolean,Boolean,List<BoardMetaData>> getMiroBoards(String accessToken, String teamId) {
         boolean success = true;
         boolean limitExceeded = false;
-        List<BoardPresentationData> boardPresentationDataList = new ArrayList<>();
+        List<BoardMetaData> boardMetaDataList = new ArrayList<>();
 
         String query = "access_token=" + accessToken + "&" + "limit=" + boardCountLimit;
         String url = apiBaseUrl+"/teams/" + teamId + "/boards/";
@@ -88,14 +88,14 @@ public class MiroApiServiceAdapter {
             InputStream responseStream = connection.getInputStream();
 
             BoardCollection boardCollection = convertJsonResponseStreamIntoMiroBoardCollection(responseStream);
-            boardPresentationDataList = createMiroBoardListFromJsonBoardCollection(boardCollection);
-            boardPresentationDataList.sort(((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName())));
-            limitExceeded = (boardPresentationDataList.size()>boardCountLimit);
+            boardMetaDataList = createMiroBoardListFromJsonBoardCollection(boardCollection);
+            boardMetaDataList.sort(((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName())));
+            limitExceeded = (boardMetaDataList.size()>boardCountLimit);
 
 
         } catch (IOException e) {
             success = false;
         }
-        return new ImmutableTriple<>(success,limitExceeded,boardPresentationDataList);
+        return new ImmutableTriple<>(success,limitExceeded, boardMetaDataList);
     }
 }
