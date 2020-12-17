@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 public class BasicInputCorrector {
 
     @Autowired
-    StringValidator stringValidator;
+    StringUtility stringUtility;
 
     public InputBoard prepareInput(InputBoard inputBoard, MappingLog log) {
         List<WidgetObject> relevantElements = inputBoard.getWidgetObjects().stream().filter(widgetObject -> widgetObject instanceof IRelevantText).collect(Collectors.toList());
         for (WidgetObject object: relevantElements) {
             IRelevantText extendedObject = (IRelevantText) object;
-            extendedObject.setMappingRelevantText(stringValidator.correctInput(extendedObject.getMappingRelevantText(), log));
+            extendedObject.setMappingRelevantText(stringUtility.correctInput(extendedObject.getMappingRelevantText(), log));
         }
         return inputBoard;
     }

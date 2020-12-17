@@ -15,7 +15,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static ch.ost.rj.sa.miro2cml.data_access.MiroToMiro2cmlConverter.createGenericWidgetObjectsFromJsonStructuredObjects;
@@ -38,6 +40,7 @@ public class MiroApiServiceAdapter {
 
 
     public WidgetCollection getBoardWidgets(String accessToken, String boardID) {
+        System.out.println(new Date().getTime());
         DataAccessLog dataAccessLog = new DataAccessLog();
         dataAccessLog.addInfoLogEntry("Send GetAllWidgets Request to MiroApi");
         String query = "access_token=" + accessToken;
@@ -65,7 +68,7 @@ public class MiroApiServiceAdapter {
                 dataAccessLog.setMaxWidgetsCountExceeded(true);
                 dataAccessLog.addWarningLogEntry("We received 1000 Widgets from Miro. This is the maximum we can receive per Board. Thus its possible, that we didn't receive all of your widgets. If you really need more than 1000 Widgets, please split them up and distribute them  on multiple boards.");
             }
-
+            System.out.println(new Date().getTime());
             return new WidgetCollection(widgetObjectList,dataAccessLog, true);
         } catch (IOException e) {
             e.printStackTrace();

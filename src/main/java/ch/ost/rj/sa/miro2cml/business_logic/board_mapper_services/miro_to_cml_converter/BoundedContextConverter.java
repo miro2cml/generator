@@ -1,6 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.miro_to_cml_converter;
 
-import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
+import ch.ost.rj.sa.miro2cml.business_logic.StringUtility;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
@@ -39,7 +39,7 @@ public class BoundedContextConverter {
         List<String> output = new ArrayList<>();
         for(String s: input){
             if(!s.equals("")){
-                output.add(StringValidator.convertForVariableName(s));
+                output.add(StringUtility.convertForVariableName(s));
             }
         }
         return output;
@@ -49,7 +49,7 @@ public class BoundedContextConverter {
         ArrayList<String> responsibilites = new ArrayList<>();
         var roletype = roletypes.split("</p><p>");
         for (String s: roletype) {
-            responsibilites.add(StringValidator.validatorForStrings(s));
+            responsibilites.add(StringUtility.validatorForStrings(s));
         }
         //remove heading from responsibilities list
         responsibilites.remove(0);
@@ -57,7 +57,7 @@ public class BoundedContextConverter {
     }
 
     private static String generateAggregateName(String name, String aggregateName) {
-        return StringValidator.convertForVariableName(name+aggregateName);
+        return StringUtility.convertForVariableName(name+aggregateName);
     }
 
     private static String generateDescription(String description, MappingLog mappingLog, MappingMessages messages) {
@@ -67,7 +67,7 @@ public class BoundedContextConverter {
             description="This is the Domain Vision Statement";
             mappingLog.addInfoLogEntry("Automatic Domain Vision Statement set to: This is the Domain Vision Statement");
         }
-        return StringValidator.validatorForStrings(description);
+        return StringUtility.validatorForStrings(description);
     }
 
     private static String generateComment(BoundedContextBoard extractedBoard) {
@@ -106,22 +106,22 @@ public class BoundedContextConverter {
                 outputString = output.substring(0, output.length()-2);
             }
         }
-        return StringValidator.validatorForStrings(outputString);
+        return StringUtility.validatorForStrings(outputString);
     }
 
     private static String validateStringsForComment(String input) {
-        input = StringValidator.replaceDashWithComma(input);
+        input = StringUtility.replaceDashWithComma(input);
         input= input.replaceFirst(",", ":");
-        return StringValidator.validatorForStrings(input);
+        return StringUtility.validatorForStrings(input);
     }
 
     private static String generateName(String name, MappingLog mappingLog, MappingMessages messages) {
         String generatedName = removeTemplateText(name, mappingLog, messages);
-        return StringValidator.convertForVariableName(generatedName);
+        return StringUtility.convertForVariableName(generatedName);
     }
 
     private static String removeTemplateText(String name, MappingLog mappingLog, MappingMessages messages) {
-        String generatedName = StringValidator.removeSimpleHtmlTags(name);
+        String generatedName = StringUtility.removeSimpleHtmlTags(name);
         if(generatedName.length()>7){
             if(generatedName.contains("Name: ")){
                 generatedName = generatedName.substring(6);
@@ -136,7 +136,7 @@ public class BoundedContextConverter {
                 mappingLog.addInfoLogEntry("Name set to MyBoundedContext");
             }
         }
-        return StringValidator.validatorForStrings(generatedName);
+        return StringUtility.validatorForStrings(generatedName);
 
     }
 }

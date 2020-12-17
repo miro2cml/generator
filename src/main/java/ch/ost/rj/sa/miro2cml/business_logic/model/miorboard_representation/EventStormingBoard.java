@@ -1,7 +1,7 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
 import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
-import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
+import ch.ost.rj.sa.miro2cml.business_logic.StringUtility;
 import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
@@ -116,7 +116,7 @@ public class EventStormingBoard {
     public List<String> getIssues() {
         ArrayList<String> output = new ArrayList<>();
         for (String s : issues) {
-            output.add(StringValidator.validatorForStrings(s));
+            output.add(StringUtility.validatorForStrings(s));
         }
         return output;
     }
@@ -133,7 +133,7 @@ public class EventStormingBoard {
                 }
             }
             if (output.isEmpty()) {
-                String logString = "No triggers found for " + StringValidator.validatorForStrings(domainEvent) + ". Check if the lines are correctly connected.";
+                String logString = "No triggers found for " + StringUtility.validatorForStrings(domainEvent) + ". Check if the lines are correctly connected.";
                 mappingLog.addErrorLogEntry(logString);
                 messages.add(logString);
             }

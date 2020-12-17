@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StringValidator {
+public class StringUtility {
 
     @Value("${miro2cml.stringValidator.maxTextSize:1200}")
     private Integer maxTextSize;

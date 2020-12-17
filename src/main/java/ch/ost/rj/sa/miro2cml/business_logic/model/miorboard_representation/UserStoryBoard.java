@@ -1,6 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 
-import ch.ost.rj.sa.miro2cml.business_logic.StringValidator;
+import ch.ost.rj.sa.miro2cml.business_logic.StringUtility;
 import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.UserStoryElementExtractionError;
 import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
@@ -97,11 +97,11 @@ public class UserStoryBoard {
     private void prepareCardForMapping(Card card){
         String cardTitle = card.getTitle();
 
-        cardTitle = StringValidator.reduceMultipleSpacesToOne(cardTitle);
-        cardTitle = StringValidator.removeSimpleHtmlTags(cardTitle);
-        cardTitle = StringValidator.extractHtmlLink(cardTitle);
-        cardTitle = StringValidator.removeAllHtmlTags(cardTitle);
-        cardTitle = StringValidator.replaceSpecialCharCodesWithTheirSingleCharEquivalent(cardTitle);
+        cardTitle = StringUtility.reduceMultipleSpacesToOne(cardTitle);
+        cardTitle = StringUtility.removeSimpleHtmlTags(cardTitle);
+        cardTitle = StringUtility.extractHtmlLink(cardTitle);
+        cardTitle = StringUtility.removeAllHtmlTags(cardTitle);
+        cardTitle = StringUtility.replaceSpecialCharCodesWithTheirSingleCharEquivalent(cardTitle);
 
         card.setTitle(cardTitle);
     }
@@ -187,7 +187,7 @@ public class UserStoryBoard {
         offset += regexParts.get(7).length();
 
         String benefit = getUserStoryElement(input, regexParts.get(8), offset);
-        String article = StringValidator.removeSpaces(regexParts.get(5));
+        String article = StringUtility.removeSpaces(regexParts.get(5));
         return new UserStory(role, verb, entity, benefit, article);
     }
 

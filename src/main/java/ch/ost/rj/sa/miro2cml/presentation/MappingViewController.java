@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -52,6 +53,7 @@ public class MappingViewController {
         if (!SessionHandlerService.hasMiroAccessToken(session)) {
             return new ModelAndView("redirect:/auth");
         }
+        System.out.println(new Date().getTime());
         ImmutableTriple<Boolean, Boolean, List<BoardRepresentation>> getBoardsResult = boardProvider.getBoards(SessionHandlerService.getMiroAccessToken(session), SessionHandlerService.getMiroTeamId(session));
         List<BoardRepresentation> boards = getBoardsResult.getRight();
         Boolean success = getBoardsResult.getLeft();
@@ -87,7 +89,7 @@ public class MappingViewController {
             model.addAttribute("logPreview", logPreview);
             model.addAttribute("logPreviewLinesCount", logPreview.lines().count());
         }
-
+        System.out.println(new Date().getTime());
         return new ModelAndView("boardMappingView", model);
     }
 
