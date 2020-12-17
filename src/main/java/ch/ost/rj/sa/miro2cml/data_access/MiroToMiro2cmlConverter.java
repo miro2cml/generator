@@ -10,8 +10,8 @@ import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MiroToGenericConverter {
-    private MiroToGenericConverter() {
+public class MiroToMiro2cmlConverter {
+    private MiroToMiro2cmlConverter() {
     }
 
     static List<WidgetObject> createGenericWidgetObjectsFromJsonStructuredObjects(WidgetsCollection miroJson, DataAccessLog dataAccessLog) {

@@ -18,8 +18,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ch.ost.rj.sa.miro2cml.data_access.MiroToGenericConverter.createGenericWidgetObjectsFromJsonStructuredObjects;
-import static ch.ost.rj.sa.miro2cml.data_access.MiroToGenericConverter.createMiroBoardListFromJsonBoardCollection;
+import static ch.ost.rj.sa.miro2cml.data_access.MiroToMiro2cmlConverter.createGenericWidgetObjectsFromJsonStructuredObjects;
+import static ch.ost.rj.sa.miro2cml.data_access.MiroToMiro2cmlConverter.createMiroBoardListFromJsonBoardCollection;
 import static ch.ost.rj.sa.miro2cml.data_access.ResponseToMiroJsonConverter.*;
 
 @Service
