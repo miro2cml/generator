@@ -47,7 +47,7 @@ public class BoundedContextConverter {
 
     private static ArrayList<String> generateResponsibilities(String roletypes) {
         ArrayList<String> responsibilites = new ArrayList<>();
-        var roletype = roletypes.split("</p><p>");
+        String[] roletype = roletypes.split("</p><p>");
         for (String s: roletype) {
             responsibilites.add(StringUtility.validatorForStrings(s));
         }
