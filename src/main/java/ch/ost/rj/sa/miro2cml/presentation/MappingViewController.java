@@ -28,7 +28,6 @@ import java.util.List;
 @Controller
 @PropertySource("classpath:application.properties")
 public class MappingViewController {
-    private static final Logger logger = LoggerFactory.getLogger(MappingViewController.class);
     @Autowired
     MappingController mappingController;
     @Autowired
@@ -53,7 +52,6 @@ public class MappingViewController {
         if (!SessionHandlerService.hasMiroAccessToken(session)) {
             return new ModelAndView("redirect:/auth");
         }
-        System.out.println(new Date().getTime());
         ImmutableTriple<Boolean, Boolean, List<BoardRepresentation>> getBoardsResult = boardProvider.getBoards(SessionHandlerService.getMiroAccessToken(session), SessionHandlerService.getMiroTeamId(session));
         List<BoardRepresentation> boards = getBoardsResult.getRight();
         Boolean success = getBoardsResult.getLeft();
@@ -61,12 +59,8 @@ public class MappingViewController {
 
         setBasicSetupForModel(model, form, boards, success, exceeded, true);
 
-        logger.debug("boardID: " + form.getBoardId());
-        logger.debug("commence with board mapping");
-
         MappingResult result = mappingController.startMappingProcess(form.getBoardType(), form.getBoardId(), SessionHandlerService.getMiroAccessToken(session));
         boolean isMappingSuccess = result.isSuccess();
-        logger.debug("finished board mapping, success?: " + isMappingSuccess);
 
         BoardRepresentation convertedBoard = boards.stream().filter(board -> form.getBoardId().equals(board.getBoardId())).findFirst().orElse(null);
         model.addAttribute("convertedBoard", convertedBoard);
@@ -89,7 +83,6 @@ public class MappingViewController {
             model.addAttribute("logPreview", logPreview);
             model.addAttribute("logPreviewLinesCount", logPreview.lines().count());
         }
-        System.out.println(new Date().getTime());
         return new ModelAndView("boardMappingView", model);
     }
 

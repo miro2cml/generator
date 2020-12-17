@@ -23,8 +23,6 @@ import java.util.Date;
 
 @Component
 public class MappingController {
-    private static final Logger logger = LoggerFactory.getLogger(MappingController.class);
-
     @Autowired
     MiroApiServiceAdapter miroApiServiceAdapter;
 
@@ -43,7 +41,6 @@ public class MappingController {
         output.setMappingLog(mappingLog);
         output.setMappingMessages(mappingMessages);
 
-        logger.debug("Get BoardData from data source");
         mappingLog.addInfoLogEntry("Get BoardData from data source (for more information, see Data Access Log Section down below.)");
         addMetaDataToLog(mappingLog,boardId);
 
@@ -53,18 +50,18 @@ public class MappingController {
         if(widgetCollection.getDataAccessLog().isMaxWidgetsCountExceeded()){
             mappingMessages.add("We received 1000 Widgets from Miro. This is the maximum we can receive per Board. Thus its possible, that we didn't receive all of your widgets. If you really need more than 1000 Widgets, please split them up and distribute them  on multiple boards.");
         }
+        mappingLog.addInfoLogEntry("Finished BoardData receival");
         if (widgetCollection.isSuccess()) {
-            logger.debug("BoardData received");
-
-            logger.debug("Commence Board mapping");
             mappingLog.addInfoLogEntry("Commence Board mapping");
             try {
                 MappedBoard mappedBoard;
+
+                mappingLog.addSectionSeparator();
                 mappingLog.addInfoLogEntry("Start with basic input correction measures.");
                 InputBoard validatedBoard = basicInputCorrector.prepareInput(inputBoard,mappingLog);
                 mappingLog.addInfoLogEntry("Basic input correction measures have been performed.");
-
                 mappingLog.addSectionSeparator();
+
                 switch (boardType) {
                     case UserStory:
                         mappedBoard = new UserStoryMapperService().mapBoard(validatedBoard, mappingLog, mappingMessages);

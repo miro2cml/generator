@@ -1,15 +1,13 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation;
 
 import org.contextmapper.dsl.contextMappingDSL.*;
-import org.contextmapper.dsl.contextMappingDSL.Flow;
 import org.contextmapper.tactic.dsl.tacticdsl.CommandEvent;
 import org.contextmapper.tactic.dsl.tacticdsl.DomainEvent;
 import org.contextmapper.tactic.dsl.tacticdsl.TacticdslFactory;
 import org.eclipse.emf.ecore.EObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
 public class EventStorming implements ICmlArtifact {
     private final List<AggregatesCML> aggregates;
@@ -27,8 +25,13 @@ public class EventStorming implements ICmlArtifact {
         Flow flowCML = ContextMappingDSLFactory.eINSTANCE.createFlow();
         HashMap<String, CommandEvent> commandList = new HashMap<>();
         application.getFlows().add(flowCML);
-        for (AggregatesCML thisAggregate: aggregates) {
-            ContextMappingDSLFactory factory =ContextMappingDSLFactory.eINSTANCE;
+        if (!aggregates.isEmpty()) {
+            flowCML.setName(aggregates.get(0).getFlow().get(0).getCommand());
+        } else {
+            flowCML.setName("emptyFlow");
+        }
+        for (AggregatesCML thisAggregate : aggregates) {
+            ContextMappingDSLFactory factory = ContextMappingDSLFactory.eINSTANCE;
             Aggregate aggregate = factory.createAggregate();
             aggregate.setName(thisAggregate.getName());
             boundedContext.getAggregates().add(aggregate);
@@ -41,15 +44,15 @@ public class EventStorming implements ICmlArtifact {
     }
 
     private void addCommandsEventsFlow(Aggregate aggregate, AggregatesCML thisAggregate, Application application, Flow flowCML, HashMap<String, CommandEvent> list) {
-        for(FlowStep steps: thisAggregate.getFlow()){
-            if(!steps.getCommand().equals("") && !steps.getEvent().equals("")){
+        for (FlowStep steps : thisAggregate.getFlow()) {
+            if (!steps.getCommand().equals("") && !steps.getEvent().equals("")) {
                 DomainEvent domainEvent = getDomainEvent(aggregate, steps);
                 CommandEvent commandEvent = getCommandEvent(application, list, steps.getCommand());
                 generateStepOne(aggregate, flowCML, steps, domainEvent, commandEvent);
-                if(steps.getTriggers().size()==1){
+                if (steps.getTriggers().size() == 1) {
                     generateStepTwo(application, flowCML, list, steps.getTriggers().get(0), domainEvent);
                 }
-                if(steps.getTriggers().size()==2){
+                if (steps.getTriggers().size() == 2) {
                     generateStepTwoWithTwoTriggers(application, flowCML, list, steps.getTriggers(), domainEvent);
                 }
             }
@@ -79,7 +82,7 @@ public class EventStorming implements ICmlArtifact {
     private void generateStepOne(Aggregate aggregate, Flow flowCML, FlowStep steps, DomainEvent domainEvent, CommandEvent commandEvent) {
         DomainEventProductionStep stepOne = ContextMappingDSLFactory.eINSTANCE.createDomainEventProductionStep();
         EitherCommandOrOperation commandOrOperation = ContextMappingDSLFactory.eINSTANCE.createEitherCommandOrOperation();
-        if(!steps.getRole().equals("")){
+        if (!steps.getRole().equals("")) {
             commandOrOperation.setActor(steps.getRole());
         }
         commandOrOperation.setCommand(commandEvent);
