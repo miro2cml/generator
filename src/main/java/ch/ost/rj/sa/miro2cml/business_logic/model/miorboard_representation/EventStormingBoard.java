@@ -33,13 +33,13 @@ public class EventStormingBoard {
     private final String userRoleColor;
     private final MappingLog mappingLog;
     private final MappingMessages messages;
-    private final ArrayList<Sticker> domainEvents;
-    private final ArrayList<Sticker> commands;
-    private final ArrayList<Sticker> aggregates;
-    private final ArrayList<Sticker> userRole;
-    private final ArrayList<String> issues;
-    private final ArrayList<ArrayList<String>> triggers;
-    private final ArrayList<EventStormingGroup> connections;
+    private final List<Sticker> domainEvents;
+    private final List<Sticker> commands;
+    private final List<Sticker> aggregates;
+    private final List<Sticker> userRole;
+    private final List<String> issues;
+    private final List<ArrayList<String>> triggers;
+    private final List<EventStormingGroup> connections;
     private double height;
     private double width;
 
@@ -53,8 +53,8 @@ public class EventStormingBoard {
         this.issueColor = getColor(ISSUE_P);
         this.userRoleColor = getColor(USER_ROLE_P);
         checkInputFields();
-        this.domainEvents = getStickerWithRelevantColor(domainEventColor, "Domain Event");
-        this.commands = getStickerWithRelevantColor(commandColor, "Command");
+        this.domainEvents = uniquifyStickerContent(getStickerWithRelevantColor(domainEventColor, "Domain Event"));
+        this.commands = uniquifyStickerContent(getStickerWithRelevantColor(commandColor, "Command"));
         this.aggregates = getStickerWithRelevantColor(aggregateColor, "Aggregate");
         this.userRole = getStickerWithRelevantColor(userRoleColor, "UserRole");
         this.issues = getStringWithColor(issueColor);
@@ -141,8 +141,9 @@ public class EventStormingBoard {
         return output;
     }
 
-    private String getTextFromStickerWithCorrectPosition(ArrayList<Sticker> inputList, double xStart, double xEnd, double yStart, double yEnd) {
-        ArrayList<Sticker> copiedInputList = SerializationUtils.clone(inputList);
+    private String getTextFromStickerWithCorrectPosition(List<Sticker> inputList, double xStart, double xEnd, double yStart, double yEnd) {
+        ArrayList<Sticker> stickerArrayList = new ArrayList<>(inputList);
+        ArrayList<Sticker> copiedInputList = SerializationUtils.clone(stickerArrayList);
         for (int i = 0; i < copiedInputList.size(); i++) {
             Sticker innerSticker = copiedInputList.get(i);
             if (innerSticker.getX() > xStart && innerSticker.getX() < xEnd && innerSticker.getY() > yStart && innerSticker.getY() < yEnd) {
@@ -153,8 +154,9 @@ public class EventStormingBoard {
         return "";
     }
 
-    private List<String> getTextsFromStickerWithCorrectPosition(ArrayList<Sticker> inputList, double xStart, double xEnd, double yStart, double yEnd) {
-        ArrayList<Sticker> copiedInputList = SerializationUtils.clone(inputList);
+    private List<String> getTextsFromStickerWithCorrectPosition(List<Sticker> inputList, double xStart, double xEnd, double yStart, double yEnd) {
+        ArrayList<Sticker> stickerArrayList = new ArrayList<>(inputList);
+        ArrayList<Sticker> copiedInputList = SerializationUtils.clone(stickerArrayList);
         ArrayList<String> output = new ArrayList<>();
         for (Sticker innerSticker : copiedInputList) {
             if (innerSticker.getX() > xStart && innerSticker.getX() < xEnd && innerSticker.getY() > yStart && innerSticker.getY() < yEnd) {
@@ -232,11 +234,12 @@ public class EventStormingBoard {
         return output;
     }
 
-    private ArrayList<Sticker> getStickerWithRelevantColor(String color, String stickerType) {
+    private List<Sticker> getStickerWithRelevantColor(String color, String stickerType) {
         ArrayList<Sticker> relevantStickers = new ArrayList<>();
         for (WidgetObject widget : inputBoard.getWidgetObjects()) {
             if (widget instanceof Sticker && (((Sticker) widget).getBackgroundColor().equals(color)) && !((Sticker) widget).getMappingRelevantText().equals("")) {
-                relevantStickers.add((Sticker) widget);
+                Sticker sticker = (Sticker) widget;
+                relevantStickers.add(sticker);
                 mappingLog.addSuccessLogEntry("Identified " + ((Sticker) widget).getText() + " as a(n)" + stickerType);
             }
         }
@@ -288,6 +291,27 @@ public class EventStormingBoard {
 
     public List<EventStormingGroup> getConnections() {
         return connections;
+    }
+
+    private List<Sticker> uniquifyStickerContent(List<Sticker> stickers){
+        ArrayList<Sticker> output = new ArrayList<>();
+
+        for (Sticker currentSticker : stickers){
+            if(output.stream().anyMatch(sticker->sticker.getMappingRelevantText().equals(currentSticker.getMappingRelevantText()))){
+                setUniqueStickerContent(output,currentSticker);
+                output.add(currentSticker);
+            }else{
+                output.add(currentSticker);
+            }
+        }
+        return output;
+    }
+    private void setUniqueStickerContent(List<Sticker> stickers, Sticker inputSticker){
+        int counter = 0;
+        String originalStickerContent = inputSticker.getMappingRelevantText();
+        while (stickers.stream().anyMatch(sticker->sticker.getMappingRelevantText().equals(inputSticker.getMappingRelevantText()))){
+            inputSticker.setMappingRelevantText(originalStickerContent+ ++counter);
+        }
     }
 
     @Override
