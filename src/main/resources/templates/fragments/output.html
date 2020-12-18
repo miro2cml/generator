@@ -21,9 +21,9 @@
                         </div>
                         <div class="col-12 alert alert-warning px-1" role="alert" th:unless="${perfectMapping}">
                             <h4 class="alert-heading">Your Board Conversion Request has been processed</h4>
-                            <span>Board Name</span><span th:text="${convertedBoard.getName()}"></span><br>
-                            <span>Board Id:</span><span th:text="${form.getBoardId()}"></span><br>
-                            <span>Board Type:</span><span th:text="${form.getBoardType()}"></span><br>
+                            <span>Board Name:   </span><span th:text="${convertedBoard.getName()}"></span><br>
+                            <span>Board Id:     </span><span th:text="${form.getBoardId()}"></span><br>
+                            <span>Board Type:   </span><span th:text="${form.getBoardType()}"></span><br>
                             <th:block th:each="message : ${mappingMessages}">
                                 <span style="font-weight: bold" th:text="${message}"></span><br>
                             </th:block>

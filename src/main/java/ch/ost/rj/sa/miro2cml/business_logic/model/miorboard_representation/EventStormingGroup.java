@@ -3,19 +3,23 @@ package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
 import java.util.List;
 
 public class EventStormingGroup {
-    private double position;
+    private final double positionX;
+    private final double positionY;
     private String domainEvent;
     private String command;
-    private List<String> agggregates;
+    private List<String> aggregates;
     private String role;
     private List<String> trigger;
-    public EventStormingGroup(double position, String domainEvent, String command, List<String> agggregates, String role, List<String> trigger) {
-        this.position = position;
+
+    public EventStormingGroup(double positionX, double positionY, String domainEvent, String command, List<String> aggregates, String role, List<String> trigger) {
+        this.positionX = positionX;
+        this.positionY = positionY;
         this.domainEvent = domainEvent;
         this.command = command;
-        this.agggregates = agggregates;
+        this.aggregates = aggregates;
         this.role = role;
         this.trigger = trigger;
+
     }
 
     public String getDomainEvent() {
@@ -34,12 +38,12 @@ public class EventStormingGroup {
         this.command = command;
     }
 
-    public List<String> getAgggregates() {
-        return agggregates;
+    public List<String> getAggregates() {
+        return aggregates;
     }
 
     public void setAggregates(List<String> aggregates) {
-        this.agggregates = aggregates;
+        this.aggregates = aggregates;
     }
 
     public String getRole() {
@@ -58,15 +62,25 @@ public class EventStormingGroup {
         this.trigger = trigger;
     }
 
-    public double getPosition() {
-        return position;
+    public double getPositionX() {
+        return positionX;
     }
+
+    public double getPositionY() {
+        return positionY;
+    }
+
 
     public int compareTo(Object o) {
         EventStormingGroup group = (EventStormingGroup) o;
-        if (getPosition() < group.getPosition()) {
+        if (getPositionX() < group.getPositionX()) {
             return -1;
-        } else if (getPosition() > group.getPosition()) {
+        } else if (getPositionX() > group.getPositionX()) {
+            return 1;
+        }
+        if (getPositionY() < group.getPositionY()) {
+            return -1;
+        } else if (getPositionY() > group.getPositionY()) {
             return 1;
         }
         return 0;

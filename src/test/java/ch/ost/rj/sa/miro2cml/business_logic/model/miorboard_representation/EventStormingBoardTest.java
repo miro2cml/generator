@@ -75,11 +75,11 @@ class EventStormingBoardTest {
         String expectedSecondCommand = "moved in";
         String expectedSecondDomainEvent = "moving in";
 
-        assertEquals(expectedAggregate, board.getConnections().get(0).getAgggregates().get(0));
+        assertEquals(expectedAggregate, board.getConnections().get(0).getAggregates().get(0));
         assertEquals(expectedCommand, board.getConnections().get(0).getCommand());
         assertEquals(expectedDomainEvent, board.getConnections().get(0).getDomainEvent());
         assertTrue(board.getConnections().get(1).getTrigger().isEmpty());
-        assertEquals(expectedSecondAggregate, board.getConnections().get(1).getAgggregates().get(0));
+        assertEquals(expectedSecondAggregate, board.getConnections().get(1).getAggregates().get(0));
         assertEquals(expectedSecondCommand, board.getConnections().get(1).getCommand());
         assertEquals(expectedSecondDomainEvent, board.getConnections().get(1).getDomainEvent());
         assertEquals(expectedDomainEvent, board.getConnections().get(0).getTrigger().get(0));

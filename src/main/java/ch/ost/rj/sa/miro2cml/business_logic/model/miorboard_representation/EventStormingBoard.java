@@ -14,10 +14,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 public class EventStormingBoard {
     public static final String USER_ROLE_P = "<p>User Role</p>";
@@ -47,6 +44,17 @@ public class EventStormingBoard {
         this.mappingLog = mappingLog;
         this.messages = messages;
         this.inputBoard = inputBoard;
+
+        Optional<WidgetObject> object = inputBoard.getWidgetObjects().stream().filter(widgetObject -> widgetObject instanceof Sticker).findAny();
+        if (object.isPresent()){
+            Sticker sticker = (Sticker) object.get();
+            height = sticker.getHeight();
+            width = sticker.getWidth();
+        } else {
+            width = 150;
+            height = 150;
+        }
+
         this.domainEventColor = getColor(DOMAIN_EVENT_P);
         this.commandColor = getColor(COMMAND_P);
         this.aggregateColor = getColor(AGGREGATE_P);
@@ -56,11 +64,12 @@ public class EventStormingBoard {
         this.domainEvents = uniquifyStickerContent(getStickerWithRelevantColor(domainEventColor, "Domain Event"));
         this.commands = uniquifyStickerContent(getStickerWithRelevantColor(commandColor, "Command"));
         this.aggregates = getStickerWithRelevantColor(aggregateColor, "Aggregate");
+
         this.userRole = getStickerWithRelevantColor(userRoleColor, "UserRole");
         this.issues = getStringWithColor(issueColor);
 
         this.triggers = getLines();
-        this.connections = generateMap();
+        this.connections = generateEventStormingGroups();
         sortEventStormingGroups();
     }
 
@@ -72,24 +81,25 @@ public class EventStormingBoard {
         connections.sort(EventStormingGroup::compareTo);
     }
 
-    private ArrayList<EventStormingGroup> generateMap() {
+    private ArrayList<EventStormingGroup> generateEventStormingGroups() {
         ArrayList<EventStormingGroup> output = new ArrayList<>();
         for (Sticker commandSticker : commands) {
             String command = commandSticker.getText();
             double xStart = commandSticker.getX();
             double yMiddle = commandSticker.getY();
-            double xEnd = xStart + (2.5 * width);
+            double xEnd = xStart + (1.5 * width);
             double yStart = yMiddle - 0.5 * height;
             double yEnd = yMiddle + (0.5 * height);
-            double position = commandSticker.getX();
+            double positionX = commandSticker.getX();
+            double positionY = commandSticker.getY();
+
 
             String localDomainEvent = getTextFromStickerWithCorrectPosition(domainEvents, xStart, xEnd, yStart, yEnd);
-            String localRole = getTextFromStickerWithCorrectPosition(userRole, xStart, xEnd + (2 * width), yStart - (1 * height), yEnd);
+            String localRole = getTextFromStickerWithCorrectPosition(userRole, xStart, xEnd + (2 * width), yStart - (2 * height), yEnd + (2 * height));
             List<String> localAggregates = getTextsFromStickerWithCorrectPosition(aggregates, xStart, xEnd, yStart - (2 * height), yEnd);
             List<String> localTrigger = getTrigger(localDomainEvent);
-
             if (!localDomainEvent.equals("") && !localAggregates.contains("")) {
-                EventStormingGroup eventStormingGroup = new EventStormingGroup(position, localDomainEvent, command, localAggregates, localRole, localTrigger);
+                EventStormingGroup eventStormingGroup = new EventStormingGroup(positionX, positionY, localDomainEvent, command, localAggregates, localRole, localTrigger);
                 mappingLog.addSuccessLogEntry("Group found with elements: DomainEvent -> " + localDomainEvent + "( triggers " + localTrigger + "), Command -> " + command + ", Aggregate ->" + localAggregates + ", User Role -> " + localRole + ".");
                 output.add(eventStormingGroup);
             } else {
@@ -161,7 +171,8 @@ public class EventStormingBoard {
         for (Sticker innerSticker : copiedInputList) {
             if (innerSticker.getX() > xStart && innerSticker.getX() < xEnd && innerSticker.getY() > yStart && innerSticker.getY() < yEnd) {
                 output.add(innerSticker.getText());
-                inputList.removeIf((Sticker sticker) -> sticker.equals(innerSticker));
+                var stickerToDelete= inputList.stream().filter((Sticker sticker) -> sticker.equals(innerSticker)).findAny();
+                stickerToDelete.ifPresent(inputList::remove);
             }
         }
         return output;
