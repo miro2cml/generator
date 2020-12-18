@@ -2,8 +2,8 @@ package ch.ost.rj.sa.miro2cml.business_logic.board_mapper_services.miro_to_cml_c
 
 import ch.ost.rj.sa.miro2cml.business_logic.StringUtility;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.*;
-import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingBoard;
-import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingGroup;
+import ch.ost.rj.sa.miro2cml.business_logic.model.miroboard_representation.EventStormingBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.miroboard_representation.EventStormingGroup;
 
 import java.util.*;
 

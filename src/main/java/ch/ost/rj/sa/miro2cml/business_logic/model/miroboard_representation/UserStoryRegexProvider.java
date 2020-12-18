@@ -1,4 +1,4 @@
-package ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation;
+package ch.ost.rj.sa.miro2cml.business_logic.model.miroboard_representation;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -4,7 +4,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.StringUtility;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.BoundedContext;
-import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.BoundedContextBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.miroboard_representation.BoundedContextBoard;
 
 import java.util.List;
 import java.util.ArrayList;

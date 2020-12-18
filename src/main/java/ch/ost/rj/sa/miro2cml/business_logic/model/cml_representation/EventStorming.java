@@ -75,7 +75,7 @@ public class EventStorming implements ICmlArtifact {
 
     private DomainEvent getDomainEvent(Aggregate aggregate, FlowStep steps) {
         DomainEvent domainEvent = TacticdslFactory.eINSTANCE.createDomainEvent();
-        domainEvent.setName(steps.getEvent()); //TODO: inspect (seems to return wrong event)
+        domainEvent.setName(steps.getEvent());
         aggregate.getDomainObjects().add(domainEvent);
         return domainEvent;
     }

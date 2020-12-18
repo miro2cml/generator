@@ -5,7 +5,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException
 import ch.ost.rj.sa.miro2cml.business_logic.model.InputBoard;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
-import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.miroboard_representation.EventStormingBoard;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Line;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.Sticker;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;

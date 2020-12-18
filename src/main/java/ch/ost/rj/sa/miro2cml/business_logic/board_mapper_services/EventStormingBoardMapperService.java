@@ -8,7 +8,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.EventStorming;
-import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.EventStormingBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.miroboard_representation.EventStormingBoard;
 
 public class EventStormingBoardMapperService implements IBoardMapperService {
 

@@ -6,7 +6,7 @@ import ch.ost.rj.sa.miro2cml.business_logic.model.MappingLog;
 import ch.ost.rj.sa.miro2cml.business_logic.model.MappingMessages;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.CmlModel;
 import ch.ost.rj.sa.miro2cml.business_logic.model.cml_representation.UserStory;
-import ch.ost.rj.sa.miro2cml.business_logic.model.miorboard_representation.UserStoryBoard;
+import ch.ost.rj.sa.miro2cml.business_logic.model.miroboard_representation.UserStoryBoard;
 
 import java.util.List;
 
