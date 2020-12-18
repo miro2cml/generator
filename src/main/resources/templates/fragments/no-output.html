@@ -10,9 +10,9 @@
             <div class="row no-gutters my-0 mx-0">
                 <div class="form-group align-items-center col-12 alert alert-danger px-1 " role="alert">
                     <h4 class="alert-heading">Something went wrong</h4>
-                    <span>Board Name</span><span th:text="${convertedBoard.getName()}"></span><br>
-                    <span>Board Id:</span><span th:text="${form.getBoardId()}"></span><br>
-                    <span>Board Type:</span><span th:text="${form.getBoardType()}"></span><br>
+                    <span>Board Name:   </span><span th:text="${convertedBoard.getName()}"></span><br>
+                    <span>Board Id:     </span><span th:text="${form.getBoardId()}"></span><br>
+                    <span>Board Type:   </span><span th:text="${form.getBoardType()}"></span><br>
                     <th:block th:each="message : ${mappingMessages}">
                         <span style="font-weight: bold" th:text="${message}"></span><br>
                     </th:block>
