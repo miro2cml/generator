@@ -1,24 +1,37 @@
-# Installationsanleitung
+# miro2cml "Whiteboard to Model Compiler"
 
+miro2cml is a compiler that generates a [Context Mapper](https://contextmapper.org/) file from a [Miro](https://miro.com/) board. miro2cml expects a specific Miro board template so that it can export the board in a meaningful way. miro2cml supports the following three Templates: [The User Story Map](https://miro.com/templates/user-story-map/), [The Bounded Context Canvas](https://github.com/ddd-crew/bounded-context-canvas) and [Event Storming](https://contextmapper.org/img/lakeside-mutual-event-storming-result.jpg).
 
+This ReadMe describes the installation. The tutorials and mapping heuristics are included in the prototype.
 
-**Achtung:** Die Applikation benötigt mindestens die Java Version 11!
+miro2cml is based on a Student Research Project by Timothée Moos and Saskia Stillhart.
 
-Der miro2cml Prototyp kann mit verschiedenen Mitteln gestartet werden. Diese wären: Nutzung eines StartSkripts, Starten über ein Terminal/CommandLineTool oder über Docker. Der einfachheitshalber wird hier davon ausgegangen, dass sich die Applikation auf der gleichen Machine gestartet wird, auf der sie auch genutzt werden soll. 
+# Overview
 
-**Recommended:** Die einfachste Möglichkeit stellt vermutlich das StarterSkript startMiro2cml.bat für Windows dar. 
+miro2cml consists of the following components:
 
-### Installation mit StarterSkript (Recommended)
+- Web Interface - the graphical user interface which also contains the tutorials and mapping heuristics (based on [Thymeleaf](https://www.thymeleaf.org/)) 
+  - Tutorials - for each Template detailed instructions on how to create the Miro Board, how to convert it and how to continue using the Context Mapper File 
+  - Mapping Heuristics/Tables - for each Template
+- Compiler - the RESTful HTTP API which represents the core of the application (based on [Spring Boot](https://spring.io/projects/spring-boot))
 
-Im Root Verzeichnis des Sourcecodes befinden sich zwei StarterSkripts, einmal startMiro2cml.sh für Ubuntu und einmal startMiro2cml.bat für Windows.
+# Installation
 
-Wird das Skript ausgeführt, wird zuerst das die Applikation gebuilded und danach ausgeführt. Das Skript kann sowohl über die Kommandozeile als auch über das Graphische Interface des Betriebsystems gestartet werden.
+Prerequisite: Java Version 11
 
-1. Navigiere in das Rootverzeichnis des Sourcodes
-2. Aktiviere Starterskript (Linux: startMiro2cml.sh, Windows: startMiro2cml.bat)
-3. Starte Browser und besuche localhost:8080
+The miro2cml prototype can be started by several means. These would be: Using a StartScript, starting via a Terminal/Command Line Interface or via Docker. For the sake of simplicity, it is assumed here that the application is started on the same machine on which it is to be used.
 
-(Auf Linux müssen möglicherweise zuerst die entsprechenden Ausführungsberechitgungen gesetzt werden)
+### Starter Script (recommended)
+
+In the root directory of the source code there are two starter scripts, one startMiro2cml.sh for Ubuntu and one startMiro2cml.bat for Windows.
+
+When the script is executed, the application is first built and then executed. The script can be started from the command line as well as from the graphical interface of the operating system.
+
+1. navigate to the root directory of the source code
+2. activate starter script (Linux: startMiro2cml.sh, Windows: startMiro2cml.bat)
+3. start browser and visit http://localhost:8080
+
+(On Linux, you may need to set the appropriate execution permissions first):
 
 ```
 chmod +x gradlew
@@ -26,17 +39,17 @@ chmod +x gradlew
 chmod +x startMiro2cml.sh
 ```
 
-### Installation mit Kommandozeilentool.
+### Command Line Interface
 
-1. Navigiere in das Rootverzeichnis des Sourcodes
+1. navigate to the root directory of the source code
 
-2. Type das folgende Kommando ein: 
+2. Type the following command: 
 
    ```
    gradlew bootJar
    ```
 
-3. Type das folgende Kommando ein: 
+3. Type the following command: 
 
    Windows: 
 
@@ -50,9 +63,9 @@ chmod +x startMiro2cml.sh
    java -jar build/libs/miro2cml-0.3.0-SNAPSHOT.jar
    ```
 
-4. Starte Browser und besuche localhost:8080
+4. start browser and visit http://localhost:8080
 
- (Auf Linux müssen möglicherweise zuerst die entsprechenden Ausführungsberechitgungen gesetzt werden)
+(On Linux, you may need to set the appropriate execution permissions first):
 
 ```
 chmod +x gradlew
@@ -60,13 +73,11 @@ chmod +x gradlew
 chmod +x startMiro2cml.sh
 ```
 
-### 
+### Docker (only Tested on Ubuntu/Debian):
 
-### Installation mit Docker (only Tested on Ubuntu/Debian):
+1. navigate to the root directory of the source code
 
-1. Navigiere in das Rootverzeichnis des Sourcodes
-
-2. Type die folgenden Kommandos ein: 
+2. Type the following commands: 
 
    ```
    chmod +x gradlew
@@ -84,8 +95,10 @@ chmod +x startMiro2cml.sh
    docker run -p 8080:8080 miro2cml/local-snapshot
    ```
 
-5. Starte Browser und besuche localhost:8080
+5. start browser and visit http://localhost:8080
 
-Mit Docker ist es sehr einfach, den Listening Port der Applikation umzukonfigurieren, dabei muss lediglich beim docker run Befehl das Argument {-p 8080:8080} durch das argument {-p {wunschPort]:8080} ersetzt werden
+With Docker it is very easy to reconfigure the listening port of the application, just replace the argument {-p 8080:8080} with the argument {-p [port]:8080} in the docker run command.
 
- 
+#  Licence
+
+All source code ist released under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
