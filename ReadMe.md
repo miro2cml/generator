@@ -2,7 +2,7 @@
 
 miro2cml is a compiler that generates a [Context Mapper](https://contextmapper.org/) file from a [Miro](https://miro.com/) board. miro2cml expects a specific Miro board template so that it can export the board in a meaningful way. miro2cml supports the following three Templates: [The User Story Map](https://miro.com/templates/user-story-map/), [The Bounded Context Canvas](https://github.com/ddd-crew/bounded-context-canvas) and [Event Storming](https://contextmapper.org/img/lakeside-mutual-event-storming-result.jpg).
 
-This ReadMe describes the installation. The tutorials and mapping heuristics are included in the prototype.
+This Readme describes the installation of the application miro2cml. The tutorials and mapping heuristics are included in the application.
 
 miro2cml is based on a Student Research Project by Timothée Moos and Saskia Stillhart.
 
@@ -19,7 +19,7 @@ miro2cml consists of the following components:
 
 Prerequisite: Java Version 11
 
-The miro2cml prototype can be started by several means. These would be: Using a StartScript, starting via a Terminal/Command Line Interface or via Docker. For the sake of simplicity, it is assumed here that the application is started on the same machine on which it is to be used.
+The miro2cml application can be started by several means. These would be: Using a StartScript, starting via a Terminal/Command Line Interface or via Docker. For the sake of simplicity, it is assumed here that the application is started on the same machine on which it is to be used.
 
 ### Starter Script (recommended)
 
