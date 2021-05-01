@@ -103,7 +103,7 @@ With Docker it is very easy to reconfigure the listening port of the application
 
 ### Miro App Configuration:
 
-1. Create app at: https://miro.com/app/settings/user-profile/apps ![App_Installation](\App_Installation.png)A simple widget will open, allowing you to specify the name and a description. After that, you will be automatically redirected to the app's settings window.
+1. Create app at: https://miro.com/app/settings/user-profile/apps ![App_Installation](App_Installation.png)A simple widget will open, allowing you to specify the name and a description. After that, you will be automatically redirected to the app's settings window.
 2. Define Redirect URLs: In this settings menu, you can enter new URLs in the Redirect URLs section.
 3. Set scopes: Now you have to set the permissions: ![OAuth_Scopes](OAuth_Scopes.png)
 
