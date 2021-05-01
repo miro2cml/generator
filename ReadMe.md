@@ -21,6 +21,8 @@ Prerequisite: Java Version 11
 
 The miro2cml application can be started by several means. These would be: Using a StartScript, starting via a Terminal/Command Line Interface or via Docker. For the sake of simplicity, it is assumed here that the application is started on the same machine on which it is to be used.
 
+In addition to the installation, the Miro App must be configured.
+
 ### Starter Script (recommended)
 
 In the root directory of the source code there are two starter scripts, one startMiro2cml.sh for Ubuntu and one startMiro2cml.bat for Windows.
@@ -98,6 +100,21 @@ chmod +x startMiro2cml.sh
 5. start browser and visit http://localhost:8080
 
 With Docker it is very easy to reconfigure the listening port of the application, just replace the argument {-p 8080:8080} with the argument {-p [port]:8080} in the docker run command.
+
+### Miro App Configuration:
+
+1. Create app at: https://miro.com/app/settings/user-profile/apps ![App_Installation](\App_Installation.png)A simple widget will open, allowing you to specify the name and a description. After that, you will be automatically redirected to the app's settings window.
+2. Define Redirect URLs: In this settings menu, you can enter new URLs in the Redirect URLs section.
+3. Set scopes: Now you have to set the permissions: ![OAuth_Scopes](OAuth_Scopes.png)
+
+4. Insert Client ID & Secret in application.properties: At the top of the settings menu you will find the client ID and the client secret, these must be inserted into the file src/main/resources/application.properties corresponding to the key miro.client.id and miro.client.secret.
+
+You can find more information on: https://developers.miro.com/docs/getting-started
+
+# Knowing Limitations
+
+- Missing Feature: copy to clipboard button
+- User Stories Template: does not support the two keywords *with its* and *for a*. [Link to Context Mapper Documentation](https://contextmapper.org/docs/user-requirements/)
 
 #  Licence
 
