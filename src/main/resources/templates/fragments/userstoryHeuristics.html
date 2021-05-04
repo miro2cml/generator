@@ -4,9 +4,9 @@
 <div th:fragment="userstory">
 <div class="card-body">
     <h6>Which inputs are converted?</h6>
-    <p>The User Story Map contains only Cards. Therefore just Cards will be converted. All other Miro elements are ignored.
-        The Cards which are yellow and blue are ignored because they illustrate the Tasks and Activites in the User Story Map.
-        The title of the Cards are relevant for the mapping. The description and the other fields of the Card will be ignored.
+    <p>A User Story Map consists of Cards (that are ordered in two dimensions). Therefore only such Cards are converted. All other Miro elements are ignored.
+        The Cards which are yellow and blue are ignored because they illustrate Tasks and Activities in the User Story Map.
+        The titles of the Cards are relevant for the mapping; their descriptions and the other fields of the Card will be ignored.
     </p>
     <h6>Mapping Table</h6>
     <p>Supported Formats:</p>
@@ -95,17 +95,18 @@
     <p><b>Why are my Cards not converted?</b></p>
     <ul>
         <li>The Cards are yellow or blue.</li>
-        <li>They have not the correct text format. Check if you use the correct format like introduced in the <a th:href="@{/UserStories}">tutorial</a>.</li>
+        <li>They do not have the correct text format. Check if you use the correct format as introduced in the <a th:href="@{/UserStories}">tutorial</a>.</li>
         <li>The User Stories are not in the title defined of the Miro Cards.</li>
     </ul>
     <p><b>How is the title of the User Story generated?</b></p>
     <p>The title is the verb concatenated with the entity of the User Story.</p>
-    <p><b>Why there are some numbers added to the title of the User Story?</b></p>
-    <p>The Context Mapper expect unique titles for the User Stories. If there are exists equal titles the miro2cml
-        converter add an 1 at the end of the name to make sure that the conversion produce a correct CML File.</p>
+    <p><b>Why are some numbers added to the title of the User Story?</b></p>
+    <p>The Context Mapper tool expects unique titles for the User Stories. If there are equal titles, the miro2cml
+        converter adds '1' <!-- [Q] hwo about 2, 3, etc? --> at the end of the name to make sure that the conversion produce a correct CML file.</p>
     <p><b>Why do some verbs have quotations marks at the beginning and at the end?</b></p>
     <p>The Context Mapper knows the CRUD verbs (create, read, update, delete). Therefore they do not need quotation marks. All other verbs are between the quotations marks to mark them as a string.</p>
     <a class="btn btn-primary" th:href="@{/UserStories}">Go to Tutorial</a>
+    <!-- [C] add a FAQ about attributes (not mapped) -->
 </div>
 </div>
 </body>

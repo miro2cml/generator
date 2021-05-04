@@ -14,31 +14,31 @@
         </div>
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h5>Step One: Create the MiroBoard</h5>
-                    <p>First you have to select the Template <i>The Bounded Context Canvas</i> by Nick Tune. It is available in (<a href="https://miro.com/miroverse/category/strategy-and-planning/strategic-domain-driven-design-template" > Miroverse</a>.
-                        You can access Miroverse from the Choose a templates area in the section Categories .
-                        The button to access Miroverse is red colored in the figure.</p>
+                <li class="list-group-item"><h5>Step One: Create the Miro board</h5>
+                    <p>First you have to select the Template <i>The Bounded Context Canvas</i> by Nick Tune. It is available in <a href="https://miro.com/miroverse/category/strategy-and-planning/strategic-domain-driven-design-template">Miroverse</a>.
+                        You can access Miroverse from the "Choose a template" area in the section Categories.
+                        The button to access Miroverse is red-colored in the figure.</p>
                     <img alt="Miro Templates access to Miroverse" th:src="@{/images/MiroTemplates.png}" class="img-tutorial">
                     <br>
                     <br>
                     <p>The easiest way to find the template in Miroverse is to use the search field, as can be seen in the figure.</p>
-                    <img alt="Miroverse: Tempalte The Bounded Context Canvas" th:src="@{/images/miroversesearch.png}" class="img-tutorial">
+                    <img alt="Miroverse: Template The Bounded Context Canvas" th:src="@{/images/miroversesearch.png}" class="img-tutorial">
                     <br>
                     <br>
                     <p>Now you can fill in your specifications about the Bounded Context that you want to model. For further information about the
-                        template take a look at the <a href="https://github.com/ddd-crew/bounded-context-canvas" target="_blank">corresponding instructions</a>. It
-                        is important that you do not change the headings in the Template as they are used for the conversion. For the fields Strategic Classification and User Role it is important to separate the elements with the usage of hyphens.
+                        template, see the <a href="https://github.com/ddd-crew/bounded-context-canvas" target="_blank">corresponding instructions</a>. It
+                        is important that you do not change the headings in the Template as they are used for the conversion. For the fields Strategic Classification and Domain Role <!-- [Q] no User Role in figure (?) --> it is important to separate the elements with the usage of hyphens.
                         In the picture below, you can see a correctly filled out template.</p>
                     <img alt="Example of Bounded Context Canvas" th:src="@{/images/BoundedContextCanvas.PNG}" class="img-tutorial">
                 <li class="list-group-item"><h5>Step Two: Convert the Board</h5>
-                    <p>After you have created your board, you can convert it with the miro2cml Tool. Choose your board and the Board Type:
-                        Bounded Context Canvas. The following Lines summarize, how the different parts of the Template will be mapped to CML: <br>
+                    <p>After you have created your board, you can convert it with the miro2cml tool. Choose your board and the Board Type:
+                        Bounded Context Canvas. The following summarizes how the different parts of the template will be mapped to CML: <br>
                         All three fields in the Strategic Classification, the Ubiquitous Language, the Business Decisions and the
-                        Outbound Communications will be converted in to a comment. The Name is converted in the name of the Bounded Context. The description
+                        Outbound Communications will be converted in to a comment. The Name is converted in the name of the Bounded Context. The Description
                         is represented in the domain Vision Statement. The Role Types are interpreted as responsibilities. The type and the knowledge level are
-                        defined by the converter. The Knowledgelevel is CONCRETE and the type is FEATURE. In the Bounded Context is a aggregate which contains the
+                        defined by the converter. The Knowledge Level is CONCRETE and the type is FEATURE. In the Bounded Context, a Aggregate is created that contains the
                         Inbound Communications as Domain Events and Entities which have the Command and Query functions.<br>
-                        For further information on how the mapping exactly works take a look at the Bounded Context mapping heuristics in the Supported Templates page.
+                        For further information on how the mapping exactly works, review the Bounded Context mapping heuristics in the <!-- [A] link missing --> Supported Templates page.
                         The example from the picture above will produce this output:<p>
                 <pre><code>
                     /**
@@ -80,8 +80,8 @@
                     }
                 </code></pre>
                 <li class="list-group-item"><h5>Step Three: Use the CML output</h5>
-                    <p>After you have received  your CML output you can make more specifications in the
-                        Bounded Context. Here is a <a href="https://contextmapper.org/docs/tactic-ddd/" target="_blank">Link</a> to the context mapper specifications.</p>
+                    <p>After you have received  your CML output you can continue po specify in the
+                        Bounded Context. Here is a <a href="https://contextmapper.org/docs/bounded-context/" target="_blank">Link</a> to the context mapper reference.</p>
             </ul>
         </div>
     </div>
