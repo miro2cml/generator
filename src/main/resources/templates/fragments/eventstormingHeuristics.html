@@ -17,17 +17,17 @@
         <tbody>
         <tr>
             <td><img alt="Stickers Event Storming" th:src="@{/images/StickerEventStorming.PNG}" class="img-tutorial"></td>
-            <td>set the colors: Command -> blue, DomainEvent -> orange, Aggregate -> yellow, User Role -> light yellow,
+            <td>set the colors, for instance: Command -> blue, DomainEvent -> orange, Aggregate -> yellow, User Role -> light yellow,
             Issue -> red</td>
         </tr>
         <tr>
             <td><img alt="Command" th:src="@{/images/EventStormingCommand.PNG}" class="img-mapping"></td>
-            <td>The Commands are the start point for the mapping. For the commands are corresponding Domain Events,
-            Aggregates and User Stories searched.</td>
+            <td>The Commands are the starting point for the mapping. From the found commands, corresponding Domain Events,
+            Aggregates and User Stories are searched for location and color.</td>
         </tr>
         <tr>
             <td><img alt="Domain Event" th:src="@{/images/EventStormingDomainEvent.PNG}" class="img-mapping"></td>
-            <td>The Mapper searches for one Domain Event in the red marked area depending on the command.</td>
+            <td>The Mapper searches for one Domain Event in the area marked red (in the next figure), depending on the command.</td>
         </tr>
         <tr>
             <td><img alt="Aggregate" th:src="@{/images/EventStormingAggregates.PNG}" class="img-mapping"></td>
@@ -92,22 +92,25 @@ application {
         </tbody>
     </table>
     <h6>Frequently Asked Questions (FAQ)</h6>
+    <p><b>Why is my board never converted without warnings?</b></p>
+    <p>The compiler is currently not able to recognise the end of an Event Storming model and therefore it always generates a warning
+    in the last step.</p>
     <p><b>Why are my Stickers not converted?</b></p>
+    Check if one of the following applies to your board:
     <ul>
-        Check if one of the following applies to your Board:
         <li>The color of the Sticker is not defined as a Event Storming element.</li>
-        <li>The Sticker have not the correct format. Check if you use the correct format like introduced in the <a th:href="@{/EventStorming}">tutorial</a>.
-            The Stickers from the same step should be near each other.</li>
-        <li>The semantic model is not correct.</li>
+        <li>The Sticker do not have the correct format. Check if you use the correct format as introduced in the <a th:href="@{/EventStorming}">tutorial</a>.
+            The Command, Domain Event and Aggregate Stickers belonging to the same process step should be near each other.</li>
+        <li>The semantic model is not correct. Each process step must contain a Command, Domain Event and an Aggregate.</li>
     </ul>
-    <p><b>What does a serializer error mean?</b></p>
-    <p>Something is wrong with your event storming model. Take another look at our tutorial and make sure that you use correct semantic model.
-        Each step must contain a Command, Domain Event and an Aggregate. If the model is correct, make sure that the Sticker are recognized. Take a look at the logfile for
-        further information's about the conversion. The Stickers from the same step should be near each other. If they are grouped correctly you should find a log entry whicht states  <i>group found</i>.
+    <p><b>What does serializer error mean?</b></p>
+    <p>Something is wrong with your event storming model. Take another look at our tutorial and examples and make sure that you use a semantically correct model:
+        Each process step must contain a Command, Domain Event and an Aggregate. If the model is correct, make sure that the stickers are recognized: Take a look at the log file for
+        further information about the conversion. The stickers from the same step should be near each other. If they are grouped correctly, you should find a log entry which states <i>group found</i>.
     </p>
     <p><b>Why is my board not recognized?</b></p>
-    <p>Our Converter for the Event Storming Boards expect you to define the colors for the Commands, Aggregates, Domain Events, User Role and Issue with Stickers, which have only the key words written on it. Make sure that all Stickers have a
-    different color and verify if the key words are correctly written.</p>
+    <p>Our Converter for the Event Storming Boards expect you to define the colors for the Commands, Aggregates, Domain Events, User Role and Issue with Stickers, which have only the keywords written on it (see our examples). Make sure that all Stickers have a
+    different color and verify if the keywords are spelled and formatted correctly.</p>
     <a class="btn btn-primary" th:href="@{/EventStorming}">Go to Tutorial</a>
 </div>
 </div>
