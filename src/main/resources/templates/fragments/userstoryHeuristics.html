@@ -10,7 +10,7 @@
     </p>
     <h6>Mapping Table</h6>
     <p>Supported Formats:</p>
-    <ul class="list-group">
+    <ul class="list-group" style="font-family: 'Times New Roman', Serif;">
         <li class="list-group-item"> As a < actor > I want to < verb > a < entity > so that < benefit >.</li>
         <li class="list-group-item"> As an < actor > I want to < verb > an < entity > so that < benefit >.</li>
         <li class="list-group-item"> As a < actor > I want to < verb > an < entity > so that < benefit >.</li>
@@ -102,11 +102,14 @@
     <p>The title is the verb concatenated with the entity of the User Story.</p>
     <p><b>Why are some numbers added to the title of the User Story?</b></p>
     <p>The Context Mapper tool expects unique titles for the User Stories. If there are equal titles, the miro2cml
-        converter adds '1' <!-- [Q] hwo about 2, 3, etc? --> at the end of the name to make sure that the conversion produce a correct CML file.</p>
+        converter adds '1' at the end of the name to make sure that the conversion produce a correct CML file.
+        For example there are three User Stories with the title "add customer", then the titles in the CML Model would be addCustomer, addCustomer1 and
+        addCustomer11.</p>
     <p><b>Why do some verbs have quotations marks at the beginning and at the end?</b></p>
     <p>The Context Mapper knows the CRUD verbs (create, read, update, delete). Therefore they do not need quotation marks. All other verbs are between the quotations marks to mark them as a string.</p>
+    <p><b>Why are the attributes and references not in the CML Model?</b></p>
+    <p>The keywords <i>with its</i> and <i>for a</i> are currently not supported.</p>
     <a class="btn btn-primary" th:href="@{/UserStories}">Go to Tutorial</a>
-    <!-- [C] add a FAQ about attributes (not mapped) -->
 </div>
 </div>
 </body>

@@ -17,7 +17,7 @@
                 <li class="list-group-item"><h5>Step One: Create the MiroBoard</h5>
                     <p>The mapping rules for the Event Storming are based on the <a href="https://github.com/ddd-crew/eventstorming-glossary-cheat-sheet" target="_blank">
                         EventStorming Cheat sheet</a> form the DDD-Community.
-                        miro2cml does not work with a predefined template here<!-- [Q] there is one now, from adcubum, so reworded -->. The origin of the template idea came from a
+                        miro2cml does not work with a predefined template here. The origin of the template idea came from a
                         <a href="https://github.com/ContextMapper/context-mapper-examples/tree/master/src/main/cml/lakeside-mutual" target="_blank">
                             sample event storming from Lakeside Mutual</a>. So the first step is to create a new Miro board.
                         Next, please define the sticker colors for the Domain Event, Command, Aggregate, Issue and User Role, as you see in the picture.
@@ -25,7 +25,7 @@
                         written exactly as in the images below. The Cheat sheet also describes Policy and System Stickers, which are not supported in miro2cml at present. You can still use them, just make sure you use different colors for those stickers. If you do that properly, the miro2cml converter will ignore them in the converting process.</p>
                     <img alt="Stickers Event Storming" th:src="@{/images/StickerEventStorming.PNG}" class="img-tutorial">
                     <p>As soon as you have finished this setup, you can start with creating your Event Storming content. We have created some extra rules to make sure that the board conversions
-                    result in a meaningful CML output. <!-- [G] either remove (done) br or add another one -->
+                    result in a meaningful CML output.
                     Group the different phases of your event. Each Group has to consist of the following elements:
                     <ul>
                         <li>one Domain Event and one Command</li>
@@ -34,7 +34,7 @@
                         <li>(optional) one Command that triggers the Domain Event (incoming arrow)</li>
                         <li>(optional) the Command triggers one or two other Domain Event (outgoing arrow)</li>
                     </ul><br>
-                    <p>The picture below provides an example of an Event Storming board. Some different formats for the phases <!-- [Q, W] phase or step? --> are shown.
+                    <p>The picture below provides an example of an Event Storming board. Some different formats for the steps are shown.
                         The stickers that belong together have to be positioned near each other (the Issue stickers will be converted to comments, which does not dependent on their positions).</p>
                     <img alt="Event Storming Example Map" th:src="@{/images/EventStormingExample.PNG}" class="img-tutorial">
                     <p>The converter can only recognize the event/comment triggers correctly if the arrows start at the Domain Event Sticker and end at the Command Sticker.
