@@ -6,7 +6,11 @@ import ch.ost.rj.sa.miro2cml.data_access.model.miro.boards.BoardCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro.widgets.WidgetsCollection;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.BoardMetaData;
 import ch.ost.rj.sa.miro2cml.data_access.model.miro2cml.widgets.WidgetObject;
+import ch.ost.rj.sa.miro2cml.presentation.AuthorizationController;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +34,8 @@ public class MiroApiServiceAdapter {
 
     private final String apiBaseUrl;
     private final Integer boardCountLimit;
+    private static final Logger logger = LoggerFactory.getLogger(MiroApiServiceAdapter.class);
+
 
     public MiroApiServiceAdapter(@Value("${miro.api.baseUrl}") String apiBaseUrl, @Value("${miro.api.boardCountLimit}") Integer boardCountLimit
     ) {
@@ -96,6 +102,7 @@ public class MiroApiServiceAdapter {
 
         } catch (IOException e) {
             success = false;
+            logger.error("getMiroBoards call on Miro API failed! Used accessToken: "+accessToken + " used TeamID: " +teamId+ " There might be a problem with the TeamID, restarting the miro2cml service has proven to sometimes solve this issue.");
         }
         return new ImmutableTriple<>(success,limitExceeded, boardMetaDataList);
     }
