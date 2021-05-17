@@ -111,11 +111,14 @@ With Docker it is very easy to reconfigure the listening port of the application
 
 You can find more information on: https://developers.miro.com/docs/getting-started
 
-# Knowing Limitations
+# Known Limitations
 
 - Missing Feature: copy to clipboard button
 - User Stories Template: does not support the two keywords *with its* and *for a*. [Link to Context Mapper Documentation](https://contextmapper.org/docs/user-requirements/)
+- Bounded Context Canvas: only one Bounded Context will be detected and transformed even if there are multiple on the board.
+- Sometimes the Miro-API does not return the teamId correctly after user authorization.  This seems to be a caching error and can be solved by restarting the miro2cml service.
 
 #  Licence
 
-All source code ist released under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+All source code is released under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
