@@ -16,14 +16,14 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><h5>Step One: Create the MiroBoard</h5>
                     <p>First, select the template User Story Map Framework. The template can be found in the section "Chose a Template"
-                        in Miro. The preview of the template is. The preview of the template is shown in the figure.</p>
+                        in Miro. The preview of the template is shown in the figure.</p>
                     <img alt="Template: User Story Map Framework" th:src="@{/images/WebUserStoryMap.PNG}" class="img-tutorial">
-                    <p>Then you can fill in the User Stories. The miro2cml converter only uses the title of the Cards,
-                        you can use the rest of the Cards like you want. In the picture below, an empty and a filled out Card are shown.</p>
+                    <p>Next, you can create the User Stories, for instance by filling in text into the empty stories or by copy-pasting a story card from a working example. The miro2cml converter only uses the title of the cards,
+                        so you can use the rest of the Cards as you wish. In the picture below, an empty and a filled out card are shown.</p>
                     <img alt="Empty Card" th:src="@{/images/WebCards.PNG}" class="img-tutorial">
                     <p>Make sure that you use one of these formats and characters for the User Stories:</p>
-                    <ul class="list-group">
-                        <li class="list-group-item"> As a < actor > I want to < verb > a < entity > so that < benefit >.</li>
+                    <ul class="list-group" style="font-family: 'Times New Roman', Serif;">
+                        <li class="list-group-item" > As a < actor > I want to < verb > a < entity > so that < benefit >.</li>
                         <li class="list-group-item"> As an < actor > I want to < verb > an < entity > so that < benefit >.</li>
                         <li class="list-group-item"> As a < actor > I want to < verb > an < entity > so that < benefit >.</li>
                         <li class="list-group-item"> As an < actor > I want to < verb > a < entity > so that < benefit >.</li>
@@ -67,12 +67,12 @@
                         </tbody>
                     </table>
                     <br>
-                    <p>The yellow and blue Cards (in the picture red bordered) are not converted as User Stories. They are used as Tasks and
+                    <p>The yellow and blue cards (in the picture, these cards have a red border) are not converted as User Stories. They are used as Tasks and
                         Activities in the Template and are therefore not relevant for the mapping.</p>
                     <img alt="Empty User Story Map Template" th:src="@{/images/MarkedUserStory.png}" class="img-tutorial"></li>
                 <li class="list-group-item"><h5>Step Two: Convert the Board</h5>
-                    <p>After you have created your board, you can convert it with the miro2cml Tool. Choose your board and the Board Type: User Stories.
-                    For the example in the figure one the following output will be generated:</p>
+                    <p>After you have created your board, you can convert it with the miro2cml tool. Choose your board and the board type "User Stories".
+                   From the figure, for example, one the following outputs will be generated:</p>
                     <pre><code>
                         UserStory createaccount {
                             As a "User"
@@ -81,11 +81,11 @@
                         }
                     </code></pre>
                     <p>The name of the User Story is composed of the verb and the entity. The rest is the same as your input.
-                        Take a look at the <a th:href="@{/SupportedTemplates}">mapping table</a> for further informations.</p></li>
+                        Take a look at the <a th:href="@{/SupportedTemplates}">mapping table</a> for further information.</p></li>
                 <li class="list-group-item"><h5>Step Three: Use the CML output</h5>
-                    <p>The CML File with your User Stories is a good start for design work with the Context Mapper
-                        Tool. Follow the <a href="https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html" target="_blank">Link</a> to a step by
-                        step tutorial for further design work. You can skip the first step in this Tutorial, as you already have your Requirements defined.
+                    <p>The CML file with your User Stories is a good start for design work with the Context Mapper
+                        Tool. Follow this <a href="https://ozimmer.ch/practices/2020/06/10/ICWEKeynoteAndDemo.html" target="_blank">Link</a> to a step by
+                        step tutorial for further design work. You can skip the first step in this tutorial, as you already have your requirements defined.
                         If you're new to the Context Mapper here is a <a href="https://contextmapper.org/docs/getting-started/" target="_blank">Link</a>
                         to the guide on how to Getting started.</p></li>
             </ul>
