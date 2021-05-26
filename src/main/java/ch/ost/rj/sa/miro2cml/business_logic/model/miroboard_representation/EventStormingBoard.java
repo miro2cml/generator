@@ -85,13 +85,15 @@ public class EventStormingBoard {
     private ArrayList<EventStormingGroup> generateEventStormingGroups() {
         ArrayList<EventStormingGroup> output = new ArrayList<>();
         for (Sticker commandSticker : commands) {
+            double groupPositionY = commandSticker.getY();
+            double groupPositionX = commandSticker.getX();
+
             String command = commandSticker.getText();
 
             double width = commandSticker.getWidth();
-            if(width < 100) {width=100;}
             double height = commandSticker.getHeight();
-            if(height<100){height=100;}
-
+            double scaledWidth = width * commandSticker.getScale();
+            double scaledHeight = height * commandSticker.getScale();
             /*
             coordinates system notes:
             y-axis is positive downwards
@@ -99,27 +101,27 @@ public class EventStormingBoard {
             sticker coordinates(getY Method) for y-Axis are center values.
             sticker coordinates(getX Method) for x-Axis are center values.
             */
+
+
+
             double xCommandPositionMiddle = commandSticker.getX();
-            double xCommandPositionLeftBoundary = commandSticker.getX();
+            double xCommandPositionLeftBoundary = xCommandPositionMiddle - (0.5 * scaledWidth);
+            double xCommandPositionRightBoundary = xCommandPositionMiddle + (0.5 * scaledWidth);
+
             double yCommandPositionMiddle = commandSticker.getY();
-            double xEnd = xCommandPositionLeftBoundary + (1.5 * width);
-            double yCommandPositionTop = yCommandPositionMiddle - (0.5 * height);
-            double yCommandPositionBottom = yCommandPositionMiddle + (0.5 * height);
-            double positionX = commandSticker.getX();
-            mappingLog.addErrorLogEntry(commandSticker.getText() + " X: "+ height + " Y:" +width+" Scale: " + commandSticker.getScale());
-            double positionY = commandSticker.getY();
+            double yCommandPositionTop = yCommandPositionMiddle - (0.5 * scaledHeight);
+            double yCommandPositionBottom = yCommandPositionMiddle + (0.5 * scaledHeight);
 
-            SearchBoundary domainEventSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary, xEnd, yCommandPositionTop, yCommandPositionBottom);
-            SearchBoundary roleSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary, xEnd + (2 * width), yCommandPositionTop - (2 * height), yCommandPositionBottom + (2 * height));
-            SearchBoundary aggregateSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary, xEnd, yCommandPositionTop - (2 * height), yCommandPositionBottom);
-
+            SearchBoundary domainEventSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary - (0.5*scaledWidth), xCommandPositionRightBoundary + (1.5 * scaledWidth), yCommandPositionTop - (0.5 * scaledHeight), yCommandPositionBottom + (0.5 * scaledHeight));
+            SearchBoundary roleSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary- (0.5*scaledWidth), xCommandPositionRightBoundary + (2.5 * scaledWidth), yCommandPositionTop - (0.5 * scaledHeight), yCommandPositionBottom + (1.25 * scaledHeight));
+            SearchBoundary aggregateSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary - (0.5* scaledWidth), xCommandPositionRightBoundary + (1.5 * scaledWidth), yCommandPositionTop - (1.5 * scaledHeight), yCommandPositionTop + (0.4 * scaledHeight));
 
             String localDomainEvent = getTextFromStickerWithCorrectPosition(domainEvents,domainEventSearchBoundary);
             String localRole = getTextFromStickerWithCorrectPosition(userRole, roleSearchBoundary);
             List<String> localAggregates = getTextsFromStickerWithCorrectPosition(aggregates, aggregateSearchBoundary);
             List<String> localTriggers = getTriggers(localDomainEvent);
             if (!localDomainEvent.equals("") && !localAggregates.contains("")) {
-                EventStormingGroup eventStormingGroup = new EventStormingGroup(positionX, positionY, localDomainEvent, command, localAggregates, localRole, localTriggers);
+                EventStormingGroup eventStormingGroup = new EventStormingGroup(groupPositionX, groupPositionY, localDomainEvent, command, localAggregates, localRole, localTriggers);
                 mappingLog.addSuccessLogEntry("Group found with elements: DomainEvent -> " + localDomainEvent + "( triggers " + localTriggers + "), Command -> " + command + ", Aggregate ->" + localAggregates + ", User Role -> " + localRole + ".");
                 output.add(eventStormingGroup);
             } else {
