@@ -72,15 +72,15 @@ public class EventStormingGroup {
 
 
     public int compareTo(Object o) {
-        EventStormingGroup group = (EventStormingGroup) o;
-        if (getPositionX() < group.getPositionX()) {
+        EventStormingGroup otherGroup = (EventStormingGroup) o;
+        if (getPositionX() < otherGroup.getPositionX()) {
             return -1;
-        } else if (getPositionX() > group.getPositionX()) {
+        } else if (getPositionX() > otherGroup.getPositionX()) {
             return 1;
         }
-        if (getPositionY() < group.getPositionY()) {
+        if (getPositionY() < otherGroup.getPositionY()) {
             return -1;
-        } else if (getPositionY() > group.getPositionY()) {
+        } else if (getPositionY() > otherGroup.getPositionY()) {
             return 1;
         }
         return 0;

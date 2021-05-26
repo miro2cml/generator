@@ -1,5 +1,6 @@
 package ch.ost.rj.sa.miro2cml.business_logic.model.miroboard_representation;
 
+import ch.ost.rj.sa.miro2cml.business_logic.model.SearchBoundary;
 import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.InvalidBoardFormatException;
 import ch.ost.rj.sa.miro2cml.business_logic.StringUtility;
 import ch.ost.rj.sa.miro2cml.business_logic.model.exceptions.WrongBoardException;
@@ -85,22 +86,41 @@ public class EventStormingBoard {
         ArrayList<EventStormingGroup> output = new ArrayList<>();
         for (Sticker commandSticker : commands) {
             String command = commandSticker.getText();
-            double xStart = commandSticker.getX();
-            double yMiddle = commandSticker.getY();
-            double xEnd = xStart + (1.5 * width);
-            double yStart = yMiddle - 0.5 * height;
-            double yEnd = yMiddle + (0.5 * height);
+
+            double width = commandSticker.getWidth();
+            if(width < 100) {width=100;}
+            double height = commandSticker.getHeight();
+            if(height<100){height=100;}
+
+            /*
+            coordinates system notes:
+            y-axis is positive downwards
+            x-axis is positive rightwards
+            sticker coordinates(getY Method) for y-Axis are center values.
+            sticker coordinates(getX Method) for x-Axis are center values.
+            */
+            double xCommandPositionMiddle = commandSticker.getX();
+            double xCommandPositionLeftBoundary = commandSticker.getX();
+            double yCommandPositionMiddle = commandSticker.getY();
+            double xEnd = xCommandPositionLeftBoundary + (1.5 * width);
+            double yCommandPositionTop = yCommandPositionMiddle - (0.5 * height);
+            double yCommandPositionBottom = yCommandPositionMiddle + (0.5 * height);
             double positionX = commandSticker.getX();
+            mappingLog.addErrorLogEntry(commandSticker.getText() + " X: "+ height + " Y:" +width+" Scale: " + commandSticker.getScale());
             double positionY = commandSticker.getY();
 
+            SearchBoundary domainEventSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary, xEnd, yCommandPositionTop, yCommandPositionBottom);
+            SearchBoundary roleSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary, xEnd + (2 * width), yCommandPositionTop - (2 * height), yCommandPositionBottom + (2 * height));
+            SearchBoundary aggregateSearchBoundary = new SearchBoundary(xCommandPositionLeftBoundary, xEnd, yCommandPositionTop - (2 * height), yCommandPositionBottom);
 
-            String localDomainEvent = getTextFromStickerWithCorrectPosition(domainEvents, xStart, xEnd, yStart, yEnd);
-            String localRole = getTextFromStickerWithCorrectPosition(userRole, xStart, xEnd + (2 * width), yStart - (2 * height), yEnd + (2 * height));
-            List<String> localAggregates = getTextsFromStickerWithCorrectPosition(aggregates, xStart, xEnd, yStart - (2 * height), yEnd);
-            List<String> localTrigger = getTrigger(localDomainEvent);
+
+            String localDomainEvent = getTextFromStickerWithCorrectPosition(domainEvents,domainEventSearchBoundary);
+            String localRole = getTextFromStickerWithCorrectPosition(userRole, roleSearchBoundary);
+            List<String> localAggregates = getTextsFromStickerWithCorrectPosition(aggregates, aggregateSearchBoundary);
+            List<String> localTriggers = getTriggers(localDomainEvent);
             if (!localDomainEvent.equals("") && !localAggregates.contains("")) {
-                EventStormingGroup eventStormingGroup = new EventStormingGroup(positionX, positionY, localDomainEvent, command, localAggregates, localRole, localTrigger);
-                mappingLog.addSuccessLogEntry("Group found with elements: DomainEvent -> " + localDomainEvent + "( triggers " + localTrigger + "), Command -> " + command + ", Aggregate ->" + localAggregates + ", User Role -> " + localRole + ".");
+                EventStormingGroup eventStormingGroup = new EventStormingGroup(positionX, positionY, localDomainEvent, command, localAggregates, localRole, localTriggers);
+                mappingLog.addSuccessLogEntry("Group found with elements: DomainEvent -> " + localDomainEvent + "( triggers " + localTriggers + "), Command -> " + command + ", Aggregate ->" + localAggregates + ", User Role -> " + localRole + ".");
                 output.add(eventStormingGroup);
             } else {
                 mappingLog.addErrorLogEntry("No grouped elements for " + command + ".");
@@ -131,7 +151,7 @@ public class EventStormingBoard {
         return output;
     }
 
-    private List<String> getTrigger(String domainEvent) {
+    private List<String> getTriggers(String domainEvent) {
         ArrayList<String> output = new ArrayList<>();
         if (!domainEvent.equals("")) {
             for (ArrayList<String> trigger : triggers) {
@@ -151,12 +171,12 @@ public class EventStormingBoard {
         return output;
     }
 
-    private String getTextFromStickerWithCorrectPosition(List<Sticker> inputList, double xStart, double xEnd, double yStart, double yEnd) {
+    private String getTextFromStickerWithCorrectPosition(List<Sticker> inputList, SearchBoundary searchBoundary) {
         ArrayList<Sticker> stickerArrayList = new ArrayList<>(inputList);
         ArrayList<Sticker> copiedInputList = SerializationUtils.clone(stickerArrayList);
         for (int i = 0; i < copiedInputList.size(); i++) {
             Sticker innerSticker = copiedInputList.get(i);
-            if (innerSticker.getX() > xStart && innerSticker.getX() < xEnd && innerSticker.getY() > yStart && innerSticker.getY() < yEnd) {
+            if (innerSticker.getX() > searchBoundary.getLeftBoundary() && innerSticker.getX() < searchBoundary.getRightBoundary() && innerSticker.getY() > searchBoundary.getTopBoundary() && innerSticker.getY() < searchBoundary.getBottomBoundary()) {
                 inputList.remove(i);
                 return innerSticker.getText();
             }
@@ -164,12 +184,12 @@ public class EventStormingBoard {
         return "";
     }
 
-    private List<String> getTextsFromStickerWithCorrectPosition(List<Sticker> inputList, double xStart, double xEnd, double yStart, double yEnd) {
+    private List<String> getTextsFromStickerWithCorrectPosition(List<Sticker> inputList, SearchBoundary searchBoundary) {
         ArrayList<Sticker> stickerArrayList = new ArrayList<>(inputList);
         ArrayList<Sticker> copiedInputList = SerializationUtils.clone(stickerArrayList);
         ArrayList<String> output = new ArrayList<>();
         for (Sticker innerSticker : copiedInputList) {
-            if (innerSticker.getX() > xStart && innerSticker.getX() < xEnd && innerSticker.getY() > yStart && innerSticker.getY() < yEnd) {
+            if (innerSticker.getX() > searchBoundary.getLeftBoundary() && innerSticker.getX() < searchBoundary.getRightBoundary() && innerSticker.getY() > searchBoundary.getTopBoundary() && innerSticker.getY() < searchBoundary.getBottomBoundary()) {
                 output.add(innerSticker.getText());
                 var stickerToDelete= inputList.stream().filter((Sticker sticker) -> sticker.equals(innerSticker)).findAny();
                 stickerToDelete.ifPresent(inputList::remove);
