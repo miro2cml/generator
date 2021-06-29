@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="boardSelection">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="text-left">Miro Input</h5>
+        </div>
+        <div class="card-body">
+            <form action="/" id="getBoardForm" method="post" th:object="${form}">
+                <div class="form-group row align-items-center">
+                    <span class="col-12">Use the Dropdown Menu to select the type of your Board</span><br>
+                    <div class="col-12"></div>
+                    <br>
+
+                    <label class="col-3 col-form-label" for="dropBoard">Miro Board Type: </label>
+                    <select class="form-control col-9" id="dropBoard" name="boardType" th:field="*{boardType}">
+                        <option th:each="miroBoard : ${boardTypes}" th:text="${miroBoard}"
+                                th:value="${miroBoard}"></option>
+                    </select>
+                </div>
+                <div class="form-group row align-items-center">
+                    <span class="col-9">Select the Miro Board you want to convert</span> <a class="col-3 align-middle text-right col-form-label" target="_blank" href="https://miro.com/app/dashboard/">Open Miro Dashboard</a>
+
+                    <label class="col-1" for="keyword">Filter: </label>
+                    <input class="col-7" id="keyword" name="keyword"
+                           onkeydown="if(event.key === 'Enter'){filterBoards();return false;} else {return true;}"
+                           placeholder="Filter your boards"
+                           th:field="*{filter}"
+                           size="50"
+                           type="text"/>
+                    <input class="col-2" id="btnApplyFilter" onclick="filterBoards()" type="button"
+                           value="Filter Boards"/>
+                    <input class="col-2" id="btnClear" onclick='clearFilter()' type="button" value="Clear Filter"/>
+                    <br>
+                </div>
+                <div th:unless="${getBoardsSuccess}" class="col-12 alert alert-danger">
+                    <strong>Error: </strong> Error during our call to Miro-API. We received empty or incomplete Board Collection. Please reload or try again later.
+                </div>
+                <div th:if="${boardLimitExceeded}" class="col-12 alert alert-warning">
+                    <strong>Warning: </strong> Number of allowed Boards exceeded.
+                </div>
+
+                <div th:if="${getBoardsSuccess}" class="form-group align-items-center">
+                    <div class="row row-cols-1 no-gutters my-0 py-0 justify-content-end">
+                        <div id="resultWrapper" class="vertical-overflow-container">
+                            <th:block th:each="board : ${miroBoards}">
+                                <div class="filterable col-12 pr-0 my-0 py-0 ">
+                                    <div class="alert alert-secondary container my-1 py-0" role="alert">
+                                        <label class="row align-items-center py-0 my-0">
+                                            <div class="col-1 ">
+                                                <input name="boardId" required th:field="*{boardId}"
+                                                       th:id="${board.getBoardId()}" th:value="${board.getBoardId()}"
+                                                       type="radio"/>
+                                            </div>
+                                            <div class="col row align-items-center">
+                                                <div class="col-7">
+                                                    <span class="boardName" th:text="${board.getName()}"></span>
+                                                </div>
+                                                <div class="col-3">
+                                                    <span>(</span><span class="boardName" th:text="${board.getBoardId()}"></span><span>)</span>
+                                                </div>
+                                                <div class="col-2">
+                                                <span><a class="alert-link" target="_blank"
+                                                         th:href="${board.getBoardLink()}">Go to Board</a></span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                        <div class="col-12 my-1 py-1"></div>
+                        <button type="submit" formmethod="get" class="btn btn-raised btn-primary align-self-start col-2" value="submit">
+                            Reload Boards
+                        </button>
+                        <div class="col-8"></div>
+                        <button type="submit" class="btn btn-raised btn-primary align-self-end col-2" id="submitForm" value="submit">
+                            Map Board
+                        </button>
+                    </div>
+                </div>
+                <a th:unless="${getBoardsSuccess}" th:href="@{/}">
+                    <button class="btn btn-primary">Reload Page</button>
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

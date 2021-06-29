@@ -1,0 +1,16 @@
+%TEMPLATE_MODE HTML
+%NAME TestGetHeaderFragment
+%CONTEXT
+# ------------------------------------------
+%INPUT (classpath:templates/fragments/footer.html)
+%TEMPLATE_MODE HTML5
+# ------------------------------------------
+%OUTPUT
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div>
+    <img alt="Context Mapper Logo" id="contextmapperlogo" src="/testing/images/logo.png"/>
+</div>
+</body>
+</html>

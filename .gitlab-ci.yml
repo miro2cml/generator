@@ -1,0 +1,91 @@
+image: java:11
+
+stages:
+  - test
+  - build
+  - prepare-deploy
+  - deploy
+  
+  
+# === VARIABLES
+variables:
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_VERSION_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  DOCKER_IMAGE_FILE_NAME: miro2cml-docker-image.tar
+  GIT_DEPTH: 0
+  
+  GRADLE_CI: "gradle -PenvironmentName=ci"
+  DEPLOYMENT_HOST: 188.68.38.100
+  SSH_PORT: 22
+  DOCKER_TLS_CERTDIR: ""
+  # following variables had to be removed due to changes on gitlab shared runner
+  # DOCKER_HOST: tcp://docker:2375
+  # DOCKER_DRIVER: overlay2
+
+test:
+  image: gradle:6.6.1-jdk11
+  stage: test
+  script:
+    - $GRADLE_CI test
+  artifacts:
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
+
+build:
+  image: gradle:6.6.1-jdk11
+  stage: build
+  script:
+    - $GRADLE_CI bootJar
+  artifacts:
+    when: on_success
+    name: '$CI_JOB_NAME-$CI_COMMIT_REF_NAME'
+    paths:
+      - build/libs
+
+# ++++ Variables Needed:
+# Built In:
+# - CI_REGISTRY_USER
+# - CI_REGISTRY_PASSWORD
+# - CI_REGISTRY_IMAGE
+# - CI_REGISTRY
+# - CI_COMMIT_REF_SLUG
+# - CI_JOB_NAME
+# - CI_COMMIT_REF_NAME
+# Internal:
+# - CONTAINER_RELEASE_IMAGE
+# - CONTAINER_VERSION_IMAGE
+# - DOCKER_IMAGE_FILE_NAME
+prepare-deploy:
+  image: docker:19.03.12
+  stage: prepare-deploy
+  services:
+    - docker:19.03.12-dind
+  script:
+    - docker version
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --pull -t $CONTAINER_RELEASE_IMAGE -t $CONTAINER_VERSION_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE
+    - docker save --output $DOCKER_IMAGE_FILE_NAME $CI_REGISTRY_IMAGE
+  dependencies:
+    - build
+  only:
+    refs:
+      - develop
+      - test
+      - master
+      - test-deploy
+      
+deploy:
+    stage: deploy
+    image: alpine
+    before_script:
+    - apk add openssh-client
+    - apk add sshpass
+    script:
+    - sshpass -p $REMOTE_PASSWORD ssh $REMOTE_USER@$DEPLOYMENT_HOST -p $SSH_PORT -o "StrictHostKeyChecking=no" "cd /docker/miro2cml/; sudo ./miro2cml-runscript.sh $CI_COMMIT_REF_NAME $CI_COMMIT_SHORT_SHA"
+    only:
+        refs:
+            - develop
+            - test
+            - master
+            - test-deploy

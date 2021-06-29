@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="eventstorming">
+<div class="card-body">
+    <h6>Which inputs are converted?</h6>
+    <p>The Event Storming Converter works with Lines and Stickers. Therefore only these widget types will be inspected.
+    </p>
+    <h6>Mapping Table</h6>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Miro Input Elements</th>
+            <th scope="col">Context Mapper Specification/Output<th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><img alt="Stickers Event Storming" th:src="@{/images/StickerEventStorming.PNG}" class="img-tutorial"></td>
+            <td>set the colors, for instance: Command -> blue, DomainEvent -> orange, Aggregate -> yellow, User Role -> light yellow,
+            Issue -> red</td>
+        </tr>
+        <tr>
+            <td><img alt="Command" th:src="@{/images/EventStormingCommand.PNG}" class="img-mapping"></td>
+            <td>The Commands are the starting point for the mapping. From the found commands, corresponding Domain Events,
+            Aggregates and User Stories are searched for location and color.</td>
+        </tr>
+        <tr>
+            <td><img alt="Domain Event" th:src="@{/images/EventStormingDomainEvent.PNG}" class="img-mapping"></td>
+            <td>The Mapper searches for one Domain Event in the area marked red (in the next figure), depending on the command.</td>
+        </tr>
+        <tr>
+            <td><img alt="Aggregate" th:src="@{/images/EventStormingAggregates.PNG}" class="img-mapping"></td>
+            <td>The Mapper searches for Aggregates in the red marked area depending on the command.</td>
+        </tr>
+        <tr>
+            <td><img alt="Role" th:src="@{/images/EventStormingRole.PNG}" class="img-mapping"></td>
+            <td>The Mapper searches for one User Role in the red marked area depending on the command.</td>
+        </tr>
+        <tr>
+            <td><img alt="Arrow" th:src="@{/images/Arrow.PNG}" class="img-tutorial"></td>
+            <td>A Domain Event could trigger a Command. This is represented with an arrow. The arrow must start at
+                the Domain Event Sticker and end at the Command Sticker as shown.</td>
+        </tr>
+        <tr>
+            <td><img alt="Event Storming Group" th:src="@{/images/EventStormingG2.PNG}" class="img-mapping"></td>
+            <td><pre><section>application {
+ CommandEvent filter_by_vehicle_type
+ Flow {
+    command filter_by_vehicle_type emits event filtered_types
+    event filtered_types triggers command [outgoing arrow]
+ }
+ Aggregate vehicle{
+    DomainEvent filtered_types
+ }
+}
+            </section></pre>
+            </td>
+        </tr>
+        <tr>
+            <td><img alt="Event Storming Group Version 2" th:src="@{/images/EventStormingV2.PNG}" class="img-tutorial"></td>
+            <td><pre><section>/* [How to handle offers?] */
+application {
+ CommandEvent chose_a_vehicle
+ CommandEvent buying_a_car
+ CommandEvent start_a_offer
+ Flow {
+    command choose_a_filter emits event selected_vehicle
+    event selected_vehicle triggers
+        command buying_a_car x start_a_offer
+
+    command buying_a_car [triggered by "Private Customer"]
+        emits event requested_purchase
+    command start_a_offer [triggered by "Business Customer"]
+        emits event requested_offer
+ }
+  Aggregate vehicle{
+     DomainEvent selected_vehicle
+  }
+  Aggregate car{
+      DomainEvent requested_purchase
+  }
+  Aggregate purchase
+  Aggregate truck{
+      DomainEvent requested_offer
+  }
+  Aggregate offer
+}
+            </section></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h6>Frequently Asked Questions (FAQ)</h6>
+    <p><b>Why is my board never converted without warnings?</b></p>
+    <p>The compiler is currently not able to recognise the end of an Event Storming model and therefore it always generates a warning
+    in the last step.</p>
+    <p><b>Why are my Stickers not converted?</b></p>
+    Check if one of the following applies to your board:
+    <ul>
+        <li>The color of the Sticker is not defined as a Event Storming element.</li>
+        <li>The Sticker do not have the correct format. Check if you use the correct format as introduced in the <a th:href="@{/EventStorming}">tutorial</a>.
+            The Command, Domain Event and Aggregate Stickers belonging to the same process step should be near each other.</li>
+        <li>The semantic model is not correct. Each process step must contain a Command, Domain Event and an Aggregate.</li>
+    </ul>
+    <p><b>What does serializer error mean?</b></p>
+    <p>Something is wrong with your event storming model. Take another look at our tutorial and examples and make sure that you use a semantically correct model:
+        Each process step must contain a Command, Domain Event and an Aggregate. If the model is correct, make sure that the stickers are recognized: Take a look at the log file for
+        further information about the conversion. The stickers from the same step should be near each other. If they are grouped correctly, you should find a log entry which states <i>group found</i>.
+    </p>
+    <p><b>Why is my board not recognized?</b></p>
+    <p>Our Converter for the Event Storming Boards expect you to define the colors for the Commands, Aggregates, Domain Events, User Role and Issue with Stickers, which have only the keywords written on it (see our examples). Make sure that all Stickers have a
+    different color and verify if the keywords are spelled and formatted correctly.</p>
+    <a class="btn btn-primary" th:href="@{/EventStorming}">Go to Tutorial</a>
+</div>
+</div>
+</body>
+</html>

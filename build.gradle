@@ -1,0 +1,53 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'ch.ost.rj.sa'
+version = '1.0.0'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+    implementation 'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.5'
+    implementation 'org.contextmapper:context-mapper-dsl:6.5.0'
+    implementation 'org.projectlombok:lombok:1.18.16'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+    compile group: 'org.webjars', name: 'jquery', version: '3.5.1'
+    compile group: 'org.webjars.npm', name: 'prettier', version: '2.0.5'
+    compile group: 'org.webjars', name: 'bootstrap', version: '4.5.3'
+
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        //exclude group: 'ch.qos.logback', module: 'logback-classic'
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+    }
+}

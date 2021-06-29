@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<div th:replace="fragments/header ::header"></div>
+<main class="container" role="main">
+    <div class="card">
+        <div class="card-body">
+                <div class="form-group align-items-center col-12 alert alert-danger " role="alert">
+                    <h4 class="alert-heading">Something unexpected happened!</h4>
+                </div>
+            <a th:href="@{/}">
+                <button class="btn btn-primary">Go Home</button>
+            </a>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>

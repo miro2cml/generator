@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header ::header"></div>
+</header>
+<br>
+<main class="container" role="main">
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h5>Overview</h5>
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <h6>Templates</h6>
+                    <p>miro2cml in its current version supports three board types:</p>
+                    <ul>
+                        <li>User Stories</li>
+                        <li>Event Storming</li>
+                        <li>Bounded Context Canvas</li>
+                    </ul>
+                    <h6>Precondition</h6>
+                    <p>To be able to follow this user guide, we expect you to be familiar with Miro and the
+                        concepts of Tactic and Strategic Domain Driven Design.</p>
+                    <ul>
+                        <li><a href="https://help.miro.com/hc/en-us/articles/360017571954-How-to-Start-Collaboration-with-Miro"
+                               target="_blank">How to Start Collaboration with Miro</a></li>
+                        <li><a href="https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design"
+                               target="_blank">An Introduction to Domain-Driven Design</a></li>
+                        <li><a href="https://contextmapper.org/docs/home/" target="_blank">Context Mapper</a></li>
+                    </ul>
+                    <h6>Mapping-Heuristics</h6>
+                    <p>The mapping-heuristics are described in the sections below. The mapping-heuristic
+                        explain in detail how the mapping is done by miro2cml. For a step-by-step description
+                        on how to use the miro2cml tool, please visit the page <a th:href="@{/UserStories}">Tutorials</a>.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <h5>User Story Mapping-Heuristics</h5>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div th:replace="fragments/userstoryHeuristics ::userstory"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <h5>Event Storming Mapping-Heuristics</h5>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    <div th:replace="fragments/eventstormingHeuristics ::eventstorming"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFour">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <h5>Bounded Context Mapping-Heuristics</h5>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                <div class="card-body">
+                    <div th:replace="fragments/canvasHeuristics ::canvas"></div>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>

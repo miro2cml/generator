@@ -1,0 +1,110 @@
+/* #2a303e, 42 :48 :62  (Rahmen, Text)
+#e4004d, 228:0  :77  (Pink, dunkel)
+#f94884, 249:72 :132 (Pink, mittel)
+#ff77a5, 255:119:165 (Pink, hell)
+#01689b, 1  :104:155 (Blau, dunkel)
+#2996cb, 41 :150:203 (Blau, mittel)
+#47aadc, 71 :170:220 (Blau, hell) */
+html {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    font-family: Arial, serif;
+    padding: 0;
+    margin: 0;
+    background-image: linear-gradient(160deg, #f9d12c 20%, white 70%) !important;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-attachment: fixed;
+}
+
+
+#mirologo {
+    top: 60px;
+    left: 5px;
+}
+
+h5,h6 {
+    color: #e4004d;
+    font-weight: bold;
+}
+.card {
+    border: 4px solid #2a303e;
+    box-shadow: 10px 10px 5px lightgray;
+}
+
+.btn-primary {
+    background-color: #01689b !important;
+}
+
+.btn-primary:hover {
+    background-color: #47aadc !important;
+    color: black !important;
+}
+
+.bg-dark {
+    background-color: #06063b !important;
+}
+
+.btn-primary > a {
+    text-decoration: none;
+    color: white;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+#contextmapperlogo, #mirologo {
+    width: 10%;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: -1;
+}
+.btn-link{
+    text-decoration-color: #e4004d !important;
+    color: white !important;
+}
+.btn-primary:active{
+    border-style: none !important;
+}
+.btn-link:hover{
+    color: white !important;
+}
+.show {
+    display: block;
+}
+.hide {
+    display: none;
+}
+
+.vertical-overflow-container {
+    width: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 23em;
+}
+
+.responsiveBox {
+    resize: none;
+    overflow: auto;
+    width: 100%;
+    height: 23em;
+}
+.img-tutorial{
+    width: 100%;
+}
+.img-mapping{
+    width: 40%;
+}
+
+.loader-img{
+    position: absolute;
+    width: 25%;
+    height: auto;
+    top: 20%;
+    left: 37.5%;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<script th:src="@{/js/main.js}"></script>
+<body>
+<header>
+    <div th:replace="fragments/header ::header"></div>
+</header>
+<br>
+<main class="container" role="main">
+    <div th:replace="fragments/boardSelection ::boardSelection"></div>
+    <br>
+    <div th:if="${hasOutputSection}">
+        <div th:if="${showCMLOutput}">
+            <div th:replace="fragments/output ::output"></div>
+        </div>
+        <div th:unless="${showCMLOutput}">
+            <div th:replace="fragments/no-output::no-output"></div>
+        </div>
+    </div>
+    <div id='loader' style='display: none;'>
+        <img alt="loading indicator" class="loader-img" th:src="@{/images/loading.gif}">
+    </div>
+
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+<script th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header ::header"></div>
+</header>
+<br>
+<main class="container" role="main">
+    <div class="card">
+        <div class="card-header">
+            <h5>How to get started</h5>
+        </div>
+        <div class="card-body">
+            <p>The first thing you have to do is authenticate yourself with Miro. Afterwards your boards will appear in
+            the gray list. <!-- [Q]: where is the gray list? --> Choose your board type and select your Miro board you like to convert, as shown in the figure.</p>
+            <img alt="Board selection form" th:src="@{/images/miroinput.png}" class="img-tutorial">
+            <br>
+            <br>
+            <p>With the Button "Map Board", you can convert your board. When the conversion is finished, a new field appears:
+            Context Mapper Output. If the first section is green, the input board was perfect. In the figure
+                you can see such an output. If the first section is orange, there are some small errors. If it is red,
+                the board could not be converted. The log file and the colored section explain
+                what went wrong. The preview shows the CML output or the log file if something went wrong. The files
+                can be downloaded via the button "Download Logfile" <!-- [W] better "Log File" (code change) --> and "Download CML".</p>
+            <img alt="Example Context Mapper Output" th:src="@{/images/cmloutput.PNG}" class="img-tutorial">
+            <br>
+            <br>
+            <h6>Board Type: EducatedGuess</h6>
+            <p>You can also set the board type to "EducatedGuess" <!-- "Guessed" -> "Guess" -->. The converter then decides which
+                template was used (by looking for mappable elements) and maps the board accordingly.</p>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>

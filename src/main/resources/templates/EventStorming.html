@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header ::header"></div>
+</header>
+<br>
+<main class="container" role="main">
+    <div class="card">
+        <div class="card-header">
+            <h5>User Guide for Event Storming</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h5>Step One: Create the MiroBoard</h5>
+                    <p>The mapping rules for the Event Storming are based on the <a href="https://github.com/ddd-crew/eventstorming-glossary-cheat-sheet" target="_blank">
+                        EventStorming Cheat sheet</a> form the DDD-Community.
+                        miro2cml does not work with a predefined template here. The origin of the template idea came from a
+                        <a href="https://github.com/ContextMapper/context-mapper-examples/tree/master/src/main/cml/lakeside-mutual" target="_blank">
+                            sample event storming from Lakeside Mutual</a>. So the first step is to create a new Miro board.
+                        Next, please define the sticker colors for the Domain Event, Command, Aggregate, Issue and User Role, as you see in the picture.
+                        miro2cml begins any mapping with the five defined Stickers; hence, it is important that these stickers have different colors and are
+                        written exactly as in the images below. The Cheat sheet also describes Policy and System Stickers, which are not supported in miro2cml at present. You can still use them, just make sure you use different colors for those stickers. If you do that properly, the miro2cml converter will ignore them in the converting process.</p>
+                    <img alt="Stickers Event Storming" th:src="@{/images/StickerEventStorming.PNG}" class="img-tutorial">
+                    <p>As soon as you have finished this setup, you can start with creating your Event Storming content. We have created some extra rules to make sure that the board conversions
+                    result in a meaningful CML output.
+                    Group the different phases of your event. Each Group has to consist of the following elements:
+                    <ul>
+                        <li>one Domain Event and one Command</li>
+                        <li>one or more Aggregates</li>
+                        <li>(optional) one User Role</li>
+                        <li>(optional) one Command that triggers the Domain Event (incoming arrow)</li>
+                        <li>(optional) the Command triggers one or two other Domain Event (outgoing arrow)</li>
+                    </ul><br>
+                    <p>The picture below provides an example of an Event Storming board. Some different formats for the steps are shown.
+                        The stickers that belong together have to be positioned near each other (the Issue stickers will be converted to comments, which does not dependent on their positions).</p>
+                    <img alt="Event Storming Example Map" th:src="@{/images/EventStormingExample.PNG}" class="img-tutorial">
+                    <p>The converter can only recognize the event/comment triggers correctly if the arrows start at the Domain Event Sticker and end at the Command Sticker.
+                        The arrow must be placed on the blue dots for both stickers. The blue dots pop up when working with the Sticker command in Miro.</p>
+                    <img alt="Arrow in Miro connected with two Stickers" th:src="@{/images/Arrow.PNG}" class="img-tutorial">
+                <li class="list-group-item"><h5>Step Two: Convert the Board</h5>
+                    <p>After you have created your board, you can convert it with the miro2cml tool. Choose your board and the board type: Event Storming.<br>
+                        The example returns the CML code below. The Issues stickers are in the comment at the beginning of the file.
+                        The Flow section represents your Domain Events, Commands and arrows. The Aggregates are also defined.
+                        The first (most left) Aggregate of a phase/step contains the corresponding Domain Events. The Commands are defined in the Application.</p>
+                    <pre><code>
+                        /* [How to handle offers?] */
+                        BoundedContext EventStormingBoundedContext {
+
+                            Application {
+                                CommandEvent start_searching_vehicles
+                                CommandEvent filter_by_vehicle_types
+                                CommandEvent choose_a_filter
+                                CommandEvent start_a_offer
+                                CommandEvent buying_a_car
+                                Flow {
+
+                                command start_searching_vehicles emits event started_search
+                                event started_search triggers command filter_by_vehicle_types
+
+                                command filter_by_vehicle_types emits event filtered_types
+                                event filtered_types triggers command choose_a_filter
+
+                                command choose_a_filter emits event selected_vehicle
+                                event selcted_vehicle triggers command buying_a_car x start_a_offer
+                                command buying_a_car [triggered by "Private Customer"] emits event requested_purchase
+                                command start_a_offer [triggered by "Business Customer"] emits event requested_offer
+                              }
+
+                             }
+
+                             Aggregate vehicle {
+                              DomainEvent started_search
+                              DomainEvent filtered_types
+                              DomainEvent selected_vehicle
+                              }
+
+                             Aggregate car {
+                              DomainEvent requested_purchase
+                              }
+
+                             Aggregate truck {
+                              DomainEvent requested_offer
+                             }
+
+                            Aggregate purchase
+
+                            Aggregate offer
+
+                            }
+                    </code></pre>
+                <li class="list-group-item"><h5>Step Three: Use the CML output</h5>
+                    <p>After you have received the CML output you can make more specifications in the CML model.
+                        Here is a <a href="https://contextmapper.org/docs/event-storming/" target="_blank">Link</a> to an Event Storming tutorial from the Context Mapper tool.</p>
+            </ul>
+        </div>
+    </div>
+</main>
+<div th:insert="fragments/footer ::footer"></div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+{
+  "properties": [
+    {
+      "name": "miro.client.id",
+      "type": "java.math.BigInteger",
+      "description": "Client ID of the miro Application."
+    },
+    {
+      "name": "miro.client.secret",
+      "type": "java.lang.String",
+      "description": "Client Secret of the miro Application."
+    },
+    {
+      "name": "miro.redirectUri",
+      "type": "java.lang.String",
+      "description": "Redirect URI sent to Miro for OAuth."
+    },
+    {
+      "name": "miro2cml.version",
+      "type": "java.lang.String",
+      "description": "Version Identifier for miro2cml."
+    },
+    {
+      "name": "contextMapper.version",
+      "type": "java.lang.String",
+      "description": "Version Identifier for ContextMapper."
+    },
+    {
+      "name": "miro2cml.baseUrl",
+      "type": "java.lang.String",
+      "description": "Description for miro2cml.baseUrl."
+    },
+    {
+      "name": "miro.baseUrl",
+      "type": "java.lang.String",
+      "description": "Base URL of our Datasource: Miro."
+    },
+    {
+      "name": "miro.api.baseUrl",
+      "type": "java.lang.String",
+      "description": "Base URL for the Miro API."
+    },
+    {
+      "name": "miro.api.oauthTokenEndpoint",
+      "type": "java.lang.String",
+      "description": "OAuth Endpoint of the Miro API, used to post the Auth-Token."
+    },
+    {
+      "name": "miro.oauthEndpoint",
+      "type": "java.lang.String",
+      "description": "URI to Miro-OAuth Endpoint."
+    },
+    {
+      "name": "miro2cml.authorizeReceiverEndpoint",
+      "type": "java.lang.String",
+      "description": "URI-suffix to internal OAuth receiver Endpoint."
+    },
+    {
+      "name": "miro.api.boardCountLimit",
+      "type": "java.lang.Integer",
+      "description": "Maximum amount of Boards, which shall be fetched from miro."
+    },
+    {
+      "name": "miro2cml.stringValidator.maxTextSize",
+      "type": "java.lang.Integer",
+      "description": "Maximum Text size for Widget Texts."
+    }
+  ]
+}

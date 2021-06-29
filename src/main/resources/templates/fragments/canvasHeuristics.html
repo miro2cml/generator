@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="canvas">
+<div class="card-body">
+    <h6>Which inputs are converted?</h6>
+    <p>The text fields and the colored boxes within the templates are converted. For further information, please consult the mapping table below.
+    </p>
+    <h6>Mapping Table</h6>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Bounded Context Canvas Element</th>
+            <th scope="col">Explanation</th>
+            <th scope="col">Context Mapper Output</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Field Name: Name: Policy Management Context</td>
+            <td>The name field is converted to the name of the Bounded Context.</td>
+            <td><pre><code>BoundedContext <b>Policy_Management_Context</b>{...}</code></pre></td>
+        </tr>
+        <tr>
+            <td>Field Description: The  Policy Management
+                Context allows Lakeside Mutual employees to view and manage
+                the insurance policies of individual customers.</td>
+            <td>The description of the Bounded Context is interpreted as the domain vision statement in the Bounded Context model in CML. The description field must be located between the
+                title "Description" and the title "Inbound Communication" and must be left of the field Domain, so that the Converter recognizes it.</td>
+            <td><pre><code>domainVisionStatement <br>"The  Policy Management Context allows<br> Lakeside Mutual employees to view and manage<br> the insurance policies of individual customers."</code></pre></td>
+        </tr>
+        <tr>
+            <td>Strategic Classification: Domain<br> - core</td>
+            <td>The input from the field domain is converted to a comment, because there is no element that matches the domain in Context Mapper.</td>
+            <td><pre><code>/* Domain: core</code></pre></td>
+        </tr>
+        <tr>
+            <td>Strategic Classification: Business Model<br> - revenue<br>- engagement<br>-compliance</td>
+            <td>The input from the field Business Model is converted to a comment, because there is no element that matches the Business Model in Context Mapper.</td>
+            <td><pre><code>/* Business Model: revenue, engagement, compliance</code></pre></td>
+        </tr>
+        <tr>
+            <td>Strategic Classification: Evolution<br> - custom built</td>
+            <td>The input from the field Evolution is converted to a comment, because there is no element that matches Evolution in the Context Mapper.</td>
+            <td><pre><code>/* Evolution: custom built</code></pre></td>
+        </tr>
+        <tr>
+            <td>Domain Roles: Role Types<br>- Manage quotation workflow<br>- CRUD on policies</td>
+            <td>The Role Types are converted to responsibilities in CML.</td>
+            <td><pre><code>responsibilities = "- Manage quotation workflow"<br> "- CRUD on policies"</code></pre></td>
+        </tr>
+        <tr>
+            <td>Inbound Communications: Event (orange boxes)<br>Offer/Quotation Requested</td>
+            <td>The Inbound Communication Events are converted to DomainEvents in CML.</td>
+            <td><pre><code>DomainEvent OfferQuotation_Requested</code></pre></td>
+        </tr>
+        <tr>
+            <td>Inbound Communications: Command (blue boxes)<br>makeOffer</td>
+            <td>The Inbound Communication Commands are converted to operations/method inside an Entity <i>BoundedContextName_Commands</i>. The return value is defined
+                as String based on the assumption that this is the most common return value. The return value can be adjusted later by hand.</td>
+            <td><pre><code>Entity BoundedContextName_Commands{<br><b>def String makeOffer</b> <br> }</code></pre></td>
+        </tr>
+        <tr>
+            <td>Inbound Communications: Query (orange boxes)<br>policies By Customer</td>
+            <td>The Inbound Communication Queries are converted to operations/method inside an the Entity <i>BoundedContextName_Queries</i>. The return value is defined
+                as String based on the assumption that this is the most common return value. The return value can be adjusted later by hand.</td>
+            <td><pre><code>Entity BoundedContextName_Queries{<br><b>def String policies_By_customer</b> <br> }</code></pre></td>
+        </tr>
+        <tr>
+            <td>Business Decisions: purple boxes<br> separate customer self service and core</td>
+            <td>The input from the Business Decisions boxes are converted to a comment, because there are no elements that match Business Decisions in the Context Mapper.</td>
+            <td><pre><code>/* Business Decisions: <br>separate customer self service and core</code></pre></td>
+        </tr>
+        <tr>
+            <td>Ubiquitous Language: light grey boxes<br>&lt;HealthInsurance&gt;</td>
+            <td>The input from the Ubiquitous Language boxes are converted to a comment, because there are no elements that match Ubiquitous Language in the Context Mapper.</td>
+            <td><pre><code>/* Ubiquitous Language: &lt;HealthInsurance&gt;</code></pre></td>
+        </tr>
+        <tr>
+            <td>Outbound Communications: Event, Command, Query<br>
+            Query: LookUpById, Event: Customer Updated, Command: Change address</td>
+            <td>The Outbound Communications are converted to a comment, because they represent events and operations from an other Bounded Context. </td>
+            <td><pre><code>/* Outbound Communication: <br>LookUpById, Customer Updated, Change address</code></pre></td>
+        </tr>
+        <tr>
+            <td>no input</td>
+            <td>The type of the Bounded Context is implicitly set to FEATURE because this is the most common use case.</td>
+            <td><pre><code>type FEATURE</code></pre></td>
+        </tr>
+        <tr>
+            <td>no input</td>
+            <td>The knowledge level is implicitly set to concrete because this is the most common use case.</td>
+            <td><pre><code>knowledgeLevel CONCRETE</code></pre></td>
+        </tr>
+        <tr>
+            <td>all other elements: like Collaborator Types</td>
+            <td>These elements are ignored during conversion, because it was really difficult to identify these Types and their connections and it is not the
+            main functionality of the template.</td>
+            <td>no CML output</td>
+        </tr>
+        </tbody>
+    </table>
+    <h6>Frequently Asked Questions (FAQ)</h6>
+    <p><b>Why are my fields not recognized?</b></p>
+    <p>The fields are identified with text search over the titles. You should not modify these titles.
+        The fields Strategic Classification and Role Types contain item lists that begin with a hyphen. The hyphens
+        distinguish the list items; for this reason, the layout of the fields should not be adjusted.</p>
+    <p><b>Why are my inbound and outbound communications elements not recognized?</b></p>
+    <p>The fields Event, Command and Query must have the same color as defined in the template. The easiest
+        way to use these elements is to copy the given fields and adjust the content.</p>
+    <p><b>Why is the field Description not found?</b></p>
+    <p>The text field below the heading Description must be between the Description heading and the
+    Inbound Communication heading. It also must be left of the Field Domain.</p>
+    <a class="btn btn-primary" th:href="@{/BoundedContext}">Go to Tutorial</a>
+</div>
+</div>
+</body>
+</html>
